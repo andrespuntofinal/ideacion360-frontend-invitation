@@ -84,6 +84,15 @@ const useEventsStore = create((set, get) => ({
     }
   },
 
+  uploadComponentFiles: async (eventId, formData) => {
+    try {
+      const { data } = await eventsService.uploadComponentFiles(eventId, formData);
+      return { success: true, urlsMap: data.data };
+    } catch (error) {
+      return { success: false, message: error.response?.data?.message || 'Error al subir archivos' };
+    }
+  },
+
   clearCurrentEvent: () => set({ currentEvent: null }),
 }));
 

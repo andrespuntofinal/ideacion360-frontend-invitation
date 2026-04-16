@@ -45,6 +45,7 @@ export const eventsService = {
   getComponents: (id) => api.get(`/events/${id}/components`),
   updateComponent: (id, type, data) => api.put(`/events/${id}/components/${type}`, data),
   deleteComponent: (id, type) => api.delete(`/events/${id}/components/${type}`),
+  uploadComponentFiles: (id, formData) => api.post(`/events/${id}/components/upload`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
 };
 
 export default api;

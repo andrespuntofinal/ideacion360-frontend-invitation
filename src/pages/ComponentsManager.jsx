@@ -6,9 +6,8 @@ import AdminLayout from '../components/admin/AdminLayout';
 import useEventsStore from '../stores/eventsStore';
 import toast from 'react-hot-toast';
 
-// Helper: render a field (detects color field by name containing 'color' or 'Color')
-const Field = ({ label, fieldKey, value, onChange, type = 'text', placeholder = '' }) => {
-  const isColor = /color/i.test(fieldKey);
+const Field = ({ label, fieldKey, value, onChange, type = 'text', placeholder = '', accept = '', step }) => {
+  const isColor = /color/i.test(fieldKey) && type !== 'file';
   return (
     <div>
       <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
@@ -25,7 +24,16 @@ const Field = ({ label, fieldKey, value, onChange, type = 'text', placeholder = 
       ) : type === 'textarea' ? (
         <textarea className="input-field" value={value || ''} onChange={e => onChange(fieldKey, e.target.value)} placeholder={placeholder} rows={3} style={{ resize: 'vertical' }} />
       ) : type === 'number' ? (
-        <input type="number" className="input-field" value={value || ''} onChange={e => onChange(fieldKey, Number(e.target.value))} placeholder={placeholder} />
+        <input type="number" className="input-field" step={step} value={value || ''} onChange={e => onChange(fieldKey, Number(e.target.value))} placeholder={placeholder} />
+      ) : type === 'file' ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <input type="file" accept={accept} className="input-field" onChange={e => {
+                if(e.target.files && e.target.files[0]) {
+                    onChange(fieldKey, e.target.files[0]);
+                }
+            }} style={{ padding: '0.35rem 0.5rem' }} />
+            {value && <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Actual: {value instanceof File ? value.name : value}</span>}
+        </div>
       ) : (
         <input type={type} className="input-field" value={value || ''} onChange={e => onChange(fieldKey, e.target.value)} placeholder={placeholder} />
       )}
@@ -38,9 +46,9 @@ const componentSchemas = {
   banner: {
     label: 'Banner', emoji: '🖼️',
     fields: [
-      { key: 'musicUrl', label: 'URL de Música de Fondo' },
-      { key: 'videoDesktop', label: 'URL Video Desktop' },
-      { key: 'videoResponsive', label: 'URL Video Responsive' },
+      { key: 'musicUrl', label: 'URL de Música de Fondo', type: 'file', accept: '.mp3' },
+      { key: 'videoDesktop', label: 'URL Video Desktop', type: 'file', accept: '.mp4,.webm' },
+      { key: 'videoResponsive', label: 'URL Video Responsive', type: 'file', accept: '.mp4,.webm' },
       { key: 'titleFont', label: 'Fuente del Título' },
       { key: 'titleSize', label: 'Tamaño del Título', placeholder: 'ej: 3rem' },
       { key: 'textColor', label: 'Color del Texto' },
@@ -52,8 +60,8 @@ const componentSchemas = {
   calendar: {
     label: 'Calendario', emoji: '📅',
     fields: [
-      { key: 'dateImg', label: 'URL Imagen de Fecha' },
-      { key: 'backgroundStyle', label: 'Estilo fondo', type: 'text' },
+      { key: 'dateImg', label: 'URL Imagen de Fecha', type: 'file', accept: '.jpg,.jpeg,.png' },
+      { key: 'backgroundStyle', label: 'ESTILO FONDO', type: 'text' },
       { key: 'titleTextColor', label: 'Color Título' },
       { key: 'titleTextFont', label: 'Fuente Título' },
       { key: 'titleMsgText', label: 'Texto del Título', type: 'textarea' },
@@ -71,11 +79,11 @@ const componentSchemas = {
     fields: [
       { key: 'carouselMsg', label: 'Mensaje del Carrusel' },
       { key: 'autoPlayInterval', label: 'Intervalo Auto-Play (ms)', type: 'number', placeholder: '3000' },
-      { key: 'backgroundColor', label: 'Color de Fondo' },
+      { key: 'backgroundStyle', label: 'ESTILO FONDO', type: 'text' },
       { key: 'titleColor', label: 'Color del Título' },
       { key: 'titleFont', label: 'Fuente del Título' },
       { key: 'cardStyle', label: 'Estilo de Tarjeta', placeholder: 'ej: rounded, shadow' },
-      { key: 'durationTransition', label: 'Duración Transición (ms)', type: 'number', placeholder: '500' },
+      { key: 'durationTransition', label: 'Duración Transición', type: 'number', step: '0.1', placeholder: '0.8' },
       { key: 'buttonPrevStyle', label: 'Estilo Botón Anterior' },
       { key: 'buttonNextStyle', label: 'Estilo Botón Siguiente' },
       { key: 'backgroundImgZoomStyle', label: 'Estilo Zoom Imagen' },
@@ -99,7 +107,7 @@ const componentSchemas = {
   countdown: {
     label: 'Conteo Regresivo', emoji: '⏱️',
     fields: [
-      { key: 'backgroundColor', label: 'Color de Fondo' },
+      { key: 'backgroundStyle', label: 'ESTILO FONDO', type: 'text' },
       { key: 'titleTextFont', label: 'Fuente Título' },
       { key: 'titleTextColor', label: 'Color Título' },
       { key: 'titleTextMsg', label: 'Mensaje Título', placeholder: 'Faltan para el gran día...' },
@@ -123,10 +131,9 @@ const componentSchemas = {
       { key: 'titleMen', label: 'Título Hombres', placeholder: 'Caballeros' },
       { key: 'dressCodeTextWomen', label: 'Descripción Mujeres', type: 'textarea' },
       { key: 'dressCodeTextMen', label: 'Descripción Hombres', type: 'textarea' },
-      { key: 'dressCodeIconWomen', label: 'URL Ícono Mujeres' },
-      { key: 'dressCodeIconMen', label: 'URL Ícono Hombres' },
+      { key: 'dressCodeIconWomen', label: 'URL Ícono Mujeres', type: 'file', accept: '.jpg,.jpeg,.png' },
+      { key: 'dressCodeIconMen', label: 'URL Ícono Hombres', type: 'file', accept: '.jpg,.jpeg,.png' },
       { key: 'iconbackgroundColor', label: 'Color Fondo Ícono' },
-      { key: 'backgroundColor', label: 'Color de Fondo' },
       { key: 'cardStyle', label: 'Estilo Card' },
       { key: 'circleStyle', label: 'Estilo Círculo' },
       { key: 'title2Color', label: 'Color Título 2' },
@@ -142,12 +149,12 @@ const componentSchemas = {
       { key: 'envelopeColor', label: 'Color del Sobre' },
       { key: 'envelopeColorDeg', label: 'Grado Gradiente Sobre', placeholder: '135' },
       { key: 'innerColor', label: 'Color Interior' },
-      { key: 'cardCouplePhoto', label: 'URL Foto de la Pareja' },
-      { key: 'textureUrl', label: 'URL Textura' },
+      { key: 'cardCouplePhoto', label: 'URL Foto de la Pareja', type: 'file', accept: '.jpg,.jpeg,.png' },
+      { key: 'textureUrl', label: 'URL Textura', type: 'file', accept: '.jpg,.jpeg,.png' },
       { key: 'envelopeMsg', label: 'Mensaje del Sobre', type: 'textarea' },
       { key: 'envelopeMsgColor', label: 'Color Mensaje Sobre' },
       { key: 'envelopeFont', label: 'Fuente del Sobre' },
-      { key: 'sealImage', label: 'URL Imagen del Sello' },
+      { key: 'sealImage', label: 'URL Imagen del Sello', type: 'file', accept: '.jpg,.jpeg,.png' },
       { key: 'overlayColor', label: 'Color Overlay' },
       { key: 'cardBackgroundColor', label: 'Color Fondo Tarjeta' },
       { key: 'accentColor', label: 'Color de Acento' },
@@ -167,7 +174,6 @@ const componentSchemas = {
       { key: 'detailsColor', label: 'Color Detalles' },
       { key: 'detailsFont', label: 'Fuente Detalles' },
       { key: 'cardStyle', label: 'Estilo Card' },
-      { key: 'detailsIcons', label: 'Íconos' },
       { key: 'detailIconColor', label: 'Color Ícono' },
       { key: 'detailItemTitleColor', label: 'Color Título Ítem' },
       { key: 'detailItemTitleFont', label: 'Fuente Título Ítem' },
@@ -187,7 +193,6 @@ const componentSchemas = {
       { key: 'brideParents', label: 'Padres de la Novia', placeholder: 'Sr. y Sra. García' },
       { key: 'font', label: 'Fuente del Mensaje' },
       { key: 'colorText1', label: 'Color Texto 1' },
-      { key: 'colorText2', label: 'Color Texto 2' },
       { key: 'colorParents', label: 'Color Texto Padres' },
       { key: 'textSize', label: 'Tamaño Texto', placeholder: 'ej: 1rem' },
     ],
@@ -311,7 +316,7 @@ const GuestManagementForm = ({ data, onChange }) => {
 };
 
 // Component accordion panel
-const ComponentPanel = ({ compKey, schema, data, onSave, saving }) => {
+const ComponentPanel = ({ compKey, schema, data, onSave, onUpload, saving }) => {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState(data || {});
   const [saved, setSaved] = useState(false);
@@ -321,7 +326,52 @@ const ComponentPanel = ({ compKey, schema, data, onSave, saving }) => {
   const handleChange = (field, value) => setFormData(f => ({ ...f, [field]: value }));
 
   const handleSave = async () => {
-    const result = await onSave(compKey, formData);
+    let payload = { ...formData };
+    let hasFiles = false;
+    const formDataObj = new FormData();
+    
+    for (const [key, value] of Object.entries(payload)) {
+      if (value instanceof File) {
+        formDataObj.append(key, value);
+        hasFiles = true;
+      }
+    }
+    
+    if (payload.images && Array.isArray(payload.images)) {
+      for (let i = 0; i < payload.images.length; i++) {
+        if (payload.images[i] instanceof File) {
+          formDataObj.append(`images_${i}`, payload.images[i]);
+          hasFiles = true;
+        }
+      }
+    }
+
+    if (hasFiles && onUpload) {
+      const uploadRes = await onUpload(formDataObj);
+      if (uploadRes.success) {
+        const urlsMap = uploadRes.urlsMap;
+        for (const [key, value] of Object.entries(payload)) {
+          if (value instanceof File) {
+             if (urlsMap[key]) {
+                 payload[key] = urlsMap[key];
+             } else {
+                 delete payload[key];
+             }
+          }
+        }
+        if (payload.images && Array.isArray(payload.images)) {
+          payload.images = payload.images.map((img, i) => 
+             (img instanceof File) ? (urlsMap[`images_${i}`] || "") : img
+          );
+        }
+        setFormData(payload);
+      } else {
+        toast.error(uploadRes.message || 'Error al subir archivos');
+        return;
+      }
+    }
+
+    const result = await onSave(compKey, payload);
     if (result.success) {
       setSaved(true);
       toast.success(`${schema.label} guardado`);
@@ -380,6 +430,8 @@ const ComponentPanel = ({ compKey, schema, data, onSave, saving }) => {
                       onChange={handleChange}
                       type={f.type}
                       placeholder={f.placeholder}
+                      accept={f.accept}
+                      step={f.step}
                     />
                   ))}
                 </div>
@@ -417,27 +469,62 @@ const ComponentPanel = ({ compKey, schema, data, onSave, saving }) => {
 
               {/* Carrusel images array */}
               {compKey === 'carousel' && (
-                <div style={{ marginTop: '1.5rem' }}>
-                  <label className="input-label">URLs de Imágenes (una por línea)</label>
-                  <textarea
-                    className="input-field" rows={4}
-                    placeholder="https://imagen1.jpg&#10;https://imagen2.jpg"
-                    value={(formData.images || []).join('\n')}
-                    onChange={e => handleChange('images', e.target.value.split('\n').filter(l => l.trim()))}
-                  />
+                <div style={{ marginTop: '1.5rem', background: 'var(--bg-card2)', padding: '1.25rem', borderRadius: 10, border: '1px solid var(--border-glass)' }}>
+                  <h4 style={{ color: 'var(--color-purple-light)', marginBottom: '1rem', fontSize: '0.9rem' }}>Imágenes del Carrusel</h4>
+                  <div style={{ marginBottom: '1rem' }}>
+                    <label className="input-label">Número de imágenes</label>
+                    <input type="number" min="0" className="input-field" 
+                      value={formData.images?.length || 0} 
+                      onChange={e => {
+                        const num = parseInt(e.target.value) || 0;
+                        const newImages = Array.from({length: num}, (_, i) => formData.images?.[i] || '');
+                        handleChange('images', newImages);
+                      }}
+                    />
+                  </div>
+                  
+                  {formData.images?.length > 0 && (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
+                      {formData.images.map((img, i) => (
+                        <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                          <label className="input-label">Imagen {i + 1}</label>
+                          <input type="file" accept=".jpg,.jpeg,.png" className="input-field" onChange={e => {
+                            if(e.target.files && e.target.files[0]) {
+                              const newImages = [...formData.images];
+                              newImages[i] = e.target.files[0];
+                              handleChange('images', newImages);
+                            }
+                          }} style={{ padding: '0.35rem 0.5rem' }} />
+                          {img && <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Actual: {img instanceof File ? img.name : img}</span>}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 
               {/* Envelope confettiColors */}
               {compKey === 'envelope' && (
-                <div style={{ marginTop: '1.5rem' }}>
-                  <label className="input-label">Colores del Confeti (uno por línea)</label>
-                  <textarea
-                    className="input-field" rows={3}
-                    placeholder="#FF6B6B&#10;#4ECDC4&#10;#45B7D1"
-                    value={(formData.confettiColors || []).join('\n')}
-                    onChange={e => handleChange('confettiColors', e.target.value.split('\n').filter(l => l.trim()))}
-                  />
+                <div style={{ marginTop: '1.5rem', background: 'var(--bg-card2)', padding: '1.25rem', borderRadius: 10, border: '1px solid var(--border-glass)' }}>
+                  <h4 style={{ color: 'var(--color-purple-light)', marginBottom: '1rem', fontSize: '0.9rem' }}>Colores del Confeti</h4>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+                    {[0, 1, 2].map(i => (
+                      <div key={i}>
+                        <label className="input-label">Color {i + 1}</label>
+                        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                          <input type="color" className="input-color" 
+                            value={formData.confettiColors?.[i] || '#ffffff'} 
+                            onChange={e => {
+                              const newColors = [...(formData.confettiColors || ['#ffffff', '#ffffff', '#ffffff'])];
+                              newColors[i] = e.target.value;
+                              handleChange('confettiColors', newColors);
+                            }} 
+                            style={{ width: 40, flexShrink: 0 }} 
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
 
@@ -473,7 +560,7 @@ const ComponentPanel = ({ compKey, schema, data, onSave, saving }) => {
 const ComponentsManager = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { fetchEventById, updateComponent, isLoading } = useEventsStore();
+  const { fetchEventById, updateComponent, uploadComponentFiles, isLoading } = useEventsStore();
   const [event, setEvent] = useState(null);
   const [saving, setSaving] = useState(false);
 
@@ -553,6 +640,10 @@ const ComponentsManager = () => {
                 schema={componentSchemas[compKey]}
                 data={event?.components?.[compKey]}
                 onSave={handleSaveComponent}
+                onUpload={async (formDataObj) => {
+                  setSaving(true);
+                  return await uploadComponentFiles(id, formDataObj);
+                }}
                 saving={saving}
               />
             </motion.div>
