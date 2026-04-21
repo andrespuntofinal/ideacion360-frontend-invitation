@@ -27,12 +27,16 @@ const Field = ({ label, fieldKey, value, onChange, type = 'text', placeholder = 
         <input type="number" className="input-field" step={step} value={value || ''} onChange={e => onChange(fieldKey, Number(e.target.value))} placeholder={placeholder} />
       ) : type === 'file' ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <input type="file" accept={accept} className="input-field" onChange={e => {
-                if(e.target.files && e.target.files[0]) {
-                    onChange(fieldKey, e.target.files[0]);
-                }
-            }} style={{ padding: '0.35rem 0.5rem' }} />
-            {value && <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Actual: {value instanceof File ? value.name : value}</span>}
+          <input type="file" accept={accept} className="input-field" onChange={e => {
+            if (e.target.files && e.target.files[0]) {
+              onChange(fieldKey, e.target.files[0]);
+            }
+          }} style={{ padding: '0.35rem 0.5rem' }} />
+          {value && (
+            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              Actual: {value instanceof File ? value.name : (typeof value === 'string' ? value.split('/').pop() : value)}
+            </span>
+          )}
         </div>
       ) : (
         <input type={type} className="input-field" value={value || ''} onChange={e => onChange(fieldKey, e.target.value)} placeholder={placeholder} />
@@ -50,10 +54,8 @@ const componentSchemas = {
       { key: 'videoDesktop', label: 'URL Video Desktop', type: 'file', accept: '.mp4,.webm' },
       { key: 'videoResponsive', label: 'URL Video Responsive', type: 'file', accept: '.mp4,.webm' },
       { key: 'titleFont', label: 'Fuente del Título' },
-      { key: 'titleSize', label: 'Tamaño del Título', placeholder: 'ej: 3rem' },
       { key: 'textColor', label: 'Color del Texto' },
       { key: 'subtitleFont', label: 'Fuente del Subtítulo' },
-      { key: 'subtitleSize', label: 'Tamaño del Subtítulo', placeholder: 'ej: 1.5rem' },
       { key: 'subtextMsg', label: 'Mensaje Subtexto', type: 'textarea' },
     ],
   },
@@ -61,7 +63,6 @@ const componentSchemas = {
     label: 'Calendario', emoji: '📅',
     fields: [
       { key: 'dateImg', label: 'URL Imagen de Fecha', type: 'file', accept: '.jpg,.jpeg,.png' },
-      { key: 'backgroundStyle', label: 'ESTILO FONDO', type: 'text' },
       { key: 'titleTextColor', label: 'Color Título' },
       { key: 'titleTextFont', label: 'Fuente Título' },
       { key: 'titleMsgText', label: 'Texto del Título', type: 'textarea' },
@@ -79,14 +80,8 @@ const componentSchemas = {
     fields: [
       { key: 'carouselMsg', label: 'Mensaje del Carrusel' },
       { key: 'autoPlayInterval', label: 'Intervalo Auto-Play (ms)', type: 'number', placeholder: '3000' },
-      { key: 'backgroundStyle', label: 'ESTILO FONDO', type: 'text' },
       { key: 'titleColor', label: 'Color del Título' },
       { key: 'titleFont', label: 'Fuente del Título' },
-      { key: 'cardStyle', label: 'Estilo de Tarjeta', placeholder: 'ej: rounded, shadow' },
-      { key: 'durationTransition', label: 'Duración Transición', type: 'number', step: '0.1', placeholder: '0.8' },
-      { key: 'buttonPrevStyle', label: 'Estilo Botón Anterior' },
-      { key: 'buttonNextStyle', label: 'Estilo Botón Siguiente' },
-      { key: 'backgroundImgZoomStyle', label: 'Estilo Zoom Imagen' },
       { key: 'buttonCloseColor', label: 'Color Botón Cerrar' },
     ],
   },
@@ -97,17 +92,20 @@ const componentSchemas = {
       { key: 'childrestrictionMessage', label: 'Mensaje', type: 'textarea', placeholder: 'Por favor, este evento es exclusivo para adultos...' },
       { key: 'titleColor', label: 'Color Título' },
       { key: 'titleFont', label: 'Fuente Título' },
-      { key: 'cardStyle', label: 'Estilo Card' },
-      { key: 'circleStyle', label: 'Estilo Círculo' },
       { key: 'iconColor', label: 'Color Ícono' },
       { key: 'textColor', label: 'Color Texto' },
       { key: 'textFont', label: 'Fuente Texto' },
+      { key: 'backgroundColorFrom', label: 'Color Fondo Desde' },
+      { key: 'backgroundColorVia', label: 'Color Fondo Via' },
+      { key: 'backgroundColorTo', label: 'Color Fondo Hasta' },
+      { key: 'boderColor', label: 'Color Borde' },
+      { key: 'backgroundColorIconMoments', label: 'Color Fondo Ícono Momentos' },
+      { key: 'borderColorIconMoments', label: 'Color Borde Ícono Momentos' },
     ],
   },
   countdown: {
     label: 'Conteo Regresivo', emoji: '⏱️',
     fields: [
-      { key: 'backgroundStyle', label: 'ESTILO FONDO', type: 'text' },
       { key: 'titleTextFont', label: 'Fuente Título' },
       { key: 'titleTextColor', label: 'Color Título' },
       { key: 'titleTextMsg', label: 'Mensaje Título', placeholder: 'Faltan para el gran día...' },
@@ -119,6 +117,10 @@ const componentSchemas = {
       { key: 'numberColorText1', label: 'Color Número 1' },
       { key: 'numberColorText2', label: 'Color Número 2' },
       { key: 'numberFontText', label: 'Fuente Número' },
+      { key: 'backgroundColorFrom', label: 'Color Fondo Desde' },
+      { key: 'backgroundColorVia', label: 'Color Fondo Via' },
+      { key: 'backgroundColorTo', label: 'Color Fondo Hasta' },
+      { key: 'boderColor', label: 'Color Borde' },
     ],
   },
   dressCode: {
@@ -134,12 +136,16 @@ const componentSchemas = {
       { key: 'dressCodeIconWomen', label: 'URL Ícono Mujeres', type: 'file', accept: '.jpg,.jpeg,.png' },
       { key: 'dressCodeIconMen', label: 'URL Ícono Hombres', type: 'file', accept: '.jpg,.jpeg,.png' },
       { key: 'iconbackgroundColor', label: 'Color Fondo Ícono' },
-      { key: 'cardStyle', label: 'Estilo Card' },
-      { key: 'circleStyle', label: 'Estilo Círculo' },
       { key: 'title2Color', label: 'Color Título 2' },
       { key: 'title2Font', label: 'Fuente Título 2' },
       { key: 'text2Color', label: 'Color Texto 2' },
       { key: 'text2Font', label: 'Fuente Texto 2' },
+      { key: 'backgroundColorFrom', label: 'Color Fondo Desde' },
+      { key: 'backgroundColorVia', label: 'Color Fondo Via' },
+      { key: 'backgroundColorTo', label: 'Color Fondo Hasta' },
+      { key: 'boderColor', label: 'Color Borde' },
+      { key: 'backgroundColorIconMoments', label: 'Color Fondo Ícono Momentos' },
+      { key: 'borderColorIconMoments', label: 'Color Borde Ícono Momentos' },
     ],
   },
   envelope: {
@@ -165,6 +171,7 @@ const componentSchemas = {
       { key: 'initialsCoupleTextColor', label: 'Color Iniciales Pareja' },
       { key: 'initialsCoupleText', label: 'Iniciales Pareja', placeholder: 'S & L' },
       { key: 'cardMessageforguestsText', label: 'Mensaje para Invitados', type: 'textarea' },
+      { key: 'backgroundImage', label: 'IMAGEN DE FONDO', type: 'file', accept: '.jpg,.jpeg,.png' },
     ],
   },
   eventDetails: {
@@ -173,15 +180,19 @@ const componentSchemas = {
       { key: 'detailsTitle', label: 'Título Detalles' },
       { key: 'detailsColor', label: 'Color Detalles' },
       { key: 'detailsFont', label: 'Fuente Detalles' },
-      { key: 'cardStyle', label: 'Estilo Card' },
       { key: 'detailIconColor', label: 'Color Ícono' },
       { key: 'detailItemTitleColor', label: 'Color Título Ítem' },
       { key: 'detailItemTitleFont', label: 'Fuente Título Ítem' },
       { key: 'detailItemText1Color', label: 'Color Texto Ítem' },
       { key: 'detailItemText1Font', label: 'Fuente Texto Ítem' },
       { key: 'detailIcon2Color', label: 'Color Ícono 2' },
-      { key: 'detailsMapsStyle', label: 'Estilo Mapa' },
       { key: 'detailsMapsTitle', label: 'Título Mapa' },
+      { key: 'backgroundColorFrom', label: 'Color Fondo Desde' },
+      { key: 'backgroundColorVia', label: 'Color Fondo Via' },
+      { key: 'backgroundColorTo', label: 'Color Fondo Hasta' },
+      { key: 'boderColor', label: 'Color Borde' },
+      { key: 'backgroundColorIconMoments', label: 'Color Fondo Ícono Momentos' },
+      { key: 'borderColorIconMoments', label: 'Color Borde Ícono Momentos' },
     ],
   },
   message: {
@@ -194,7 +205,8 @@ const componentSchemas = {
       { key: 'font', label: 'Fuente del Mensaje' },
       { key: 'colorText1', label: 'Color Texto 1' },
       { key: 'colorParents', label: 'Color Texto Padres' },
-      { key: 'textSize', label: 'Tamaño Texto', placeholder: 'ej: 1rem' },
+      { key: 'backgroundImage', label: 'Imagen de Fondo', type: 'file', accept: '.jpg,.jpeg,.png' },
+      { key: 'backgroundColor', label: 'Color de Fondo' },
     ],
   },
   presents: {
@@ -204,11 +216,15 @@ const componentSchemas = {
       { key: 'presentMessage', label: 'Mensaje', type: 'textarea', placeholder: 'Si deseas hacernos un regalo...' },
       { key: 'titleColor', label: 'Color Título' },
       { key: 'titleFont', label: 'Fuente Título' },
-      { key: 'cardStyle', label: 'Estilo Card' },
-      { key: 'circleStyle', label: 'Estilo Círculo' },
       { key: 'iconColor', label: 'Color Ícono' },
       { key: 'textColor', label: 'Color Texto' },
       { key: 'textFont', label: 'Fuente Texto' },
+      { key: 'backgroundColorFrom', label: 'Color Fondo Desde' },
+      { key: 'backgroundColorVia', label: 'Color Fondo Via' },
+      { key: 'backgroundColorTo', label: 'Color Fondo Hasta' },
+      { key: 'boderColor', label: 'Color Borde' },
+      { key: 'backgroundColorIconMoments', label: 'Color Fondo Ícono Momentos' },
+      { key: 'borderColorIconMoments', label: 'Color Borde Ícono Momentos' },
     ],
   },
   rsvp: {
@@ -217,7 +233,6 @@ const componentSchemas = {
       { key: 'buttonText', label: 'Texto Botón Principal', placeholder: 'Confirmar Asistencia' },
       { key: 'successMessage', label: 'Mensaje de Éxito', type: 'textarea' },
       { key: 'rejectedMessage', label: 'Mensaje de Rechazo', type: 'textarea' },
-      { key: 'backgroundColor', label: 'Color de Fondo' },
       { key: 'buttonColor', label: 'Color Botón' },
       { key: 'buttonTextColor', label: 'Color Texto Botón' },
       { key: 'buttonTextFont', label: 'Fuente Texto Botón' },
@@ -245,8 +260,6 @@ const componentSchemas = {
     label: 'Línea de Tiempo', emoji: '📋',
     fields: [
       { key: 'font', label: 'Fuente' },
-      { key: 'textColor', label: 'Color de Texto' },
-      { key: 'backgroundColor', label: 'Color de Fondo' },
       { key: 'iconStep1', label: 'Ícono Paso 1', placeholder: '💒' },
       { key: 'textStep1', label: 'Texto Paso 1', placeholder: 'Ceremonia Religiosa' },
       { key: 'timeStep1', label: 'Hora Paso 1', placeholder: '4:00 PM' },
@@ -269,7 +282,6 @@ const componentSchemas = {
     isSpecial: true,
   },
 };
-
 const GuestManagementForm = ({ data, onChange }) => {
   const totalGuests = data?.totalGuests || 0;
   const guests = data?.guests || [];
@@ -329,14 +341,14 @@ const ComponentPanel = ({ compKey, schema, data, onSave, onUpload, saving }) => 
     let payload = { ...formData };
     let hasFiles = false;
     const formDataObj = new FormData();
-    
+
     for (const [key, value] of Object.entries(payload)) {
       if (value instanceof File) {
         formDataObj.append(key, value);
         hasFiles = true;
       }
     }
-    
+
     if (payload.images && Array.isArray(payload.images)) {
       for (let i = 0; i < payload.images.length; i++) {
         if (payload.images[i] instanceof File) {
@@ -352,16 +364,16 @@ const ComponentPanel = ({ compKey, schema, data, onSave, onUpload, saving }) => 
         const urlsMap = uploadRes.urlsMap;
         for (const [key, value] of Object.entries(payload)) {
           if (value instanceof File) {
-             if (urlsMap[key]) {
-                 payload[key] = urlsMap[key];
-             } else {
-                 delete payload[key];
-             }
+            if (urlsMap[key]) {
+              payload[key] = urlsMap[key];
+            } else {
+              delete payload[key];
+            }
           }
         }
         if (payload.images && Array.isArray(payload.images)) {
-          payload.images = payload.images.map((img, i) => 
-             (img instanceof File) ? (urlsMap[`images_${i}`] || "") : img
+          payload.images = payload.images.map((img, i) =>
+            (img instanceof File) ? (urlsMap[`images_${i}`] || "") : img
           );
         }
         setFormData(payload);
@@ -473,29 +485,33 @@ const ComponentPanel = ({ compKey, schema, data, onSave, onUpload, saving }) => 
                   <h4 style={{ color: 'var(--color-purple-light)', marginBottom: '1rem', fontSize: '0.9rem' }}>Imágenes del Carrusel</h4>
                   <div style={{ marginBottom: '1rem' }}>
                     <label className="input-label">Número de imágenes</label>
-                    <input type="number" min="0" className="input-field" 
-                      value={formData.images?.length || 0} 
+                    <input type="number" min="0" className="input-field"
+                      value={formData.images?.length || 0}
                       onChange={e => {
                         const num = parseInt(e.target.value) || 0;
-                        const newImages = Array.from({length: num}, (_, i) => formData.images?.[i] || '');
+                        const newImages = Array.from({ length: num }, (_, i) => formData.images?.[i] || '');
                         handleChange('images', newImages);
                       }}
                     />
                   </div>
-                  
+
                   {formData.images?.length > 0 && (
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
                       {formData.images.map((img, i) => (
                         <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                           <label className="input-label">Imagen {i + 1}</label>
                           <input type="file" accept=".jpg,.jpeg,.png" className="input-field" onChange={e => {
-                            if(e.target.files && e.target.files[0]) {
+                            if (e.target.files && e.target.files[0]) {
                               const newImages = [...formData.images];
                               newImages[i] = e.target.files[0];
                               handleChange('images', newImages);
                             }
                           }} style={{ padding: '0.35rem 0.5rem' }} />
-                          {img && <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Actual: {img instanceof File ? img.name : img}</span>}
+                          {img && (
+                            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                              Actual: {img instanceof File ? img.name : (typeof img === 'string' ? img.split('/').pop() : img)}
+                            </span>
+                          )}
                         </div>
                       ))}
                     </div>
@@ -512,14 +528,14 @@ const ComponentPanel = ({ compKey, schema, data, onSave, onUpload, saving }) => 
                       <div key={i}>
                         <label className="input-label">Color {i + 1}</label>
                         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                          <input type="color" className="input-color" 
-                            value={formData.confettiColors?.[i] || '#ffffff'} 
+                          <input type="color" className="input-color"
+                            value={formData.confettiColors?.[i] || '#ffffff'}
                             onChange={e => {
                               const newColors = [...(formData.confettiColors || ['#ffffff', '#ffffff', '#ffffff'])];
                               newColors[i] = e.target.value;
                               handleChange('confettiColors', newColors);
-                            }} 
-                            style={{ width: 40, flexShrink: 0 }} 
+                            }}
+                            style={{ width: 40, flexShrink: 0 }}
                           />
                         </div>
                       </div>
