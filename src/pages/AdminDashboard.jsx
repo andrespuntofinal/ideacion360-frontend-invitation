@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Calendar, Plus, Trash2, Edit, Eye, Settings2,
-  TrendingUp, CheckCircle, Clock, Users, MoreVertical
+  TrendingUp, CheckCircle, Clock, Users, MoreVertical, CreditCard
 } from 'lucide-react';
 import AdminLayout from '../components/admin/AdminLayout';
 import useEventsStore from '../stores/eventsStore';
@@ -142,108 +142,118 @@ const AdminDashboard = () => {
                   const isLast = idx >= events.length - 2 && events.length > 2;
                   const isFirst = idx === 0 && events.length > 1;
                   return (
-                  <tr key={event._id}>
-                    <td>
-                      <span className={`badge badge-${event.type || 'web'}`}>
-                        {typeLabels[event.type] || 'Web'}
-                      </span>
-                    </td>
-                    <td>
-                      <div style={{ fontWeight: 500 }}>{event.contact?.name || '—'}</div>
-                      <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>{event.contact?.email || ''}</div>
-                    </td>
-                    <td style={{ color: 'var(--text-secondary)' }}>{event.wedding?.coupleNames || '—'}</td>
-                    <td style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>{formatDate(event.wedding?.weddingDate)}</td>
-                    <td>
-                      <span className={`badge badge-${event.status || 'draft'}`}>
-                        {event.status === 'active' ? 'Activo' : event.status === 'inactive' ? 'Inactivo' : 'Borrador'}
-                      </span>
-                    </td>
-                    <td>
-                      <div style={{ display: 'flex', justifyContent: 'flex-end', position: 'relative' }}>
-                        <button
-                          onClick={() => setOpenMenuId(openMenuId === event.eventId ? null : event.eventId)}
-                          style={{
-                            background: 'transparent', border: 'none', color: 'var(--text-muted)',
-                            padding: '0.4rem', cursor: 'pointer', borderRadius: '50%',
-                            transition: 'all 0.2s'
-                          }}
-                          onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
-                          onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-                        >
-                          <MoreVertical size={18} />
-                        </button>
+                    <tr key={event._id}>
+                      <td>
+                        <span className={`badge badge-${event.type || 'web'}`}>
+                          {typeLabels[event.type] || 'Web'}
+                        </span>
+                      </td>
+                      <td>
+                        <div style={{ fontWeight: 500 }}>{event.contact?.name || '—'}</div>
+                        <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>{event.contact?.email || ''}</div>
+                      </td>
+                      <td style={{ color: 'var(--text-secondary)' }}>{event.wedding?.coupleNames || '—'}</td>
+                      <td style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>{formatDate(event.wedding?.weddingDate)}</td>
+                      <td>
+                        <span className={`badge badge-${event.status || 'draft'}`}>
+                          {event.status === 'active' ? 'Activo' : event.status === 'inactive' ? 'Inactivo' : 'Borrador'}
+                        </span>
+                      </td>
+                      <td>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', position: 'relative' }}>
+                          <button
+                            onClick={() => setOpenMenuId(openMenuId === event.eventId ? null : event.eventId)}
+                            style={{
+                              background: 'transparent', border: 'none', color: 'var(--text-muted)',
+                              padding: '0.4rem', cursor: 'pointer', borderRadius: '50%',
+                              transition: 'all 0.2s'
+                            }}
+                            onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+                            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                          >
+                            <MoreVertical size={18} />
+                          </button>
 
-                        {openMenuId === event.eventId && (
-                          <>
-                            <div 
-                              style={{ position: 'fixed', inset: 0, zIndex: 40 }} 
-                              onClick={() => setOpenMenuId(null)} 
-                            />
-                            <div
-                              style={{
-                                position: 'absolute',
-                                right: '30px',
-                                top: isLast ? 'auto' : '0',
-                                bottom: isLast ? '0' : 'auto',
-                                background: 'var(--bg-card2)',
-                                border: '1px solid var(--border-glass)',
-                                borderRadius: '12px',
-                                padding: '0.5rem',
-                                zIndex: 50,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '0.25rem',
-                                minWidth: '160px',
-                                boxShadow: 'var(--shadow-card)'
-                              }}
-                            >
-                              <button
-                                onClick={() => { setOpenMenuId(null); navigate(`/Wedding-Invitation/Admin/events/${event.eventId}`); }}
-                                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', border: 'none', color: 'var(--text-primary)', padding: '0.5rem', cursor: 'pointer', borderRadius: '6px', textAlign: 'left', fontSize: '0.85rem' }}
-                                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(124,58,237,0.1)'}
-                                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                          {openMenuId === event.eventId && (
+                            <>
+                              <div
+                                style={{ position: 'fixed', inset: 0, zIndex: 40 }}
+                                onClick={() => setOpenMenuId(null)}
+                              />
+                              <div
+                                style={{
+                                  position: 'absolute',
+                                  right: '30px',
+                                  top: isLast ? 'auto' : '0',
+                                  bottom: isLast ? '0' : 'auto',
+                                  background: 'var(--bg-card2)',
+                                  border: '1px solid var(--border-glass)',
+                                  borderRadius: '12px',
+                                  padding: '0.5rem',
+                                  zIndex: 50,
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  gap: '0.25rem',
+                                  minWidth: '160px',
+                                  boxShadow: 'var(--shadow-card)'
+                                }}
                               >
-                                <Eye size={14} color="var(--color-purple-light)" /> Ver Detalle
-                              </button>
-                              
-                              {event.type === 'web' && (
                                 <button
-                                  onClick={() => { setOpenMenuId(null); navigate(`/Wedding-Invitation/Admin/events/${event.eventId}/components`); }}
+                                  onClick={() => { setOpenMenuId(null); navigate(`/Wedding-Invitation/Admin/events/${event.eventId}`); }}
                                   style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', border: 'none', color: 'var(--text-primary)', padding: '0.5rem', cursor: 'pointer', borderRadius: '6px', textAlign: 'left', fontSize: '0.85rem' }}
-                                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(138,196,224,0.1)'}
+                                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(124,58,237,0.1)'}
                                   onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                                 >
-                                  <Settings2 size={14} color="var(--color-blue)" /> Componentes
+                                  <Eye size={14} color="var(--color-purple-light)" /> Ver Detalle
                                 </button>
-                              )}
 
-                              <button
-                                onClick={() => { setOpenMenuId(null); navigate(`/Wedding-Invitation/Admin/events/${event.eventId}/edit`); }}
-                                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', border: 'none', color: 'var(--text-primary)', padding: '0.5rem', cursor: 'pointer', borderRadius: '6px', textAlign: 'left', fontSize: '0.85rem' }}
-                                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(251,191,36,0.1)'}
-                                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-                              >
-                                <Edit size={14} color="#fbbf24" /> Editar Evento
-                              </button>
-                              
-                              <div style={{ height: '1px', background: 'var(--border-glass)', margin: '4px 0' }} />
-                              
-                              <button
-                                onClick={() => { setOpenMenuId(null); setDeleteConfirm(event.eventId); }}
-                                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', border: 'none', color: '#f87171', padding: '0.5rem', cursor: 'pointer', borderRadius: '6px', textAlign: 'left', fontSize: '0.85rem' }}
-                                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(239,68,68,0.1)'}
-                                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-                              >
-                                <Trash2 size={14} color="#f87171" /> Eliminar
-                              </button>
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                )})}
+                                {event.type === 'web' && (
+                                  <button
+                                    onClick={() => { setOpenMenuId(null); navigate(`/Wedding-Invitation/Admin/events/${event.eventId}/components`); }}
+                                    style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', border: 'none', color: 'var(--text-primary)', padding: '0.5rem', cursor: 'pointer', borderRadius: '6px', textAlign: 'left', fontSize: '0.85rem' }}
+                                    onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(138,196,224,0.1)'}
+                                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                                  >
+                                    <Settings2 size={14} color="var(--color-blue)" /> Componentes
+                                  </button>
+                                )}
+
+                                <button
+                                  onClick={() => { setOpenMenuId(null); window.open(`/Wedding-Invitation/card/${event.eventId}`, '_blank'); }}
+                                  style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', border: 'none', color: 'var(--text-primary)', padding: '0.5rem', cursor: 'pointer', borderRadius: '6px', textAlign: 'left', fontSize: '0.85rem' }}
+                                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(74,222,128,0.1)'}
+                                  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                                >
+                                  <CreditCard size={14} color="#4ade80" /> Ver Tarjeta
+                                </button>
+
+                                <button
+                                  onClick={() => { setOpenMenuId(null); navigate(`/Wedding-Invitation/Admin/events/${event.eventId}/edit`); }}
+                                  style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', border: 'none', color: 'var(--text-primary)', padding: '0.5rem', cursor: 'pointer', borderRadius: '6px', textAlign: 'left', fontSize: '0.85rem' }}
+                                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(251,191,36,0.1)'}
+                                  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                                >
+                                  <Edit size={14} color="#fbbf24" /> Editar Evento
+                                </button>
+
+                                <div style={{ height: '1px', background: 'var(--border-glass)', margin: '4px 0' }} />
+
+                                <button
+                                  onClick={() => { setOpenMenuId(null); setDeleteConfirm(event.eventId); }}
+                                  style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', border: 'none', color: '#f87171', padding: '0.5rem', cursor: 'pointer', borderRadius: '6px', textAlign: 'left', fontSize: '0.85rem' }}
+                                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(239,68,68,0.1)'}
+                                  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                                >
+                                  <Trash2 size={14} color="#f87171" /> Eliminar
+                                </button>
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           )}

@@ -9,7 +9,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import EventForm from './pages/EventForm';
 import EventDetail from './pages/EventDetail';
 import ComponentsManager from './pages/ComponentsManager';
-import InvitationCard from './pages/InvitationCard';
+import CardPage from './card/CardPage';
 import ControlUser from './pages/ControlUser';
 
 import AdminSettings from './pages/AdminSettings';
@@ -66,8 +66,8 @@ const App = () => {
           <ProtectedRoute><ComponentsManager /></ProtectedRoute>
         } />
 
-        {/* Client / Guest Routes */}
-        <Route path="/Wedding-Invitation/card/*" element={<InvitationCard />} />
+        {/* Public Card (Invitation View) */}
+        <Route path="/Wedding-Invitation/card/:eventId" element={<CardPage />} />
         <Route path="/Wedding-Invitation/control-user/*" element={<ControlUser />} />
 
         <Route path="/Wedding-Invitation/Admin/settings" element={
