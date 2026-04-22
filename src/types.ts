@@ -131,6 +131,7 @@ export interface CardParamsGeneral {
 
 export interface CardWeddingData {
   weddingDate: string;
+  weddingTime: string;
   coupleNames: string;
 }
 

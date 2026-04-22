@@ -11,6 +11,7 @@ export const DEFAULT_CONFIG: CardConfig = {
   },
   weddingData: {
     weddingDate: '2026-09-19T17:00:00',
+    weddingTime: '17:00',
     coupleNames: 'Juan & Laura',
   },
   activeComponents: {
@@ -190,6 +191,7 @@ export function CardProvider({ eventId, children }: CardProviderProps) {
           },
           weddingData: {
             weddingDate: wedding.weddingDate ? new Date(wedding.weddingDate).toISOString() : DEFAULT_CONFIG.weddingData.weddingDate,
+            weddingTime: wedding.weddingTime || DEFAULT_CONFIG.weddingData.weddingTime,
             coupleNames: wedding.coupleNames || DEFAULT_CONFIG.weddingData.coupleNames,
           },
           webhookUrl: event.components?.rsvp?.webhookUrl || DEFAULT_CONFIG.webhookUrl,

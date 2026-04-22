@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Music, Music2, X } from 'lucide-react';
+import { Music, VolumeX, RotateCcw } from 'lucide-react';
 import { useCardConfig } from '../CardContext';
 
 interface FooterControlsProps {
@@ -14,8 +14,8 @@ export default function FooterControls({ onClose }: FooterControlsProps) {
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = 0.5;
-      audioRef.current.play().catch((err) => { console.log('Autoplay blocked', err); setIsPlaying(false); });
+      audioRef.current.volume = 0.4;
+      audioRef.current.play().catch(() => setIsPlaying(false));
     }
   }, []);
 
@@ -27,13 +27,31 @@ export default function FooterControls({ onClose }: FooterControlsProps) {
   };
 
   return (
-    <div className="fixed bottom-8 right-8 flex flex-col gap-4 z-50">
-      <audio ref={audioRef} src={banner.musicUrl as string} loop />
-      <button onClick={toggleMusic} className="w-12 h-12 bg-white rounded-full shadow-2xl flex items-center justify-center text-stone-800 hover:scale-110 transition-transform">
-        {isPlaying ? <Music className="w-6 h-6 animate-pulse" /> : <Music2 className="w-6 h-6 opacity-50" />}
+    <div className="fixed bottom-6 right-5 flex flex-col gap-3 z-50">
+      <audio ref={audioRef} src={banner.musicUrl} loop />
+
+      {/* Music button */}
+      <button
+        onClick={toggleMusic}
+        title={isPlaying ? 'Pausar música' : 'Reproducir música'}
+        className="w-11 h-11 rounded-full shadow-2xl flex items-center justify-center backdrop-blur-md transition-all duration-300 hover:scale-110 border"
+        style={{ backgroundColor: 'rgba(255,255,255,0.12)', borderColor: 'rgba(255,255,255,0.2)', color: '#F7F9FA' }}
+      >
+        {isPlaying ? (
+          <Music className="w-5 h-5 animate-pulse" />
+        ) : (
+          <VolumeX className="w-5 h-5 opacity-60" />
+        )}
       </button>
-      <button onClick={onClose} className="w-12 h-12 bg-stone-800 rounded-full shadow-2xl flex items-center justify-center text-white hover:scale-110 transition-transform">
-        <X className="w-6 h-6" />
+
+      {/* Back to envelope */}
+      <button
+        onClick={onClose}
+        title="Volver al sobre"
+        className="w-11 h-11 rounded-full shadow-2xl flex items-center justify-center backdrop-blur-md transition-all duration-300 hover:scale-110 border"
+        style={{ backgroundColor: 'rgba(255,255,255,0.12)', borderColor: 'rgba(255,255,255,0.2)', color: '#F7F9FA' }}
+      >
+        <RotateCcw className="w-5 h-5" />
       </button>
     </div>
   );

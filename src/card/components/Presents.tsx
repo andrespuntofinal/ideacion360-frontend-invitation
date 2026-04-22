@@ -5,26 +5,60 @@ import { useCardConfig } from '../CardContext';
 export default function Presents() {
   const { config } = useCardConfig();
   const { presents } = config;
+
   return (
-    <section className="w-full h-full flex flex-col">
-      <div className="w-full mx-auto flex-1 flex flex-col">
-        <h2 className="text-xl md:text-2xl text-center mb-6 md:mb-10 tracking-widest uppercase"
-          style={{ color: presents.titleColor as string, fontFamily: presents.titleFont as string }}>
-          {presents.presentTitle as string}
+    <section className="w-full py-6 md:py-10 px-0 md:px-4">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="text-center mb-8 md:mb-12"
+      >
+        <p className="text-xs tracking-[0.3em] uppercase mb-2" style={{ color: presents.titleColor, opacity: 0.6 }}>
+          ✦ &nbsp; Regalos &nbsp; ✦
+        </p>
+        <h2
+          className="text-xl md:text-2xl tracking-widest uppercase"
+          style={{ color: presents.titleColor, fontFamily: presents.titleFont }}
+        >
+          {presents.presentTitle}
         </h2>
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          className="flex-1 py-8 px-4 md:p-10 rounded-none md:rounded-3xl shadow-xl flex flex-col items-center justify-center text-center relative overflow-hidden gap-0"
-          style={{ background: `linear-gradient(to bottom right, ${presents.backgroundColorFrom}, ${presents.backgroundColorVia}, ${presents.backgroundColorTo})`, border: `1px solid ${presents.boderColor}` }}>
-          <div className="w-16 h-16 md:w-24 md:h-24 rounded-full flex items-center justify-center mb-6 md:mb-8"
-            style={{ background: presents.backgroundColorIconMoments as string, border: `3px solid ${presents.borderColorIconMoments}` }}>
-            <Mail className="w-8 h-8 md:w-12 md:h-12" style={{ color: presents.iconColor as string }} />
-          </div>
-          <p className="text-xs sm:text-sm md:text-base leading-relaxed max-w-2xl"
-            style={{ color: presents.textColor as string, fontFamily: presents.textFont as string }}>
-            {presents.presentMessage as string}
-          </p>
-        </motion.div>
-      </div>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.9 }}
+        className="flex flex-col items-center text-center rounded-2xl md:rounded-3xl overflow-hidden shadow-xl px-6 pt-10 pb-10"
+        style={{
+          background: `linear-gradient(160deg, ${presents.backgroundColorFrom}, ${presents.backgroundColorVia}, ${presents.backgroundColorTo})`,
+          border: `1px solid ${presents.boderColor}`,
+        }}
+      >
+        {/* Icon */}
+        <div
+          className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-6 shadow-lg"
+          style={{
+            background: presents.backgroundColorIconMoments,
+            border: `3px solid ${presents.borderColorIconMoments}`,
+          }}
+        >
+          <Mail className="w-8 h-8 md:w-10 md:h-10" style={{ color: presents.iconColor }} />
+        </div>
+
+        {/* Divider */}
+        <div className="h-px w-16 mb-6" style={{ backgroundColor: presents.borderColorIconMoments, opacity: 0.4 }} />
+
+        {/* Message */}
+        <p
+          className="text-sm md:text-base leading-relaxed max-w-sm"
+          style={{ color: presents.textColor, fontFamily: presents.textFont }}
+        >
+          {presents.presentMessage}
+        </p>
+      </motion.div>
     </section>
   );
 }

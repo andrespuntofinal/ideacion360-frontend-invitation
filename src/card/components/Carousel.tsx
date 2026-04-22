@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useCardConfig } from '../CardContext';
 
 export default function Carousel() {
@@ -9,41 +9,151 @@ export default function Carousel() {
   const images = (carousel.images as string[]) || [];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [direction, setDirection] = useState(1);
 
   useEffect(() => {
     if (images.length === 0) return;
-    const timer = setInterval(() => { setCurrentIndex((prev) => (prev + 1) % images.length); }, (carousel.autoPlayInterval as number) || 6000);
+    const timer = setInterval(() => {
+      setDirection(1);
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, (carousel.autoPlayInterval as number) || 6000);
     return () => clearInterval(timer);
   }, [images.length, carousel.autoPlayInterval]);
 
+  const goTo = (idx: number) => {
+    setDirection(idx > currentIndex ? 1 : -1);
+    setCurrentIndex(idx);
+  };
+
+  const prev = () => {
+    setDirection(-1);
+    setCurrentIndex((p) => (p - 1 + images.length) % images.length);
+  };
+
+  const next = () => {
+    setDirection(1);
+    setCurrentIndex((p) => (p + 1) % images.length);
+  };
+
   if (images.length === 0) return null;
 
+  const variants = {
+    enter: (d: number) => ({ x: d > 0 ? '100%' : '-100%', opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit: (d: number) => ({ x: d > 0 ? '-100%' : '100%', opacity: 0 }),
+  };
+
   return (
-    <section className="w-full my-0 md:my-12 md:rounded-3xl backdrop-blur-lg relative overflow-hidden py-6 px-0 md:px-6 flex flex-col justify-center items-center">
-      <h2 className="text-xl md:text-2xl text-center mb-6 md:mb-10 tracking-widest uppercase"
-        style={{ color: carousel.titleColor as string, fontFamily: carousel.titleFont as string }}>
-        {carousel.carouselMsg as string}
-      </h2>
-      <div className="w-full max-w-4xl mx-auto relative group">
-        <div className="aspect-video md:aspect-[21/9] overflow-hidden rounded-none md:rounded-2xl relative">
-          <AnimatePresence mode="wait">
-            <motion.img key={currentIndex} src={images[currentIndex]}
-              initial={{ opacity: 0, scale: 1.05 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }}
-              transition={{ duration: 1.2, ease: 'easeInOut' }}
-              className="w-full h-full object-cover object-[center_25%] cursor-zoom-in"
+    <section className="w-full py-20 md:py-32 px-4 flex flex-col items-center">
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="text-center mb-12 md:mb-16"
+      >
+        <p className="text-xs md:text-sm tracking-[0.35em] uppercase mb-4" style={{ color: carousel.titleColor, opacity: 0.8 }}>
+          ✦ &nbsp; Galería &nbsp; ✦
+        </p>
+        <h2
+          className="text-3xl md:text-4xl tracking-widest uppercase font-light"
+          style={{ color: carousel.titleColor, fontFamily: carousel.titleFont }}
+        >
+          {carousel.carouselMsg}
+        </h2>
+      </motion.div>
+
+      {/* Slider */}
+      <div className="relative w-full max-w-6xl mx-auto group">
+        {/* Main image */}
+        <div className="relative overflow-hidden aspect-video md:aspect-[21/9] rounded-none md:rounded-2xl shadow-2xl">
+          <AnimatePresence custom={direction} mode="popLayout">
+            <motion.img
+              key={currentIndex}
+              custom={direction}
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
+              src={images[currentIndex]}
+              className="absolute inset-0 w-full h-full object-cover cursor-zoom-in"
               onClick={() => setSelectedImage(images[currentIndex])}
-              referrerPolicy="no-referrer" />
+              referrerPolicy="no-referrer"
+            />
           </AnimatePresence>
+
+          {/* Gradient overlay on sides for depth */}
+          <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-black/20 to-transparent pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-black/20 to-transparent pointer-events-none" />
+
+          {/* Nav arrows */}
+          {images.length > 1 && (
+            <>
+              <button
+                onClick={prev}
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-black/50 hover:scale-110"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                onClick={next}
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-black/50 hover:scale-110"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </>
+          )}
         </div>
+
+        {/* Dots */}
+        {images.length > 1 && (
+          <div className="flex justify-center gap-2 mt-5">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goTo(i)}
+                className="transition-all duration-300"
+                style={{
+                  width: i === currentIndex ? '24px' : '8px',
+                  height: '8px',
+                  borderRadius: '9999px',
+                  backgroundColor: carousel.titleColor,
+                  opacity: i === currentIndex ? 1 : 0.35,
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
+
+      {/* Lightbox */}
       <AnimatePresence>
         {selectedImage && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 backdrop-blur-sm"
-            onClick={() => setSelectedImage(null)}>
-            <button className="absolute top-6 right-6" style={{ color: carousel.buttonCloseColor as string }}><X className="w-8 h-8" /></button>
-            <motion.img initial={{ scale: 0.9 }} animate={{ scale: 1 }} src={selectedImage}
-              className="max-w-full max-h-full object-contain rounded-lg" referrerPolicy="no-referrer" />
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-md p-4"
+            onClick={() => setSelectedImage(null)}
+          >
+            <button
+              className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center transition-colors hover:bg-white/20"
+              style={{ color: carousel.buttonCloseColor }}
+              onClick={() => setSelectedImage(null)}
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <motion.img
+              initial={{ scale: 0.92, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+              src={selectedImage}
+              className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+              referrerPolicy="no-referrer"
+              onClick={(e) => e.stopPropagation()}
+            />
           </motion.div>
         )}
       </AnimatePresence>

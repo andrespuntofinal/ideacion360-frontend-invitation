@@ -10,10 +10,19 @@ export default function Countdown() {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
-    const targetDate = new Date(weddingData.weddingDate).getTime();
+    // Treat the wedding date and time as Colombia local time (UTC-5)
+    const datePart = weddingData.weddingDate.substring(0, 10);
+    const timePart = weddingData.weddingTime || '00:00';
+    const targetISO = `${datePart}T${timePart.length === 5 ? timePart + ':00' : timePart}-05:00`;
+    const targetDate = new Date(targetISO).getTime();
+
     const timer = setInterval(() => {
       const distance = targetDate - Date.now();
-      if (distance < 0) { clearInterval(timer); return; }
+      if (distance < 0) {
+        clearInterval(timer);
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        return;
+      }
       setTimeLeft({
         days: Math.floor(distance / (1000 * 60 * 60 * 24)),
         hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
@@ -22,7 +31,7 @@ export default function Countdown() {
       });
     }, 1000);
     return () => clearInterval(timer);
-  }, [weddingData.weddingDate]);
+  }, [weddingData.weddingDate, weddingData.weddingTime]);
 
   const items = [
     { label: 'Días', value: timeLeft.days },
@@ -32,22 +41,85 @@ export default function Countdown() {
   ];
 
   return (
-    <section className="w-full my-4 md:my-12 md:rounded-3xl backdrop-blur-lg relative overflow-hidden py-12 px-2 md:px-6 flex flex-col justify-center"
-      style={{ background: `linear-gradient(to bottom right, ${countdown.backgroundColorFrom}, ${countdown.backgroundColorVia}, ${countdown.backgroundColorTo})`, border: `1px solid ${countdown.boderColor}` }}>
-      <div className="w-full max-w-3xl mx-auto text-center">
-        <h2 className="text-center mb-8 md:mb-16 tracking-widest uppercase text-2xl md:text-3xl"
-          style={{ color: countdown.titleTextColor as string, fontFamily: countdown.titleTextFont as string }}>
-          {countdown.titleTextMsg as string}
-        </h2>
-        <div className="flex flex-row justify-center items-center gap-2 md:gap-8">
+    <section
+      className="w-full relative overflow-hidden py-20 md:py-28 px-4 flex flex-col items-center"
+      style={{
+        background: `linear-gradient(135deg, ${countdown.backgroundColorFrom} 0%, ${countdown.backgroundColorVia} 50%, ${countdown.backgroundColorTo} 100%)`,
+      }}
+    >
+      {/* Decorative ring overlay */}
+      <div
+        className="absolute inset-0 opacity-5"
+        style={{
+          backgroundImage: 'radial-gradient(circle at 50% 50%, white 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
+        }}
+      />
+
+      <div className="relative z-10 w-full max-w-5xl flex flex-col items-center text-center">
+        {/* Section header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="mb-16 md:mb-20"
+        >
+          <p
+            className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold md:font-bold tracking-[0.15em] md:tracking-[0.25em] uppercase mb-2"
+            style={{ color: countdown.titleTextColor, opacity: 0.8, fontFamily: countdown.titleTextFont }}
+          >
+            {countdown.titleTextMsg}
+          </p>
+          <br />
+          <br />
+
+        </motion.div>
+
+        {/* Counters */}
+        <div className="flex flex-wrap justify-center items-center gap-6 md:gap-10 lg:gap-14">
           {items.map((item, index) => (
-            <motion.div key={item.label} initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }} transition={{ delay: index * 0.1 }}
-              whileHover={{ scale: 1.05, boxShadow: countdown.boxShadowColor as string, borderColor: countdown.borderColor as string, backgroundColor: countdown.backgroundColor2 as string }}
-              className="flex flex-col items-center justify-center w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 rounded-full border-4 shadow-xl transition-all duration-300"
-              style={{ borderColor: countdown.borderColorCircle as string, backgroundColor: countdown.backgroundColorCircle as string }}>
-              <span className="text-2xl sm:text-3xl md:text-5xl leading-none" style={{ color: countdown.numberColorText1 as string, fontFamily: countdown.numberFontText as string }}>{item.value}</span>
-              <span className="text-[9px] sm:text-[10px] md:text-xs uppercase tracking-widest mt-1 md:mt-2" style={{ color: countdown.numberColorText2 as string, fontFamily: countdown.numberFontText as string }}>{item.label}</span>
+            <motion.div
+              key={item.label}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.12, duration: 0.7, ease: 'easeOut' }}
+              className="flex flex-col items-center"
+            >
+              {/* Circle */}
+              <div
+                className="relative flex items-center justify-center rounded-full shadow-2xl mb-3 md:mb-4"
+                style={{
+                  width: 'clamp(70px, 18vw, 130px)',
+                  height: 'clamp(70px, 18vw, 130px)',
+                  background: countdown.backgroundColorCircle,
+                  border: `3px solid ${countdown.borderColorCircle}`,
+                  boxShadow: `0 0 30px ${countdown.boxShadowColor}44`,
+                }}
+              >
+                {/* Inner ring */}
+                <div
+                  className="absolute inset-[6px] rounded-full border opacity-30"
+                  style={{ borderColor: countdown.borderColorCircle }}
+                />
+                <span
+                  className="relative z-10 leading-none font-light"
+                  style={{
+                    color: countdown.numberColorText1,
+                    fontFamily: countdown.numberFontText,
+                    fontSize: 'clamp(1.5rem, 5vw, 2.8rem)',
+                  }}
+                >
+                  {String(item.value).padStart(2, '0')}
+                </span>
+              </div>
+              <span
+                className="text-[10px] sm:text-xs md:text-sm tracking-[0.2em] uppercase"
+                style={{ color: countdown.numberColorText2, fontFamily: countdown.numberFontText }}
+              >
+                {item.label}
+              </span>
             </motion.div>
           ))}
         </div>
