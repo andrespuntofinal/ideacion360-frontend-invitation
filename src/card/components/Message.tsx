@@ -17,7 +17,7 @@ export default function Message() {
           className="flex items-center justify-center gap-4 mb-12"
         >
           <div className="h-px flex-1 max-w-[80px]" style={{ backgroundColor: message.colorParents, opacity: 0.4 }} />
-          <span style={{ color: message.colorParents, fontSize: '1.4rem', opacity: 0.7 }}>❧</span>
+          <span style={{ color: message.colorParents, fontSize: '1.4rem', opacity: 0.7 }}>♥</span>
           <div className="h-px flex-1 max-w-[80px]" style={{ backgroundColor: message.colorParents, opacity: 0.4 }} />
         </motion.div>
 
@@ -95,7 +95,7 @@ export default function Message() {
           className="flex items-center justify-center gap-4 mt-12"
         >
           <div className="h-px flex-1 max-w-[80px]" style={{ backgroundColor: message.colorParents, opacity: 0.4 }} />
-          <span style={{ color: message.colorParents, fontSize: '1.4rem', opacity: 0.7 }}>❧</span>
+          <span style={{ color: message.colorParents, fontSize: '1.4rem', opacity: 0.7 }}>♥</span>
           <div className="h-px flex-1 max-w-[80px]" style={{ backgroundColor: message.colorParents, opacity: 0.4 }} />
         </motion.div>
       </div>

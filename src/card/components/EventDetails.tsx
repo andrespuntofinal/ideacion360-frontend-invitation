@@ -61,11 +61,12 @@ export default function EventDetails() {
 
               {/* Title */}
               <h3
-                className="text-lg md:text-xl font-medium mb-5 tracking-wide"
+                className="text-base sm:text-lg tracking-widest mb-2"
                 style={{ fontFamily: eventDetails.detailItemTitleFont, color: eventDetails.detailItemTitleColor }}
               >
                 {item.title}
               </h3>
+              <br />
 
               {/* Divider */}
               <div className="h-px w-16 mb-5" style={{ backgroundColor: eventDetails.borderColorIconMoments, opacity: 0.4 }} />
@@ -76,17 +77,19 @@ export default function EventDetails() {
                   className="flex items-center justify-center gap-2 text-sm"
                   style={{ color: eventDetails.detailItemText1Color, fontFamily: eventDetails.detailItemText1Font }}
                 >
-                  <MapPin className="w-4 h-4 flex-shrink-0" style={{ color: eventDetails.detailIcon2Color }} />
-                  <span className="leading-snug">{item.place}</span>
+                  <MapPin className="text-sm md:text-base leading-relaxed" style={{ color: eventDetails.detailIcon2Color }} />
+                  <span className="text-sm md:text-base leading-relaxed">{item.place}</span>
                 </div>
+                <br />
                 <div
                   className="flex items-center justify-center gap-2 text-sm"
                   style={{ color: eventDetails.detailItemText1Color, fontFamily: eventDetails.detailItemText1Font }}
                 >
-                  <Clock className="w-4 h-4 flex-shrink-0" style={{ color: eventDetails.detailIcon2Color }} />
-                  <span>{item.time}</span>
+                  <Clock className="text-sm md:text-base leading-relaxed" style={{ color: eventDetails.detailIcon2Color }} />
+                  <span className="text-sm md:text-base leading-relaxed">{item.time}</span>
                 </div>
               </div>
+              <br />
 
               {/* Map link */}
               {item.mapUrl && (
@@ -106,6 +109,7 @@ export default function EventDetails() {
                 </a>
               )}
             </div>
+
           </motion.div>
         ))}
       </div>

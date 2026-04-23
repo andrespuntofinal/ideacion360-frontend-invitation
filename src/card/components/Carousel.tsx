@@ -54,10 +54,8 @@ export default function Carousel() {
         className="text-center mb-12 md:mb-16"
       >
         <p className="text-base sm:text-2xl tracking-widest uppercase mb-2" style={{ color: carousel.titleColor, fontFamily: carousel.titleFont }}>
-          ✦ &nbsp; {carousel.carouselMsg} &nbsp; ✦
+          ♥ &nbsp; {carousel.carouselMsg} &nbsp; ♥
         </p>
-        <br />
-        <br />
       </motion.div>
 
       {/* Slider */}

@@ -43,9 +43,8 @@ export default function ChildRestriction() {
         >
           <Users className="w-8 h-8 md:w-10 md:h-10" style={{ color: childRestriction.iconColor }} />
         </div>
+        <br />
 
-        {/* Divider */}
-        <div className="h-px w-16 mb-6" style={{ backgroundColor: childRestriction.borderColorIconMoments, opacity: 0.4 }} />
 
         {/* Message */}
         <p

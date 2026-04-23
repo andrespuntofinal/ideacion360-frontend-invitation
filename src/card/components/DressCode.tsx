@@ -51,19 +51,11 @@ export default function DressCode() {
               }}
             >
               {item.iconUrl ? (
-                <div
-                  className="w-7 h-7 md:w-10 md:h-10"
-                  style={{
-                    backgroundColor: dressCode.iconbackgroundColor,
-                    WebkitMaskImage: `url(${item.iconUrl})`,
-                    maskImage: `url(${item.iconUrl})`,
-                    WebkitMaskRepeat: 'no-repeat',
-                    maskRepeat: 'no-repeat',
-                    WebkitMaskSize: 'contain',
-                    maskSize: 'contain',
-                    WebkitMaskPosition: 'center',
-                    maskPosition: 'center',
-                  }}
+                <img
+                  src={item.iconUrl}
+                  alt={item.title}
+                  className="w-8 h-8 md:w-12 md:h-12 object-contain"
+                  referrerPolicy="no-referrer"
                 />
               ) : (
                 <span className="text-2xl">👗</span>
@@ -72,11 +64,12 @@ export default function DressCode() {
 
             {/* Title */}
             <h3
-              className="text-lg md:text-xl font-medium mb-3 tracking-wide"
+              className="text-base sm:text-lg tracking-widest mb-2"
               style={{ fontFamily: dressCode.title2Font, color: dressCode.title2Color }}
             >
               {item.title}
             </h3>
+            <br />
 
             {/* Divider */}
             <div className="h-px w-16 mb-4" style={{ backgroundColor: dressCode.borderColorIconMoments, opacity: 0.4 }} />
@@ -88,6 +81,9 @@ export default function DressCode() {
             >
               {item.text}
             </p>
+            <br />
+            <br />
+            <br />
           </motion.div>
         ))}
       </div>

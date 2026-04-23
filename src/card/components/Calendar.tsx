@@ -32,7 +32,7 @@ export default function Calendar() {
 
 
         <p className="text-base sm:text-2xl tracking-widest uppercase mb-2" style={{ color: calendar.titleTextColor, fontFamily: calendar.titleTextFont }}>
-          ✦ &nbsp; {calendar.titleMsgText} &nbsp; ✦
+          ♥ &nbsp; {calendar.titleMsgText} &nbsp; ♥
         </p>
         <br />
         <br />

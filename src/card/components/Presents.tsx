@@ -43,9 +43,9 @@ export default function Presents() {
         >
           <Mail className="w-8 h-8 md:w-10 md:h-10" style={{ color: presents.iconColor }} />
         </div>
+        <br />
 
-        {/* Divider */}
-        <div className="h-px w-16 mb-6" style={{ backgroundColor: presents.borderColorIconMoments, opacity: 0.4 }} />
+
 
         {/* Message */}
         <p
