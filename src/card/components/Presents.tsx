@@ -15,15 +15,11 @@ export default function Presents() {
         transition={{ duration: 0.8 }}
         className="text-center mb-8 md:mb-12"
       >
-        <p className="text-xs tracking-[0.3em] uppercase mb-2" style={{ color: presents.titleColor, opacity: 0.6 }}>
-          ✦ &nbsp; Regalos &nbsp; ✦
-        </p>
-        <h2
-          className="text-xl md:text-2xl tracking-widest uppercase"
-          style={{ color: presents.titleColor, fontFamily: presents.titleFont }}
-        >
+        <p className="text-base sm:text-lg tracking-widest uppercase mb-2" style={{ color: presents.titleColor, fontFamily: presents.titleFont }}>
           {presents.presentTitle}
-        </h2>
+        </p>
+        <br />
+
       </motion.div>
 
       <motion.div

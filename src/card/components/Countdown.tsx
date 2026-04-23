@@ -66,7 +66,7 @@ export default function Countdown() {
           className="mb-16 md:mb-20"
         >
           <p
-            className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold md:font-bold tracking-[0.15em] md:tracking-[0.25em] uppercase mb-2"
+            className="text-base sm:text-2xl tracking-widest uppercase mb-2"
             style={{ color: countdown.titleTextColor, opacity: 0.8, fontFamily: countdown.titleTextFont }}
           >
             {countdown.titleTextMsg}

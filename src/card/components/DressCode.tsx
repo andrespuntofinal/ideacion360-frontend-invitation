@@ -20,15 +20,11 @@ export default function DressCode() {
         transition={{ duration: 0.8 }}
         className="text-center mb-8 md:mb-12"
       >
-        <p className="text-xs tracking-[0.3em] uppercase mb-2" style={{ color: dressCode.titleColor, opacity: 0.6 }}>
-          ✦ &nbsp; Vestimenta &nbsp; ✦
-        </p>
-        <h2
-          className="text-xl md:text-2xl tracking-widest uppercase"
-          style={{ color: dressCode.titleColor, fontFamily: dressCode.titleFont }}
-        >
+        <p className="text-base sm:text-lg tracking-widest uppercase mb-2" style={{ color: dressCode.titleColor, fontFamily: dressCode.titleFont }}>
           {dressCode.titletext}
-        </h2>
+        </p>
+        <br />
+
       </motion.div>
 
       {/* Cards */}

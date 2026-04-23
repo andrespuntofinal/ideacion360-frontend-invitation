@@ -39,7 +39,7 @@ export default function Landing2({ onClose }: Landing2Props) {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundAttachment: 'fixed',
-            opacity: 0.12,
+            opacity: 0.35,
           }}
         />
       )}

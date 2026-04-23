@@ -38,9 +38,9 @@ export default function Carousel() {
   if (images.length === 0) return null;
 
   const variants = {
-    enter: (d: number) => ({ x: d > 0 ? '100%' : '-100%', opacity: 0 }),
-    center: { x: 0, opacity: 1 },
-    exit: (d: number) => ({ x: d > 0 ? '-100%' : '100%', opacity: 0 }),
+    enter: { scale: 1.1, opacity: 0 },
+    center: { scale: 1, opacity: 1 },
+    exit: { scale: 0.95, opacity: 0 },
   };
 
   return (
@@ -53,30 +53,25 @@ export default function Carousel() {
         transition={{ duration: 0.8 }}
         className="text-center mb-12 md:mb-16"
       >
-        <p className="text-xs md:text-sm tracking-[0.35em] uppercase mb-4" style={{ color: carousel.titleColor, opacity: 0.8 }}>
-          ✦ &nbsp; Galería &nbsp; ✦
+        <p className="text-base sm:text-2xl tracking-widest uppercase mb-2" style={{ color: carousel.titleColor, fontFamily: carousel.titleFont }}>
+          ✦ &nbsp; {carousel.carouselMsg} &nbsp; ✦
         </p>
-        <h2
-          className="text-3xl md:text-4xl tracking-widest uppercase font-light"
-          style={{ color: carousel.titleColor, fontFamily: carousel.titleFont }}
-        >
-          {carousel.carouselMsg}
-        </h2>
+        <br />
+        <br />
       </motion.div>
 
       {/* Slider */}
       <div className="relative w-full max-w-6xl mx-auto group">
         {/* Main image */}
         <div className="relative overflow-hidden aspect-video md:aspect-[21/9] rounded-none md:rounded-2xl shadow-2xl">
-          <AnimatePresence custom={direction} mode="popLayout">
+          <AnimatePresence mode="popLayout">
             <motion.img
               key={currentIndex}
-              custom={direction}
               variants={variants}
               initial="enter"
               animate="center"
               exit="exit"
-              transition={{ duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
+              transition={{ duration: 1.5, ease: [0.33, 1, 0.68, 1] }}
               src={images[currentIndex]}
               className="absolute inset-0 w-full h-full object-cover cursor-zoom-in"
               onClick={() => setSelectedImage(images[currentIndex])}

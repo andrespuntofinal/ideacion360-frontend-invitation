@@ -24,15 +24,12 @@ export default function EventDetails() {
         transition={{ duration: 0.8 }}
         className="text-center mb-8 md:mb-12"
       >
-        <p className="text-xs tracking-[0.3em] uppercase mb-2" style={{ color: eventDetails.detailsColor, opacity: 0.6 }}>
-          ✦ &nbsp; Programa &nbsp; ✦
-        </p>
-        <h2
-          className="text-xl md:text-2xl tracking-widest uppercase"
-          style={{ color: eventDetails.detailsColor, fontFamily: eventDetails.detailsFont }}
-        >
+        <p className="text-base sm:text-lg tracking-widest uppercase mb-2" style={{ color: eventDetails.detailsColor, fontFamily: eventDetails.detailsFont }}>
           {eventDetails.detailsTitle}
-        </h2>
+        </p>
+        <br />
+
+
       </motion.div>
 
       {/* Cards */}

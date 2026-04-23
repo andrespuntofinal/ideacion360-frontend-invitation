@@ -38,7 +38,7 @@ export default function RSVP() {
   const buttonSendStyle = rsvp.buttonSendStyle as Record<string, string>;
 
   return (
-    <section className="w-full py-20 md:py-32 px-4">
+    <section className="w-full py-24 md:py-32 px-4 flex flex-col items-center">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -47,15 +47,13 @@ export default function RSVP() {
         transition={{ duration: 0.8 }}
         className="text-center mb-12"
       >
-        <p className="text-xs tracking-[0.3em] uppercase mb-3" style={{ color: rsvp.title2TextColor, opacity: 0.6 }}>
-          ✦ &nbsp; Confirmación &nbsp; ✦
-        </p>
+
         <Heart className="w-6 h-6 mx-auto mb-4 opacity-50" style={{ color: rsvp.title2TextColor }} />
       </motion.div>
 
-      <div className="max-w-lg mx-auto">
+      <div className="w-full max-w-4xl flex flex-col items-center">
         <AnimatePresence mode="wait">
-          {!isSubmitted ? (
+          {!isSubmitted && (
             <motion.div
               key="form-area"
               initial={{ opacity: 0 }}
@@ -64,7 +62,7 @@ export default function RSVP() {
               transition={{ duration: 0.5 }}
             >
               {!isFormVisible ? (
-                <div className="flex justify-center">
+                <div className="flex justify-center mt-8">
                   <motion.button
                     onClick={() => setIsFormVisible(true)}
                     whileHover={{ scale: 1.05, y: -2 }}
@@ -82,45 +80,63 @@ export default function RSVP() {
                 </div>
               ) : (
                 <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl"
-                  style={{ backgroundColor: `${rsvp.buttonColor}15`, border: `1px solid ${rsvp.title2TextColor}30` }}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6 }}
+                  className="w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)] backdrop-blur-md border border-white/40"
+                  style={{ backgroundColor: `${rsvp.buttonColor}08` }}
                 >
-                  <div className="p-6 md:p-10">
+                  {/* Floating heart icon on top border */}
+
+
+                  <div className="p-10 md:p-16 relative z-0">
                     <h2
-                      className="text-2xl md:text-3xl text-center mb-2"
+                      className="text-3xl md:text-4xl text-center mb-1"
                       style={{ fontFamily: rsvp.title2TextFont, color: rsvp.title2TextColor }}
                     >
                       {rsvp.title2TextMsg}
                     </h2>
-                    <div className="h-px w-16 mx-auto mb-8" style={{ backgroundColor: rsvp.title2TextColor, opacity: 0.3 }} />
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                    <label
+                      className="block text-xs md:text-sm tracking-[0.2em] uppercase text-center mb-3 mt-4"
+                      style={{ fontFamily: rsvp.title3TextFont, color: rsvp.title3TextColor, opacity: 0.8 }}
+                    >
+                      {rsvp.title3TextMsg}
+                    </label>
+
+                    {/* Decorative divider */}
+                    <div className="flex items-center justify-center gap-3 mb-10">
+                      <div className="h-[1px] w-12 bg-[#d4af37]/30"></div>
+                      <Heart className="w-3 h-3 text-[#d4af37]/50" />
+                      <div className="h-[1px] w-12 bg-[#d4af37]/30"></div>
+                    </div>
+
+                    <form onSubmit={handleSubmit} className="space-y-8">
                       {/* Attendance toggle */}
                       <div>
-                        <label
-                          className="block text-xs tracking-[0.25em] uppercase mb-4 text-center"
-                          style={{ fontFamily: rsvp.title3TextFont, color: rsvp.title3TextColor }}
-                        >
-                          {rsvp.title3TextMsg}
-                        </label>
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="flex flex-col sm:flex-row gap-4">
                           <button
                             type="button"
                             onClick={() => setFormData({ ...formData, attendance: 'si' })}
-                            className="py-3 px-4 rounded-xl border-2 font-medium transition-all duration-200 text-sm"
-                            style={(formData.attendance === 'si' ? rsvp.buttonYes1Style : rsvp.buttonYes2Style) as React.CSSProperties}
+                            className="flex-1 py-4 px-6 rounded-lg border font-medium transition-all duration-300 text-sm tracking-wider uppercase flex items-center justify-center gap-3"
+                            style={formData.attendance === 'si'
+                              ? { backgroundColor: '#19284c', color: '#ffffff', borderColor: '#19284c' }
+                              : { backgroundColor: 'transparent', color: rsvp.title2TextColor, borderColor: `${rsvp.title2TextColor}30` }
+                            }
                           >
+                            <CheckCircle2 className="w-4 h-4" />
                             {rsvp.buttonYesMsg}
                           </button>
                           <button
                             type="button"
                             onClick={() => setFormData({ ...formData, attendance: 'no' })}
-                            className="py-3 px-4 rounded-xl border-2 font-medium transition-all duration-200 text-sm"
-                            style={(formData.attendance === 'si' ? rsvp.buttonNot1Style : rsvp.buttonNot2Style) as React.CSSProperties}
+                            className="flex-1 py-4 px-6 rounded-lg border font-medium transition-all duration-300 text-sm tracking-wider uppercase flex items-center justify-center gap-3"
+                            style={formData.attendance === 'no'
+                              ? { backgroundColor: '#fdfbf7', color: '#d4af37', borderColor: '#d4af37' }
+                              : { backgroundColor: 'transparent', color: rsvp.title2TextColor, borderColor: `${rsvp.title2TextColor}30` }
+                            }
                           >
+                            <X className="w-4 h-4" />
                             {rsvp.buttonNotMsg}
                           </button>
                         </div>
@@ -128,44 +144,50 @@ export default function RSVP() {
 
                       {/* Message */}
                       <div>
+                        <br />
                         <label
                           className="block text-xs tracking-[0.2em] uppercase mb-2"
                           style={{ fontFamily: rsvp.msgTextFont, color: rsvp.msgTextColor }}
                         >
                           {rsvp.msgTextMsg}
                         </label>
-                        <textarea
-                          value={formData.message}
-                          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                          rows={4}
-                          className="w-full p-4 rounded-xl border-2 outline-none resize-none transition-all duration-300 focus:shadow-lg"
-                          style={{
-                            backgroundColor: textareaStyle.backgroundColor,
-                            color: textareaStyle.colorText,
-                            borderColor: textareaStyle.borderColor,
-                            fontFamily: textareaStyle.fontFamily,
-                          }}
-                        />
+                        <div className="relative">
+                          <br />
+                          <textarea
+                            value={formData.message}
+                            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                            rows={6}
+                            placeholder="Tu mensaje para nosotros..."
+                            className="w-full p-5 rounded-none border-0 outline-none resize-none transition-all duration-300 bg-white/50 focus:bg-white"
+                            style={{
+                              color: rsvp.title2TextColor,
+                              fontFamily: textareaStyle.fontFamily,
+                              boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)'
+                            }}
+                          />
+                          <Heart className="absolute bottom-4 right-4 w-4 h-4 text-gray-400 opacity-50" strokeWidth={1} />
+                        </div>
                       </div>
 
                       {/* Submit */}
-                      <div className="flex justify-center pt-2">
+                      <div className="pt-4">
                         <motion.button
                           type="submit"
                           disabled={isSubmitting}
-                          whileHover={{ scale: isSubmitting ? 1 : 1.04 }}
-                          whileTap={{ scale: 0.97 }}
-                          className="py-3 px-8 rounded-xl border-2 font-medium tracking-wider text-sm transition-all duration-300"
+                          whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="w-full py-4 px-6 rounded-lg border-0 font-medium tracking-[0.15em] uppercase text-sm transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-3"
                           style={{
-                            backgroundColor: buttonSendStyle.backgroundColor,
-                            color: buttonSendStyle.color,
-                            borderColor: buttonSendStyle.borderColor,
+                            backgroundColor: '#b89255',
+                            color: '#ffffff',
                             fontFamily: buttonSendStyle.fontFamily,
                             cursor: isSubmitting ? 'not-allowed' : 'pointer',
-                            opacity: isSubmitting ? 0.6 : 1,
+                            opacity: isSubmitting ? 0.7 : 1,
                           }}
                         >
-                          {isSubmitting ? '...' : rsvp.buttonSendMsg}
+                          <span className="opacity-60 text-lg">🌿</span>
+                          {isSubmitting ? 'ENVIANDO...' : rsvp.buttonSendMsg}
+                          <span className="opacity-60 text-lg">🌿</span>
                         </motion.button>
                       </div>
                     </form>
@@ -173,50 +195,95 @@ export default function RSVP() {
                 </motion.div>
               )}
             </motion.div>
-          ) : (
+          )}
+
+        </AnimatePresence>
+      </div>
+
+      <AnimatePresence>
+        {isSubmitted && (
+          <motion.div
+            key="success-modal"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-6"
+          >
+            {/* Backdrop */}
             <motion.div
-              key="success"
-              initial={{ opacity: 0, scale: 0.92 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
-              className="relative rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl text-center px-8 py-12"
-              style={{ backgroundColor: `${rsvp.buttonColor}15`, border: `1px solid ${rsvp.title2TextColor}30` }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+              onClick={handleClose}
+            />
+
+            {/* Modal Content */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              className="relative w-full max-w-lg bg-white rounded-2xl md:rounded-3xl shadow-2xl text-center px-8 py-12 overflow-hidden"
             >
+              {/* Decorative background circle */}
+              <div
+                className="absolute -top-24 -right-24 w-48 h-48 rounded-full opacity-10"
+                style={{ backgroundColor: rsvp.confirmationCircleColor }}
+              />
+
               <button
-                onClick={handleClose}
-                className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-colors opacity-50 hover:opacity-100"
-                style={{ color: rsvp.confirmationTitleTextColor, backgroundColor: `${rsvp.confirmationCircleColor}20` }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleClose();
+                }}
+                className="absolute top-4 right-4 w-12 h-12 rounded-full flex items-center justify-center transition-all hover:bg-black/5 active:scale-95 z-[60] cursor-pointer"
+                style={{ color: rsvp.confirmationTitleTextColor }}
+                aria-label="Cerrar"
               >
-                <X className="w-4 h-4" />
+                <X className="w-6 h-6" strokeWidth={2.5} />
               </button>
 
               <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.2, type: 'spring', stiffness: 200, damping: 14 }}
+                initial={{ scale: 0, rotate: -20 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ delay: 0.2, type: 'spring', stiffness: 200, damping: 12 }}
+                className="relative z-10"
               >
-                <CheckCircle2 className="w-16 h-16 mx-auto mb-5" style={{ color: rsvp.confirmationCircleColor }} />
+                <div
+                  className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center shadow-lg"
+                  style={{ backgroundColor: `${rsvp.confirmationCircleColor}15` }}
+                >
+                  <Heart className="w-10 h-10 fill-current" style={{ color: rsvp.confirmationCircleColor }} />
+                </div>
               </motion.div>
 
-              <h3
-                className="text-2xl md:text-3xl mb-4 font-medium"
-                style={{ color: rsvp.confirmationTitleTextColor, fontFamily: rsvp.confirmationTitleTextFont }}
-              >
-                {paramsGeneral.guestName}
-              </h3>
+              <div className="relative z-10">
+                <h3
+                  className="text-3xl md:text-3xl mb-2 font-bold"
+                  style={{ color: rsvp.confirmationTitleTextColor, fontFamily: rsvp.confirmationTitleTextFont }}
+                >
+                  {paramsGeneral.guestName}
+                </h3>
 
-              <div className="h-px w-16 mx-auto mb-5" style={{ backgroundColor: rsvp.confirmationCircleColor, opacity: 0.4 }} />
+                <div
+                  className="h-1 w-12 mx-auto mb-6 rounded-full"
+                  style={{ backgroundColor: rsvp.confirmationCircleColor, opacity: 0.5 }}
+                />
 
-              <p
-                className="leading-relaxed text-sm md:text-base"
-                style={{ color: rsvp.confirmationTextColor, fontFamily: rsvp.confirmationTextFont }}
-              >
-                {formData.attendance === 'si' ? rsvp.successMessage : rsvp.rejectedMessage}
-              </p>
+                <p
+                  className="text-lg md:text-xl leading-relaxed font-medium px-4"
+                  style={{ color: rsvp.confirmationTextColor, fontFamily: rsvp.confirmationTextFont }}
+                >
+                  {formData.attendance === 'si' ? rsvp.successMessage : rsvp.rejectedMessage}
+                </p>
+
+
+              </div>
             </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

@@ -35,7 +35,7 @@ export default function FooterControls({ onClose }: FooterControlsProps) {
         onClick={toggleMusic}
         title={isPlaying ? 'Pausar música' : 'Reproducir música'}
         className="w-11 h-11 rounded-full shadow-2xl flex items-center justify-center backdrop-blur-md transition-all duration-300 hover:scale-110 border"
-        style={{ backgroundColor: 'rgba(255,255,255,0.12)', borderColor: 'rgba(255,255,255,0.2)', color: '#F7F9FA' }}
+        style={{ backgroundColor: '#27272B', borderColor: '#D7B272', color: '#F7F9FA' }}
       >
         {isPlaying ? (
           <Music className="w-5 h-5 animate-pulse" />
@@ -49,7 +49,7 @@ export default function FooterControls({ onClose }: FooterControlsProps) {
         onClick={onClose}
         title="Volver al sobre"
         className="w-11 h-11 rounded-full shadow-2xl flex items-center justify-center backdrop-blur-md transition-all duration-300 hover:scale-110 border"
-        style={{ backgroundColor: 'rgba(255,255,255,0.12)', borderColor: 'rgba(255,255,255,0.2)', color: '#F7F9FA' }}
+        style={{ backgroundColor: '#27272B', borderColor: '#D7B272', color: '#F7F9FA' }}
       >
         <RotateCcw className="w-5 h-5" />
       </button>

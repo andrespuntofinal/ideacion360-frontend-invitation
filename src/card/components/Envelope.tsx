@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
+import { Heart } from 'lucide-react';
 import { useCardConfig } from '../CardContext';
 
 interface EnvelopeProps {
@@ -35,8 +36,37 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
       {/* Light overlay to ensure text readability */}
       <div className="absolute inset-0 z-0 backdrop-blur-[2px]" style={{ backgroundColor: envelope.overlayColor }} />
 
+      {/* Message ABOVE Envelope */}
+      <motion.div
+        className="relative z-10 flex flex-col items-center text-center mb-8 px-6"
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 0.3 }}
+      >
+
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5, duration: 0.9 }}
+          className="text-xl md:text-2xl italic leading-relaxed"
+          style={{ color: envelope.textDarkColor, fontFamily: envelope.envelopeFont, opacity: 0.9 }}
+        >
+          {envelope.envelopeMsg}
+        </motion.p>
+
+        {/* Decorative Divider */}
+        <div className="flex items-center gap-4 mt-6 opacity-60">
+          <div className="h-[1px] w-20" style={{ backgroundColor: envelope.accentColor }} />
+          <Heart className="w-5 h-5 fill-current" style={{ color: envelope.accentColor }} />
+          <div className="h-[1px] w-20" style={{ backgroundColor: envelope.accentColor }} />
+        </div>
+      </motion.div>
+      <br />
+
       {/* Envelope Container */}
-      <div className="relative w-full max-w-lg aspect-[4/3] z-10 mt-10 md:mt-20">
+      <div className="relative w-full max-w-lg aspect-[4/3] z-10">
         <div className="absolute inset-0 flex items-center justify-center">
           {/* Back of envelope (inside) */}
           <div
@@ -81,17 +111,25 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
 
             {/* Card 2: Photo */}
             <motion.div
-              className="absolute w-44 h-56 shadow-xl p-2 z-10"
+              className="absolute w-44 h-56 shadow-2xl p-4 z-10 border-[6px]"
               initial={{ y: 20, x: 0, rotate: 0, opacity: 0, scale: 0.8 }}
               animate={step === 'opening' ? { y: [20, -320, -140], x: [0, 40, 90], rotate: [0, 5, 15], opacity: [0, 1, 1], scale: [0.8, 1, 1], zIndex: [10, 10, 34] } : { y: 20, x: 0, rotate: 0, opacity: 0, scale: 0.8, zIndex: 10 }}
               transition={{ duration: 1.5, times: [0, 0.5, 1], ease: 'easeInOut' }}
-              style={{ backgroundColor: envelope.photoBackgroundColor }}
+              style={{
+                backgroundColor: envelope.photoBackgroundColor,
+                borderColor: envelope.photoBackgroundColor,
+
+              }}
             >
-              {envelope.cardCouplePhoto ? (
-                <img src={envelope.cardCouplePhoto} alt="Pareja" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-              ) : (
-                <div className="w-full h-full bg-gray-800 flex items-center justify-center text-xs text-gray-500">Sin Foto</div>
-              )}
+              <div className="w-full h-full relative overflow-hidden shadow-inner ring-1 ring-black/10">
+                {envelope.cardCouplePhoto ? (
+                  <img src={envelope.cardCouplePhoto} alt="Pareja" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                ) : (
+                  <div className="w-full h-full bg-gray-100 flex items-center justify-center text-xs text-gray-400 font-serif italic">Nuestra Foto</div>
+                )}
+                {/* Frame inner shadow/glow */}
+                <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_20px_rgba(0,0,0,0.1)]" />
+              </div>
             </motion.div>
           </div>
 
@@ -123,10 +161,10 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
             <div className="absolute inset-0 bg-black/10" />
             <motion.div
               className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-start pt-8 px-12 text-center pointer-events-none"
-              animate={{ opacity: step === 'opening' ? 0 : 1 }}
+              animate={{ opacity: step === 'opening' ? 0 : 0 }}
               transition={{ duration: 0.3 }}
             >
-              <p className="text-xl md:text-2xl leading-tight" style={{ color: envelope.envelopeMsgColor, fontFamily: envelope.envelopeFont }}>{envelope.envelopeMsg}</p>
+              {/* Hidden message inside (no longer needed here) */}
             </motion.div>
           </motion.div>
 

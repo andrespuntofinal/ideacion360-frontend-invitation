@@ -31,9 +31,11 @@ export default function Calendar() {
 
 
 
-        <p className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold md:font-bold tracking-[0.15em] md:tracking-[0.25em] uppercase mb-2" style={{ color: calendar.titleTextColor, fontFamily: calendar.titleTextFont }}>
-          {calendar.titleMsgText}
+        <p className="text-base sm:text-2xl tracking-widest uppercase mb-2" style={{ color: calendar.titleTextColor, fontFamily: calendar.titleTextFont }}>
+          ✦ &nbsp; {calendar.titleMsgText} &nbsp; ✦
         </p>
+        <br />
+        <br />
       </motion.div>
 
       <div className="w-full max-w-4xl flex flex-col items-center">
@@ -67,7 +69,8 @@ export default function Calendar() {
             >
               {monthNames[month]} · {year}
             </h2>
-
+            <br />
+            <br />
             {/* Day-of-week header */}
             <div className="grid grid-cols-7 gap-1 w-full text-center mb-2">
               {daysOfWeek.map((day) => (

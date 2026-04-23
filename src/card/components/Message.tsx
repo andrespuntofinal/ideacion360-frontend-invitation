@@ -27,7 +27,7 @@ export default function Message() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.9, ease: 'easeOut' }}
-          className="text-2xl md:text-3xl lg:text-4xl italic leading-loose mb-10"
+          className="text-xl md:text-2xl italic leading-relaxed"
           style={{ color: message.colorText1, fontFamily: message.font }}
         >
           "{message.text1}"
@@ -70,6 +70,7 @@ export default function Message() {
             )}
           </motion.div>
         )}
+        <br />
 
         {/* Second text */}
         {message.text2 && (
