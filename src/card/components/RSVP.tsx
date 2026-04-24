@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, X, Heart } from 'lucide-react';
+import { useParams } from 'react-router-dom';
 import { useCardConfig } from '../CardContext';
+import { eventsService } from '../../services/api';
 
 export default function RSVP() {
   const { config } = useCardConfig();
@@ -12,23 +14,40 @@ export default function RSVP() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({ message: '', attendance: 'si' });
 
+  const { eventId } = useParams<{ eventId: string }>();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    if (webhookUrl) {
-      try {
-        const payload = {
+
+    try {
+      const payload = {
+        message: formData.message,
+        attendance: formData.attendance,
+        guestName: paramsGeneral.guestName,
+        companions: paramsGeneral.numberGuests,
+      };
+
+      if (eventId) {
+        // Use the new backend endpoint for sending emails
+        await eventsService.sendRSVP(eventId, payload);
+      } else if (webhookUrl) {
+        // Fallback to webhook if no id is present but webhook exists
+        const webhookPayload = {
           nombre: paramsGeneral.guestName,
           mensaje: formData.message,
           numeroInvitados: paramsGeneral.numberGuests,
           asistencia: formData.attendance,
           fechaConfirmacion: new Date().toISOString(),
         };
-        await fetch(webhookUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-      } catch (error) { console.error('Error al enviar datos al webhook:', error); }
-    } else {
-      await new Promise((r) => setTimeout(r, 1000));
+        await fetch(webhookUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(webhookPayload) });
+      } else {
+        await new Promise((r) => setTimeout(r, 1000));
+      }
+    } catch (error) {
+      console.error('Error al enviar la confirmación:', error);
     }
+
     setIsSubmitting(false);
     setIsSubmitted(true);
   };
@@ -120,7 +139,7 @@ export default function RSVP() {
                             onClick={() => setFormData({ ...formData, attendance: 'si' })}
                             className="flex-1 py-4 px-6 rounded-lg border font-medium transition-all duration-300 text-sm tracking-wider uppercase flex items-center justify-center gap-3"
                             style={formData.attendance === 'si'
-                              ? { backgroundColor: '#19284c', color: '#ffffff', borderColor: '#19284c' }
+                              ? { backgroundColor: rsvp.title2TextColor, color: rsvp.buttonTextColor, borderColor: `${rsvp.title2TextColor}30` }
                               : { backgroundColor: 'transparent', color: rsvp.title2TextColor, borderColor: `${rsvp.title2TextColor}30` }
                             }
                           >
@@ -132,7 +151,7 @@ export default function RSVP() {
                             onClick={() => setFormData({ ...formData, attendance: 'no' })}
                             className="flex-1 py-4 px-6 rounded-lg border font-medium transition-all duration-300 text-sm tracking-wider uppercase flex items-center justify-center gap-3"
                             style={formData.attendance === 'no'
-                              ? { backgroundColor: '#fdfbf7', color: '#d4af37', borderColor: '#d4af37' }
+                              ? { backgroundColor: rsvp.title2TextColor, color: rsvp.buttonTextColor, borderColor: `${rsvp.title2TextColor}30` }
                               : { backgroundColor: 'transparent', color: rsvp.title2TextColor, borderColor: `${rsvp.title2TextColor}30` }
                             }
                           >

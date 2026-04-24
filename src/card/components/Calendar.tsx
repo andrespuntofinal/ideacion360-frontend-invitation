@@ -105,7 +105,6 @@ export default function Calendar() {
                             ? {
                               color: calendar.dayColorText2,
                               backgroundColor: calendar.daySelectedColor,
-                              ringColor: calendar.daySelectedColor,
                             }
                             : { color: calendar.dayColorText1 }
                         }

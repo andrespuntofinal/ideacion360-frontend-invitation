@@ -51,6 +51,8 @@ export const eventsService = {
     api.post(`/events/${id}/components/upload`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     }),
+  sendRSVP: (id: string, data: Record<string, unknown>) => api.post(`/events/${id}/rsvp`, data),
 };
 
+// Export services
 export default api;
