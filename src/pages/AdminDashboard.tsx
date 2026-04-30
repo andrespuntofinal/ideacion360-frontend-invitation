@@ -116,9 +116,15 @@ const AdminDashboard = () => {
                                   {
                                     label: 'Ver Tarjeta', icon: CreditCard, color: '#4ade80', bg: 'rgba(74,222,128,0.1)', action: () => {
                                       setOpenMenuId(null);
-                                      const appUrl = import.meta.env.VITE_APP_URL || window.location.origin;
-                                      const guestName = encodeURIComponent('Andrés y Johanna');
-                                      window.open(`${appUrl}/wedding/card/${event.eventId}?guestName=${guestName}&numberGuests=2`, '_blank');
+                                      const guests = event.components?.guestManagement?.guests;
+                                      const firstGuestUrl = guests && guests.length > 0 ? guests[0].urlCard : null;
+                                      
+                                      if (firstGuestUrl) {
+                                        window.open(firstGuestUrl, '_blank');
+                                      } else {
+                                        const appUrl = import.meta.env.VITE_APP_URL || window.location.origin;
+                                        window.open(`${appUrl}/wedding/card/${event.eventId}`, '_blank');
+                                      }
                                     }
                                   },
                                   { label: 'Editar Evento', icon: Edit, color: '#fbbf24', bg: 'rgba(251,191,36,0.1)', action: () => { setOpenMenuId(null); navigate(`/wedding/Admin/events/${event.eventId}/edit`); } },
