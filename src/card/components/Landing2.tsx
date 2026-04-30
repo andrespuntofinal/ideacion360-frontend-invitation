@@ -69,6 +69,9 @@ export default function Landing2({ onClose }: Landing2Props) {
           </div>
         )}
 
+        {/* 10. Carousel — full bleed */}
+        {activeComponents.carousel && <Carousel />}
+
         {/* 7 & 8. ChildRestriction + Presents — side by side on large screens */}
         {(activeComponents.childRestriction || activeComponents.presents) && (
           <div className="w-full max-w-6xl mx-auto px-4">
@@ -81,9 +84,6 @@ export default function Landing2({ onClose }: Landing2Props) {
 
         {/* 9. Timeline — full bleed */}
         {activeComponents.timeline && <Timeline />}
-
-        {/* 10. Carousel — full bleed */}
-        {activeComponents.carousel && <Carousel />}
 
         {/* 11. RSVP */}
         {activeComponents.rsvp && <RSVP />}
