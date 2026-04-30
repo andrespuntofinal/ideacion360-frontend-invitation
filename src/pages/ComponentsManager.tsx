@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Save, CheckCircle, AlertCircle, ChevronDown, ChevronUp, Copy, Link2 } from 'lucide-react';
+import { ArrowLeft, Save, CheckCircle, AlertCircle, ChevronDown, ChevronUp, Copy, Link2, MessageSquare } from 'lucide-react';
 import AdminLayout from '../components/admin/AdminLayout';
 import useEventsStore from '../stores/eventsStore';
 import toast from 'react-hot-toast';
@@ -297,9 +297,14 @@ const componentSchemas: Record<string, any> = {
 const GuestManagementForm = ({ data, onChange }: { data: any, onChange: (val: any) => void }) => {
   const { id: eventId } = useParams<{ id: string }>();
   const appUrl = import.meta.env.VITE_APP_URL || window.location.origin;
+  const [showMessage, setShowMessage] = useState<string | null>(null);
 
   const totalGuests = data?.totalGuests || 0;
   const guests = data?.guests || [];
+
+  const attendingGuests = guests.filter((g: any) => g.confirmation === 'si').length;
+  const notAttendingGuests = guests.filter((g: any) => g.confirmation === 'no').length;
+  const pendingGuests = guests.filter((g: any) => g.confirmation !== 'si' && g.confirmation !== 'no').length;
 
   const generateUrl = (name: string, companions: number) => {
     if (!eventId) return '';
@@ -355,43 +360,118 @@ const GuestManagementForm = ({ data, onChange }: { data: any, onChange: (val: an
 
   return (
     <div>
-      <div style={{ marginBottom: '1.5rem', maxWidth: 240 }}>
-        <label className="input-label">Cantidad de Invitados</label>
-        <input type="number" className="input-field" value={totalGuests} min={0} max={500}
-          onChange={e => setTotal(e.target.value)} />
+      <div style={{ display: 'flex', gap: '2rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+        <div style={{ maxWidth: 240 }}>
+          <label className="input-label">Cantidad de Invitados</label>
+          <input type="number" className="input-field" value={totalGuests} min={0} max={500}
+            onChange={e => setTotal(e.target.value)} />
+        </div>
+        
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', background: 'var(--bg-card2)', padding: '1rem', borderRadius: 12, border: '1px solid var(--border-glass)' }}>
+          <div style={{ fontSize: '0.85rem', color: 'var(--text-primary)' }}>
+            <span style={{ display: 'inline-block', width: 10, height: 10, borderRadius: '50%', background: '#4ade80', marginRight: 8, boxShadow: '0 0 5px #4ade80' }}></span>
+            Total Invitados que asistirán: <strong>{attendingGuests}</strong>
+          </div>
+          <div style={{ fontSize: '0.85rem', color: 'var(--text-primary)' }}>
+            <span style={{ display: 'inline-block', width: 10, height: 10, borderRadius: '50%', background: '#fb923c', marginRight: 8, boxShadow: '0 0 5px #fb923c' }}></span>
+            Total Invitados que no asistirán: <strong>{notAttendingGuests}</strong>
+          </div>
+          <div style={{ fontSize: '0.85rem', color: 'var(--text-primary)' }}>
+            <span style={{ display: 'inline-block', width: 10, height: 10, borderRadius: '50%', background: '#9ca3af', marginRight: 8, boxShadow: '0 0 5px #9ca3af' }}></span>
+            Total invitados que faltan por confirmar: <strong>{pendingGuests}</strong>
+          </div>
+        </div>
       </div>
+
       {guests.length > 0 && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxHeight: 500, overflowY: 'auto', paddingRight: '0.5rem' }}>
-          {guests.map((g: any, i: number) => (
-            <div key={i} style={{ background: 'var(--bg-card2)', borderRadius: 12, border: '1px solid var(--border-glass)', padding: '1rem' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 100px', gap: '0.75rem', marginBottom: '0.75rem' }}>
-                <div>
-                  <label className="input-label">Invitado {i + 1}</label>
-                  <input type="text" className="input-field" placeholder="Nombre completo" value={g.name}
-                    onChange={e => setGuest(i, 'name', e.target.value)} />
-                </div>
-                <div>
-                  <label className="input-label">Acompañantes</label>
-                  <input type="number" className="input-field" min={0} max={20} value={g.companions}
-                    onChange={e => setGuest(i, 'companions', e.target.value)} />
-                </div>
-              </div>
-              <div>
-                <label className="input-label">Url Tarjeta</label>
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                  <div style={{ flex: 1, background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, padding: '0.5rem 0.75rem', fontSize: '0.75rem', color: 'var(--color-purple-light)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                    <Link2 size={12} />
-                    {g.urlCard || 'Generando...'}
+          {guests.map((g: any, i: number) => {
+            let bgColor = 'var(--bg-card2)';
+            let borderColor = 'var(--border-glass)';
+            if (g.confirmation === 'si') {
+              bgColor = 'rgba(74, 222, 128, 0.08)';
+              borderColor = 'rgba(74, 222, 128, 0.3)';
+            } else if (g.confirmation === 'no') {
+              bgColor = 'rgba(251, 146, 60, 0.08)';
+              borderColor = 'rgba(251, 146, 60, 0.3)';
+            } else {
+              bgColor = 'rgba(156, 163, 175, 0.08)';
+              borderColor = 'rgba(156, 163, 175, 0.3)';
+            }
+
+            return (
+              <div key={i} style={{ background: bgColor, borderRadius: 12, border: `1px solid ${borderColor}`, padding: '1rem', boxShadow: `0 4px 12px ${bgColor}` }}>
+                {/* Fila 1: Nombre y Acompañantes */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 100px', gap: '0.75rem', marginBottom: '0.75rem', alignItems: 'end' }}>
+                  <div>
+                    <label className="input-label">Invitado {i + 1}</label>
+                    <input type="text" className="input-field" placeholder="Nombre completo" value={g.name || ''}
+                      onChange={e => setGuest(i, 'name', e.target.value)} />
                   </div>
-                  <button type="button" onClick={() => copyToClipboard(g.urlCard)} className="btn-secondary" style={{ padding: '0.5rem', borderRadius: 8, minWidth: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Copy size={14} />
-                  </button>
+                  <div>
+                    <label className="input-label">Acompañantes</label>
+                    <input type="number" className="input-field" min={0} max={20} value={g.companions || 0}
+                      onChange={e => setGuest(i, 'companions', e.target.value)} />
+                  </div>
+                </div>
+
+                {/* Fila 2: Confirmación, Fecha, Mensaje */}
+                <div style={{ display: 'grid', gridTemplateColumns: g.message ? '1fr 1.5fr auto' : '1fr 1.5fr', gap: '0.75rem', marginBottom: '0.75rem', alignItems: 'center' }}>
+                  <div>
+                    <label className="input-label">Confirmación</label>
+                    <div style={{ padding: '0.5rem 0.75rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, fontSize: '0.85rem', color: 'var(--text-primary)', height: '38px', display: 'flex', alignItems: 'center' }}>
+                      {g.confirmation === 'si' ? 'Sí asistirá' : g.confirmation === 'no' ? 'No asistirá' : 'Pendiente por confirmar'}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="input-label">Fecha de confirmación</label>
+                    <div style={{ padding: '0.5rem 0.75rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, fontSize: '0.85rem', color: 'var(--text-primary)', height: '38px', display: 'flex', alignItems: 'center' }}>
+                      {g.confirmationDate ? new Date(g.confirmationDate).toLocaleString('es-CO', { month: 'long', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }) : 'No confirmada'}
+                    </div>
+                  </div>
+                  {g.message && (
+                    <div style={{ alignSelf: 'end' }}>
+                      <label className="input-label" style={{ opacity: 0, marginBottom: 0 }}>Msj</label>
+                      <button type="button" onClick={() => setShowMessage(g.message)} className="btn-secondary" style={{ padding: '0.5rem', borderRadius: 8, height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Ver mensaje">
+                        <MessageSquare size={18} />
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Fila 3: Url Tarjeta */}
+                <div>
+                  <label className="input-label">Url Tarjeta</label>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <div style={{ flex: 1, background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, padding: '0.5rem 0.75rem', fontSize: '0.75rem', color: 'var(--color-purple-light)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      <Link2 size={12} />
+                      {g.urlCard || 'Generando...'}
+                    </div>
+                    <button type="button" onClick={() => copyToClipboard(g.urlCard)} className="btn-secondary" style={{ padding: '0.5rem', borderRadius: 8, minWidth: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <Copy size={14} />
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
+
+      <AnimatePresence>
+        {showMessage && (
+          <div style={{ position: 'fixed', inset: 0, zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowMessage(null)} style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }} />
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} style={{ position: 'relative', width: '100%', maxWidth: 400, background: 'var(--bg-card)', borderRadius: 16, border: '1px solid var(--border-glass)', padding: '2rem', boxShadow: '0 20px 40px rgba(0,0,0,0.4)', zIndex: 10 }}>
+              <h3 style={{ fontSize: '1.2rem', marginBottom: '1rem', color: 'var(--color-purple-light)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <MessageSquare size={20} /> Mensaje del Invitado
+              </h3>
+              <p style={{ color: 'var(--text-primary)', lineHeight: 1.6, marginBottom: '1.5rem', whiteSpace: 'pre-wrap', maxHeight: '300px', overflowY: 'auto' }}>{showMessage}</p>
+              <button onClick={() => setShowMessage(null)} className="btn-primary" style={{ width: '100%' }}>Cerrar</button>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
