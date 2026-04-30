@@ -356,7 +356,7 @@ export const GuestManagementForm = ({ data, onChange }: { data: any, onChange: (
       </div>
 
       {guests.length > 0 && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxHeight: 500, overflowY: 'auto', paddingRight: '0.5rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {guests.map((g: any, i: number) => {
             let bgColor = 'var(--bg-card2)';
             let borderColor = 'var(--border-glass)';
@@ -374,13 +374,13 @@ export const GuestManagementForm = ({ data, onChange }: { data: any, onChange: (
             return (
               <div key={i} style={{ background: bgColor, borderRadius: 12, border: `1px solid ${borderColor}`, padding: '1rem', boxShadow: `0 4px 12px ${bgColor}` }}>
                 {/* Fila 1: Nombre y Acompañantes */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 100px', gap: '0.75rem', marginBottom: '0.75rem', alignItems: 'end' }}>
-                  <div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '0.75rem', alignItems: 'end' }}>
+                  <div style={{ flex: '1 1 250px' }}>
                     <label className="input-label">Invitado {i + 1}</label>
                     <input type="text" className="input-field" placeholder="Nombre completo" value={g.name || ''}
                       onChange={e => setGuest(i, 'name', e.target.value)} />
                   </div>
-                  <div>
+                  <div style={{ flex: '1 1 120px' }}>
                     <label className="input-label">Acompañantes</label>
                     <input type="number" className="input-field" min={0} max={20} value={g.companions || 0}
                       onChange={e => setGuest(i, 'companions', e.target.value)} />
@@ -388,22 +388,22 @@ export const GuestManagementForm = ({ data, onChange }: { data: any, onChange: (
                 </div>
 
                 {/* Fila 2: Confirmación, Fecha, Mensaje */}
-                <div style={{ display: 'grid', gridTemplateColumns: g.message ? '1fr 1.5fr auto' : '1fr 1.5fr', gap: '0.75rem', marginBottom: '0.75rem', alignItems: 'center' }}>
-                  <div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '0.75rem', alignItems: 'center' }}>
+                  <div style={{ flex: '1 1 150px' }}>
                     <label className="input-label">Confirmación</label>
                     <div style={{ padding: '0.5rem 0.75rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, fontSize: '0.85rem', color: 'var(--text-primary)', height: '38px', display: 'flex', alignItems: 'center' }}>
                       {g.confirmation === 'si' ? 'Sí asistirá' : g.confirmation === 'no' ? 'No asistirá' : 'Pendiente por confirmar'}
                     </div>
                   </div>
-                  <div>
+                  <div style={{ flex: '1 1 200px' }}>
                     <label className="input-label">Fecha de confirmación</label>
                     <div style={{ padding: '0.5rem 0.75rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, fontSize: '0.85rem', color: 'var(--text-primary)', height: '38px', display: 'flex', alignItems: 'center' }}>
                       {g.confirmationDate ? new Date(g.confirmationDate).toLocaleString('es-CO', { month: 'long', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }) : 'No confirmada'}
                     </div>
                   </div>
                   {g.message && (
-                    <div style={{ alignSelf: 'end' }}>
-                      <label className="input-label" style={{ opacity: 0, marginBottom: 0 }}>Msj</label>
+                    <div style={{ alignSelf: 'end', flex: '0 0 auto' }}>
+                      <label className="input-label" style={{ opacity: 0, marginBottom: 0, display: 'block' }}>Msj</label>
                       <button type="button" onClick={() => setShowMessage(g.message)} className="btn-secondary" style={{ padding: '0.5rem', borderRadius: 8, height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Ver mensaje">
                         <MessageSquare size={18} />
                       </button>
@@ -415,12 +415,12 @@ export const GuestManagementForm = ({ data, onChange }: { data: any, onChange: (
                 {g.urlCard && (
                   <div>
                     <label className="input-label">Url Tarjeta</label>
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
-                      <div style={{ flex: 1, background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, padding: '0.5rem 0.75rem', fontSize: '0.75rem', color: 'var(--color-purple-light)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                        <Link2 size={12} />
-                        {g.urlCard}
+                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                      <div style={{ flex: '1 1 200px', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, padding: '0.5rem 0.75rem', fontSize: '0.75rem', color: 'var(--color-purple-light)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                        <Link2 size={12} style={{ flexShrink: 0 }} />
+                        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{g.urlCard}</span>
                       </div>
-                      <button type="button" onClick={() => copyToClipboard(g.urlCard)} className="btn-secondary" style={{ padding: '0.5rem', borderRadius: 8, minWidth: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <button type="button" onClick={() => copyToClipboard(g.urlCard)} className="btn-secondary" style={{ flex: '0 0 auto', padding: '0.5rem', borderRadius: 8, minWidth: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <Copy size={14} />
                       </button>
                     </div>
