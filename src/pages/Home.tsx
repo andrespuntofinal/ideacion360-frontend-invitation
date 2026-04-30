@@ -15,7 +15,7 @@ const services = [
     color: '#f472b6',
     gradient: 'linear-gradient(135deg, rgba(244,114,182,0.2) 0%, rgba(124,58,237,0.2) 100%)',
     border: 'rgba(244,114,182,0.3)',
-    href: '/Wedding-Invitation',
+    href: '/wedding',
     cta: 'Ver Invitaciones',
   },
   {
@@ -163,7 +163,7 @@ const Home = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}
             >
-              <Link to="/Wedding-Invitation">
+              <Link to="/wedding">
                 <button className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.9rem 2rem', fontSize: '1rem' }}>
                   <Heart size={18} />
                   Ver Invitaciones de Boda
@@ -500,7 +500,7 @@ const Home = () => {
                 Cuéntanos tu idea y te mostraremos cómo hacerla realidad con tecnología y creatividad.
               </p>
               <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                <Link to="/Wedding-Invitation">
+                <Link to="/wedding">
                   <button className="btn-primary" style={{ padding: '0.9rem 2.5rem', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <Heart size={18} />
                     Crear mi invitación de boda

@@ -25,7 +25,7 @@ const Footer = () => {
             <h4 style={{ color: 'var(--text-primary)', fontSize: '0.875rem', fontWeight: 600, marginBottom: '1rem', fontFamily: 'var(--font-body)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Servicios</h4>
             {['Wedding Invitation', 'Sitios Web', 'Animación Digital'].map((item) => (
               <div key={item} style={{ marginBottom: '0.5rem' }}>
-                <Link to="/Wedding-Invitation"
+                <Link to="/wedding"
                   style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontSize: '0.85rem', transition: 'color 0.2s' }}
                   onMouseEnter={(e) => ((e.target as HTMLAnchorElement).style.color = 'var(--color-purple-light)')}
                   onMouseLeave={(e) => ((e.target as HTMLAnchorElement).style.color = 'var(--text-secondary)')}

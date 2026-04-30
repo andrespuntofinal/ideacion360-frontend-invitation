@@ -47,7 +47,7 @@ const EventDetail = () => {
     <AdminLayout>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <button onClick={() => navigate('/Wedding-Invitation/Admin/dashboard')}
+          <button onClick={() => navigate('/wedding/Admin/dashboard')}
             style={{ background: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.3)', color: 'var(--color-purple-light)', padding: '0.5rem', borderRadius: 8, cursor: 'pointer', display: 'flex' }}>
             <ArrowLeft size={18} />
           </button>
@@ -57,12 +57,12 @@ const EventDetail = () => {
           </div>
         </div>
         <div style={{ display: 'flex', gap: '0.75rem' }}>
-          <button className="btn-secondary" onClick={() => navigate(`/Wedding-Invitation/Admin/events/${id}/edit`)}
+          <button className="btn-secondary" onClick={() => navigate(`/wedding/Admin/events/${id}/edit`)}
             style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', fontSize: '0.85rem' }}>
             <Edit size={15} /> Editar
           </button>
           {event.type === 'web' && (
-            <button className="btn-primary" onClick={() => navigate(`/Wedding-Invitation/Admin/events/${id}/components`)}
+            <button className="btn-primary" onClick={() => navigate(`/wedding/Admin/events/${id}/components`)}
               style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', fontSize: '0.85rem' }}>
               <Settings2 size={15} /> Gestionar Componentes
             </button>

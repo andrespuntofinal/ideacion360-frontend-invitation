@@ -728,7 +728,7 @@ const ComponentsManager = () => {
         if (!g.token) {
           const randomStr = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
           g.token = `${initials}${randomStr}`;
-          g.urlCard = `${appUrl}/Wedding-Invitation/card/${g.token}`;
+          g.urlCard = `${appUrl}/wedding/card/${g.token}`;
         }
         return g;
       });
@@ -748,7 +748,7 @@ const ComponentsManager = () => {
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
         <button
-          onClick={() => navigate('/Wedding-Invitation/Admin/dashboard')}
+          onClick={() => navigate('/wedding/Admin/dashboard')}
           style={{ background: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.3)', color: 'var(--color-purple-light)', padding: '0.5rem', borderRadius: 8, cursor: 'pointer', display: 'flex' }}
         >
           <ArrowLeft size={18} />
@@ -777,7 +777,7 @@ const ComponentsManager = () => {
           <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginBottom: '1.5rem' }}>
             Al crear el evento no se activaron componentes. Edita el evento para activarlos.
           </p>
-          <button className="btn-primary" onClick={() => navigate(`/Wedding-Invitation/Admin/events/${id}/edit`)}>
+          <button className="btn-primary" onClick={() => navigate(`/wedding/Admin/events/${id}/edit`)}>
             Editar Evento
           </button>
         </div>

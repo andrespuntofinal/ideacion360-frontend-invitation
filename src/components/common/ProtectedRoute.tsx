@@ -9,7 +9,7 @@ interface ProtectedRouteProps {
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const { isAuthenticated } = useAuthStore();
   if (!isAuthenticated) {
-    return <Navigate to="/Wedding-Invitation/Admin" replace />;
+    return <Navigate to="/wedding/Admin" replace />;
   }
   return <>{children}</>;
 };

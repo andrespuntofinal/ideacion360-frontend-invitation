@@ -49,7 +49,7 @@ const WeddingLanding = () => (
             <button className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.9rem 2rem' }}><Play size={18} />Ver Demo</button>
           </motion.div>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} style={{ marginTop: '3rem' }}>
-            <Link to="/Wedding-Invitation/Admin" style={{ textDecoration: 'none' }}>
+            <Link to="/wedding/Admin" style={{ textDecoration: 'none' }}>
               <button style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.3)', color: 'var(--color-purple-light)', padding: '0.5rem 1.2rem', borderRadius: 8, fontSize: '0.8rem', fontWeight: 500, cursor: 'pointer', fontFamily: 'var(--font-body)', transition: 'all 0.2s' }}
                 onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(124,58,237,0.2)')}
                 onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(124,58,237,0.1)')}>

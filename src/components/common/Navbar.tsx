@@ -5,7 +5,7 @@ import { Menu, X, Zap } from 'lucide-react';
 
 const navLinks = [
   { label: 'Inicio', href: '/' },
-  { label: 'Wedding Invitations', href: '/Wedding-Invitation' },
+  { label: 'Wedding Invitations', href: '/wedding' },
   { label: 'Sitios Web', href: '/#sitios-web' },
   { label: 'Animación Digital', href: '/#animacion' },
 ];
@@ -56,7 +56,7 @@ const Navbar = () => {
               {link.label}
             </Link>
           ))}
-          <Link to="/Wedding-Invitation/Admin/dashboard">
+          <Link to="/wedding/Admin/dashboard">
             <button className="btn-primary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.8rem' }}>Admin</button>
           </Link>
         </nav>
@@ -79,7 +79,7 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
-            <Link to="/Wedding-Invitation/Admin/dashboard" style={{ display: 'block', marginTop: '1rem' }}>
+            <Link to="/wedding/Admin/dashboard" style={{ display: 'block', marginTop: '1rem' }}>
               <button className="btn-primary" style={{ width: '100%' }}>Admin Panel</button>
             </Link>
           </motion.div>

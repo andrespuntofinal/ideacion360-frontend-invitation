@@ -41,7 +41,7 @@ const AdminDashboard = () => {
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', color: 'var(--text-primary)', marginBottom: '0.25rem' }}>Dashboard</h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Gestiona todos los eventos de bodas</p>
         </div>
-        <Link to="/Wedding-Invitation/Admin/events/new" style={{ textDecoration: 'none' }}>
+        <Link to="/wedding/Admin/events/new" style={{ textDecoration: 'none' }}>
           <motion.button className="btn-primary" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
             style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.5rem', width: 'max-content' }}>
             <Plus size={18} />Crear Evento
@@ -78,7 +78,7 @@ const AdminDashboard = () => {
               <Calendar size={48} color="var(--text-muted)" style={{ margin: '0 auto 1rem', display: 'block' }} />
               <p style={{ color: 'var(--text-secondary)', fontWeight: 500, marginBottom: '0.5rem' }}>No hay eventos aún</p>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '1.5rem' }}>Crea tu primer evento de boda</p>
-              <Link to="/Wedding-Invitation/Admin/events/new"><button className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}><Plus size={16} /> Crear Evento</button></Link>
+              <Link to="/wedding/Admin/events/new"><button className="btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}><Plus size={16} /> Crear Evento</button></Link>
             </div>
           ) : (
             <table className="data-table">
@@ -111,17 +111,17 @@ const AdminDashboard = () => {
                               <div style={{ position: 'fixed', inset: 0, zIndex: 40 }} onClick={() => setOpenMenuId(null)} />
                               <div style={{ position: 'absolute', right: '30px', top: isLast ? 'auto' : '0', bottom: isLast ? '0' : 'auto', background: 'var(--bg-card2)', border: '1px solid var(--border-glass)', borderRadius: '12px', padding: '0.5rem', zIndex: 50, display: 'flex', flexDirection: 'column', gap: '0.25rem', minWidth: '160px', boxShadow: 'var(--shadow-card)' }}>
                                 {[
-                                  { label: 'Ver Detalle', icon: Eye, color: 'var(--color-purple-light)', bg: 'rgba(124,58,237,0.1)', action: () => { setOpenMenuId(null); navigate(`/Wedding-Invitation/Admin/events/${event.eventId}`); } },
-                                  ...(event.type === 'web' ? [{ label: 'Componentes', icon: Settings2, color: 'var(--color-blue)', bg: 'rgba(138,196,224,0.1)', action: () => { setOpenMenuId(null); navigate(`/Wedding-Invitation/Admin/events/${event.eventId}/components`); } }] : []),
+                                  { label: 'Ver Detalle', icon: Eye, color: 'var(--color-purple-light)', bg: 'rgba(124,58,237,0.1)', action: () => { setOpenMenuId(null); navigate(`/wedding/Admin/events/${event.eventId}`); } },
+                                  ...(event.type === 'web' ? [{ label: 'Componentes', icon: Settings2, color: 'var(--color-blue)', bg: 'rgba(138,196,224,0.1)', action: () => { setOpenMenuId(null); navigate(`/wedding/Admin/events/${event.eventId}/components`); } }] : []),
                                   {
                                     label: 'Ver Tarjeta', icon: CreditCard, color: '#4ade80', bg: 'rgba(74,222,128,0.1)', action: () => {
                                       setOpenMenuId(null);
                                       const appUrl = import.meta.env.VITE_APP_URL || window.location.origin;
                                       const guestName = encodeURIComponent('Andrés y Johanna');
-                                      window.open(`${appUrl}/Wedding-Invitation/card/${event.eventId}?guestName=${guestName}&numberGuests=2`, '_blank');
+                                      window.open(`${appUrl}/wedding/card/${event.eventId}?guestName=${guestName}&numberGuests=2`, '_blank');
                                     }
                                   },
-                                  { label: 'Editar Evento', icon: Edit, color: '#fbbf24', bg: 'rgba(251,191,36,0.1)', action: () => { setOpenMenuId(null); navigate(`/Wedding-Invitation/Admin/events/${event.eventId}/edit`); } },
+                                  { label: 'Editar Evento', icon: Edit, color: '#fbbf24', bg: 'rgba(251,191,36,0.1)', action: () => { setOpenMenuId(null); navigate(`/wedding/Admin/events/${event.eventId}/edit`); } },
                                 ].map(({ label, icon: BtnIcon, color: btnColor, bg: btnBg, action }) => (
                                   <button key={label} onClick={action}
                                     style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'transparent', border: 'none', color: 'var(--text-primary)', padding: '0.5rem', cursor: 'pointer', borderRadius: '6px', textAlign: 'left', fontSize: '0.85rem' }}

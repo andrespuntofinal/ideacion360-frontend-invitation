@@ -81,7 +81,7 @@ const EventForm = () => {
     if (result.success) {
       setNotification({ type: 'success', message: isEdit ? '¡Evento actualizado!' : '¡Evento creado!' });
       toast.success(isEdit ? 'Evento actualizado' : 'Evento creado');
-      setTimeout(() => navigate('/Wedding-Invitation/Admin/dashboard'), 1500);
+      setTimeout(() => navigate('/wedding/Admin/dashboard'), 1500);
     } else {
       setNotification({ type: 'error', message: result.message || 'Error al guardar' });
       toast.error(result.message || 'Error al guardar');
@@ -93,7 +93,7 @@ const EventForm = () => {
   return (
     <AdminLayout>
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
-        <button onClick={() => navigate('/Wedding-Invitation/Admin/dashboard')}
+        <button onClick={() => navigate('/wedding/Admin/dashboard')}
           style={{ background: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.3)', color: 'var(--color-purple-light)', padding: '0.5rem', borderRadius: 8, cursor: 'pointer', display: 'flex' }}>
           <ArrowLeft size={18} />
         </button>
@@ -207,7 +207,7 @@ const EventForm = () => {
         </motion.div>
 
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1.5rem', gap: '1rem' }}>
-          <button type="button" className="btn-secondary" onClick={() => activeStep > 0 ? setActiveStep((s) => s - 1) : navigate('/Wedding-Invitation/Admin/dashboard')} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <button type="button" className="btn-secondary" onClick={() => activeStep > 0 ? setActiveStep((s) => s - 1) : navigate('/wedding/Admin/dashboard')} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <ArrowLeft size={16} />{activeStep === 0 ? 'Cancelar' : 'Anterior'}
           </button>
           {activeStep < steps.length - 1 ? (

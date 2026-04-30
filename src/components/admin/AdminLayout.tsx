@@ -9,9 +9,9 @@ interface AdminLayoutProps {
 }
 
 const navItems = [
-  { icon: LayoutDashboard, label: 'Dashboard', href: '/Wedding-Invitation/Admin/dashboard' },
-  { icon: Calendar, label: 'Eventos', href: '/Wedding-Invitation/Admin/events' },
-  { icon: Settings, label: 'Configuración', href: '/Wedding-Invitation/Admin/settings' },
+  { icon: LayoutDashboard, label: 'Dashboard', href: '/wedding/Admin/dashboard' },
+  { icon: Calendar, label: 'Eventos', href: '/wedding/Admin/events' },
+  { icon: Settings, label: 'Configuración', href: '/wedding/Admin/settings' },
 ];
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
@@ -20,7 +20,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
 
-  const handleLogout = () => { logout(); navigate('/Wedding-Invitation/Admin'); };
+  const handleLogout = () => { logout(); navigate('/wedding/Admin'); };
 
   const SidebarContent = () => (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>

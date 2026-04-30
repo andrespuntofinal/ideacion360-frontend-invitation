@@ -14,7 +14,7 @@ const AdminLogin = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = await login({ username, password });
-    if (result?.success) { navigate('/Wedding-Invitation/Admin/dashboard'); }
+    if (result?.success) { navigate('/wedding/Admin/dashboard'); }
   };
 
   return (
