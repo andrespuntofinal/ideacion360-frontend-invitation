@@ -306,34 +306,11 @@ const GuestManagementForm = ({ data, onChange }: { data: any, onChange: (val: an
   const notAttendingGuests = guests.filter((g: any) => g.confirmation === 'no').length;
   const pendingGuests = guests.filter((g: any) => g.confirmation !== 'si' && g.confirmation !== 'no').length;
 
-  const generateUrl = (name: string, companions: number) => {
-    if (!eventId) return '';
-    const encodedName = encodeURIComponent(name || '');
-    return `${appUrl}/Wedding-Invitation/card/${eventId}?guestName=${encodedName}&numberGuests=${companions || 0}`;
-  };
-
-  // Generate missing URLs on load
-  useEffect(() => {
-    if (guests.length > 0) {
-      const needsUpdate = guests.some((g: any) => !g.urlCard || g.urlCard === 'Generando...');
-      if (needsUpdate) {
-        const updatedGuests = guests.map((g: any) => ({
-          ...g,
-          urlCard: g.urlCard && g.urlCard !== 'Generando...' ? g.urlCard : generateUrl(g.name, g.companions)
-        }));
-        onChange({ ...data, guests: updatedGuests });
-      }
-    }
-  }, [eventId]); // Run once when eventId is available
-
   const setTotal = (n: string) => {
     const num = Math.max(0, parseInt(n) || 0);
     const newGuests = Array.from({ length: num }, (_, i) => {
       const existing = guests[i] || { name: '', companions: 0 };
-      return { 
-        ...existing, 
-        urlCard: existing.urlCard && existing.urlCard !== 'Generando...' ? existing.urlCard : generateUrl(existing.name, existing.companions) 
-      };
+      return { ...existing };
     });
     onChange({ totalGuests: num, guests: newGuests });
   };
@@ -343,11 +320,6 @@ const GuestManagementForm = ({ data, onChange }: { data: any, onChange: (val: an
     const val = field === 'companions' ? (parseInt(value) || 0) : value;
     const updatedGuest = { ...newGuests[i], [field]: val };
     
-    // Auto-generate URL
-    if (field === 'name' || field === 'companions') {
-      updatedGuest.urlCard = generateUrl(updatedGuest.name, updatedGuest.companions);
-    }
-
     newGuests[i] = updatedGuest;
     onChange({ ...data, guests: newGuests });
   };
@@ -440,18 +412,20 @@ const GuestManagementForm = ({ data, onChange }: { data: any, onChange: (val: an
                 </div>
 
                 {/* Fila 3: Url Tarjeta */}
-                <div>
-                  <label className="input-label">Url Tarjeta</label>
-                  <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <div style={{ flex: 1, background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, padding: '0.5rem 0.75rem', fontSize: '0.75rem', color: 'var(--color-purple-light)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                      <Link2 size={12} />
-                      {g.urlCard || 'Generando...'}
+                {g.urlCard && (
+                  <div>
+                    <label className="input-label">Url Tarjeta</label>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      <div style={{ flex: 1, background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, padding: '0.5rem 0.75rem', fontSize: '0.75rem', color: 'var(--color-purple-light)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                        <Link2 size={12} />
+                        {g.urlCard}
+                      </div>
+                      <button type="button" onClick={() => copyToClipboard(g.urlCard)} className="btn-secondary" style={{ padding: '0.5rem', borderRadius: 8, minWidth: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Copy size={14} />
+                      </button>
                     </div>
-                    <button type="button" onClick={() => copyToClipboard(g.urlCard)} className="btn-secondary" style={{ padding: '0.5rem', borderRadius: 8, minWidth: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <Copy size={14} />
-                    </button>
                   </div>
-                </div>
+                )}
               </div>
             );
           })}
@@ -744,6 +718,22 @@ const ComponentsManager = () => {
   const handleSaveComponent = async (compKey: string, data: any) => {
     if (!id) return { success: false, message: 'ID de evento faltante' };
     setSaving(true);
+
+    if (compKey === 'guestManagement' && data.guests && Array.isArray(data.guests)) {
+      const rawInitials = event?.components?.envelope?.initialsCoupleText || 'EVT';
+      const initials = rawInitials.replace(/[^A-Za-z]/g, '').toUpperCase().substring(0, 3).padEnd(3, 'X');
+      const appUrl = import.meta.env.VITE_APP_URL || window.location.origin;
+      
+      data.guests = data.guests.map((g: any) => {
+        if (!g.token) {
+          const randomStr = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+          g.token = `${initials}${randomStr}`;
+          g.urlCard = `${appUrl}/Wedding-Invitation/card/${g.token}`;
+        }
+        return g;
+      });
+    }
+
     const result = await updateComponent(id, compKey, data);
     setSaving(false);
     return result;

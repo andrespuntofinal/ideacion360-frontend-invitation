@@ -40,6 +40,7 @@ export const authService = {
 export const eventsService = {
   getAll: (params?: Record<string, unknown>) => api.get('/events', { params }),
   getById: (id: string) => api.get(`/events/${id}`),
+  getByToken: (token: string) => api.get(`/events/card/${token}`),
   create: (data: Partial<WeddingEvent>) => api.post('/events', data),
   update: (id: string, data: Partial<WeddingEvent>) => api.put(`/events/${id}`, data),
   delete: (id: string) => api.delete(`/events/${id}`),

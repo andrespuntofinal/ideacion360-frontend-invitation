@@ -176,9 +176,20 @@ export function CardProvider({ eventId, children }: CardProviderProps) {
       return result;
     };
 
-    eventsService.getById(eventId)
-      .then(({ data }) => {
-        const event = data.data;
+    const fetchPromise = eventId.length < 36 
+      ? eventsService.getByToken(eventId).then(res => ({
+          event: res.data.data.event,
+          guestName: res.data.data.guest?.name,
+          numberGuests: res.data.data.guest?.companions
+        }))
+      : eventsService.getById(eventId).then(res => ({
+          event: res.data.data,
+          guestName: urlGuestName,
+          numberGuests: urlNumberGuests
+        }));
+
+    fetchPromise
+      .then(({ event, guestName, numberGuests }) => {
         const comps = event.components || {};
         const active = event.activeComponents || {};
         const wedding = event.wedding || {};
@@ -186,8 +197,8 @@ export function CardProvider({ eventId, children }: CardProviderProps) {
         setConfig(prev => ({
           ...prev,
           paramsGeneral: {
-            guestName: urlGuestName || prev.paramsGeneral.guestName,
-            numberGuests: urlNumberGuests ? parseInt(urlNumberGuests) : prev.paramsGeneral.numberGuests,
+            guestName: guestName || prev.paramsGeneral.guestName,
+            numberGuests: numberGuests ? parseInt(String(numberGuests)) : prev.paramsGeneral.numberGuests,
           },
           weddingData: {
             weddingDate: wedding.weddingDate ? new Date(wedding.weddingDate).toISOString() : DEFAULT_CONFIG.weddingData.weddingDate,
