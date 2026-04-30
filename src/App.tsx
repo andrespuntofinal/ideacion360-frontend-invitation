@@ -13,6 +13,8 @@ import CardPage from './card/CardPage';
 import ControlUser from './pages/ControlUser';
 import AdminSettings from './pages/AdminSettings';
 import NotFound from './pages/NotFound';
+import ClientLogin from './pages/ClientLogin';
+import ClientGuestManagement from './pages/ClientGuestManagement';
 
 // Guards
 import ProtectedRoute from './components/common/ProtectedRoute';
@@ -47,6 +49,12 @@ const App = () => {
 
         {/* Admin Login */}
         <Route path="/wedding/Admin" element={<AdminLogin />} />
+        
+        {/* Client Auth & Dashboard */}
+        <Route path="/wedding/login" element={<ClientLogin />} />
+        <Route path="/wedding/mi-boda/:eventId" element={
+          <ClientGuestManagement />
+        } />
 
         {/* Protected Admin Routes */}
         <Route path="/wedding/Admin/dashboard" element={

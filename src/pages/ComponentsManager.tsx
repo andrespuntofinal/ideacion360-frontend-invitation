@@ -294,7 +294,7 @@ const componentSchemas: Record<string, any> = {
   },
 };
 
-const GuestManagementForm = ({ data, onChange }: { data: any, onChange: (val: any) => void }) => {
+export const GuestManagementForm = ({ data, onChange }: { data: any, onChange: (val: any) => void }) => {
   const { id: eventId } = useParams<{ id: string }>();
   const appUrl = import.meta.env.VITE_APP_URL || window.location.origin;
   const [showMessage, setShowMessage] = useState<string | null>(null);

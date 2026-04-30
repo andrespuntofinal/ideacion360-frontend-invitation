@@ -56,9 +56,14 @@ const Navbar = () => {
               {link.label}
             </Link>
           ))}
-          <Link to="/wedding/Admin/dashboard">
-            <button className="btn-primary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.8rem' }}>Admin</button>
-          </Link>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <Link to="/wedding/login">
+              <button className="btn-secondary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.8rem' }}>Mi boda</button>
+            </Link>
+            <Link to="/wedding/Admin/dashboard">
+              <button className="btn-primary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.8rem' }}>Admin</button>
+            </Link>
+          </div>
         </nav>
 
         <button onClick={() => setMenuOpen(!menuOpen)}
@@ -79,9 +84,14 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
-            <Link to="/wedding/Admin/dashboard" style={{ display: 'block', marginTop: '1rem' }}>
-              <button className="btn-primary" style={{ width: '100%' }}>Admin Panel</button>
-            </Link>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1rem' }}>
+              <Link to="/wedding/login" style={{ display: 'block' }}>
+                <button className="btn-secondary" style={{ width: '100%' }}>Mi boda</button>
+              </Link>
+              <Link to="/wedding/Admin/dashboard" style={{ display: 'block' }}>
+                <button className="btn-primary" style={{ width: '100%' }}>Admin Panel</button>
+              </Link>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
