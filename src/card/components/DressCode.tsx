@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useCardConfig } from '../CardContext';
 
+
 export default function DressCode() {
   const { config } = useCardConfig();
   const { dressCode } = config;
@@ -20,15 +21,16 @@ export default function DressCode() {
         transition={{ duration: 0.8 }}
         className="text-center mb-8 md:mb-12"
       >
-        <p className="text-base sm:text-lg tracking-widest uppercase mb-2" style={{ color: dressCode.titleColor, fontFamily: dressCode.titleFont }}>
+        <p className="text-sm sm:text-xl font-bold tracking-widest mb-1 uppercase" style={{ color: dressCode.titleColor, fontFamily: dressCode.titleFont }}>
           {dressCode.titletext}
         </p>
+        <br />
         <br />
 
       </motion.div>
 
       {/* Cards */}
-      <div className="flex flex-col sm:flex-row gap-4 md:gap-6 w-full">
+      <div className="flex flex-row gap-2 md:gap-6 w-full">
         {details.map((item, i) => (
           <motion.div
             key={item.title}
@@ -36,18 +38,18 @@ export default function DressCode() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.15, duration: 0.8 }}
-            className="flex-1 flex flex-col items-center text-center rounded-2xl md:rounded-3xl overflow-hidden shadow-xl px-6 pt-8 pb-8"
+            className="relative flex-1 flex flex-col items-center text-center rounded-2xl md:rounded-3xl shadow-xl px-2 sm:px-6 pt-16 pb-6 sm:pb-8 mt-10"
             style={{
               background: `linear-gradient(160deg, ${dressCode.backgroundColorFrom}, ${dressCode.backgroundColorVia}, ${dressCode.backgroundColorTo})`,
-              border: `1px solid ${dressCode.boderColor}`,
+              border: `2px solid ${dressCode.borderColorIconMoments}`,
             }}
           >
-            {/* Icon circle */}
+            {/* Floating Icon */}
             <div
-              className="w-14 h-14 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-5 shadow-lg"
+              className="absolute -top-8 left-1/2 -translate-x-1/2 w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center shadow-xl z-20"
               style={{
                 background: dressCode.backgroundColorIconMoments,
-                border: `2px solid ${dressCode.borderColorIconMoments}`,
+                border: `3px solid ${dressCode.borderColorIconMoments}`,
               }}
             >
               {item.iconUrl ? (
@@ -61,29 +63,29 @@ export default function DressCode() {
                 <span className="text-2xl">👗</span>
               )}
             </div>
+            <br />
+            <br />
 
             {/* Title */}
             <h3
-              className="text-base sm:text-lg tracking-widest mb-2"
+              className="text-sm sm:text-xl font-bold tracking-widest mb-1"
               style={{ fontFamily: dressCode.title2Font, color: dressCode.title2Color }}
             >
               {item.title}
             </h3>
             <br />
 
-            {/* Divider */}
-            <div className="h-px w-16 mb-4" style={{ backgroundColor: dressCode.borderColorIconMoments, opacity: 0.4 }} />
+            <div className="h-px w-16 mb-4 opacity-40" style={{ backgroundColor: dressCode.borderColorIconMoments }} />
 
-            {/* Description */}
             <p
-              className="text-sm md:text-base leading-relaxed"
+              className="text-[10px] sm:text-sm leading-relaxed"
               style={{ fontFamily: dressCode.text2Font, color: dressCode.text2Color }}
             >
               {item.text}
             </p>
             <br />
-            <br />
-            <br />
+
+
           </motion.div>
         ))}
       </div>
