@@ -119,11 +119,13 @@ const AdminDashboard = () => {
                                       const guests = event.components?.guestManagement?.guests;
                                       const firstGuestUrl = guests && guests.length > 0 ? guests[0].urlCard : null;
                                       
+                                      const frontUrl = import.meta.env.VITE_FRONT_URL || window.location.origin;
+                                      const baseFrontUrl = frontUrl.replace(/\/$/, '');
                                       if (firstGuestUrl) {
-                                        window.open(firstGuestUrl, '_blank');
+                                        const fullGuestUrl = firstGuestUrl.startsWith('http') ? firstGuestUrl : `${baseFrontUrl}/${firstGuestUrl}`;
+                                        window.open(fullGuestUrl, '_blank');
                                       } else {
-                                        const appUrl = import.meta.env.VITE_APP_URL || window.location.origin;
-                                        window.open(`${appUrl}/wedding/card/${event.eventId}`, '_blank');
+                                        window.open(`${baseFrontUrl}/wedding/card/${event.eventId}`, '_blank');
                                       }
                                     }
                                   },

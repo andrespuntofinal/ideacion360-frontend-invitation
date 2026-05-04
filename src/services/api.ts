@@ -1,7 +1,11 @@
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import type { LoginCredentials, WeddingEvent } from '../types';
 
-const API_URL = '/api';
+const API_URL = import.meta.env.VITE_API_URL 
+  ? (import.meta.env.VITE_API_URL.endsWith('/api') ? import.meta.env.VITE_API_URL : `${import.meta.env.VITE_API_URL}/api`)
+  : '/api';
+
+console.log('🌐 Conectando a API en:', API_URL);
 
 const api = axios.create({
   baseURL: API_URL,

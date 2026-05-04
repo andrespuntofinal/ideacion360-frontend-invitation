@@ -10,7 +10,7 @@ interface EnvelopeProps {
 
 export default function Envelope({ onOpenComplete }: EnvelopeProps) {
   const { config } = useCardConfig();
-  const { envelope, paramsGeneral } = config;
+  const { envelope, banner, paramsGeneral } = config;
   const [step, setStep] = useState<'closed' | 'opening'>('closed');
 
   const handleVerDetalles = () => {
@@ -40,8 +40,12 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
       <motion.div
         className="relative z-10 flex flex-col items-center text-center mb-8 px-6"
         initial={{ opacity: 0, y: -30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 0.3 }}
+        animate={{ 
+          opacity: step === 'opening' ? 0 : 1, 
+          y: step === 'opening' ? -20 : 0,
+          pointerEvents: step === 'opening' ? 'none' : 'auto'
+        }}
+        transition={{ duration: 0.8, delay: step === 'opening' ? 0 : 0.3 }}
       >
 
 
@@ -70,7 +74,7 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
         <div className="absolute inset-0 flex items-center justify-center">
           {/* Back of envelope (inside) */}
           <div
-            className="absolute w-[90%] h-[90%] rounded-md shadow-inner"
+            className="absolute w-[90%] h-[90%] rounded-2xl shadow-inner"
             style={{
               backgroundColor: envelope.cardBackgroundColor,
               backgroundImage: envelope.textureUrl ? `url(${envelope.textureUrl})` : 'none',
@@ -96,14 +100,12 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
               <div className="w-full h-full border rounded-md p-4 flex flex-col items-center justify-center relative overflow-hidden"
                 style={{ borderColor: `${envelope.accentColor}80` }}>
                 {/* Decorative corners */}
-                <div className="absolute top-1 left-1 w-4 h-4 border-t border-l" style={{ borderColor: envelope.accentColor }} />
-                <div className="absolute top-1 right-1 w-4 h-4 border-t border-r" style={{ borderColor: envelope.accentColor }} />
-                <div className="absolute bottom-1 left-1 w-4 h-4 border-b border-l" style={{ borderColor: envelope.accentColor }} />
-                <div className="absolute bottom-1 right-1 w-4 h-4 border-b border-r" style={{ borderColor: envelope.accentColor }} />
+
 
                 <h3 className="text-xs mb-2 tracking-widest uppercase" style={{ color: envelope.textColor, fontFamily: envelope.envelopeFont }}>{envelope.cardMessageforguestsText}</h3>
                 <p className="text-xl font-bold mb-4 leading-tight" style={{ color: envelope.accentColor, fontFamily: envelope.titleFont }}>{paramsGeneral.guestName}</p>
                 <div className="mt-2 pt-3 border-t w-full" style={{ borderColor: `${envelope.accentColor}4D` }}>
+                  <br />
                   <p className="text-sm font-bold" style={{ color: envelope.textDarkColor, fontFamily: envelope.envelopeFont }}>{paramsGeneral.numberGuests} PERSONAS</p>
                 </div>
               </div>
@@ -135,7 +137,7 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
 
           {/* Envelope Front */}
           <div
-            className="absolute w-full h-full z-20 rounded-md overflow-hidden"
+            className="absolute w-full h-full z-20 rounded-2xl overflow-hidden"
             style={{
               backgroundImage: `linear-gradient(to bottom right, ${envelope.envelopeColor}, ${envelope.envelopeColorDeg}, ${envelope.envelopeColor})${envelope.textureUrl ? `, url(${envelope.textureUrl})` : ''}`,
               backgroundBlendMode: 'multiply'
@@ -149,11 +151,11 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
 
           {/* Top Flap */}
           <motion.div
-            className="absolute top-0 left-0 w-full h-[65%] origin-top z-30"
+            className="absolute top-0 left-0 w-full h-[65%] origin-top z-30 rounded-t-2xl"
             style={{
               backgroundImage: `linear-gradient(to bottom right, ${envelope.envelopeColor}, ${envelope.envelopeColorDeg}, ${envelope.envelopeColor})${envelope.textureUrl ? `, url(${envelope.textureUrl})` : ''}`,
               backgroundBlendMode: 'multiply',
-              clipPath: 'polygon(0 0, 100% 0, 50% 100%)'
+              clipPath: 'polygon(0 10%, 2% 5%, 5% 2%, 10% 0, 90% 0, 95% 2%, 98% 5%, 100% 10%, 50% 100%)'
             }}
             animate={{ rotateX: step === 'opening' ? -180 : 0, zIndex: step === 'opening' ? 5 : 30 }}
             transition={{ duration: 0.8, ease: 'easeInOut' }}
@@ -187,11 +189,11 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
                   <span className="text-white text-xs font-bold">SELLO</span>
                 </div>
               )}
-              <div className="relative z-10 flex flex-col items-center justify-center" style={{ color: envelope.initialsCoupleTextColor }}>
+              <div className="relative z-10 flex flex-col items-center justify-center" style={{ fontFamily: banner.titleFont, color: banner.textColor }}>
                 {step === 'closed' ? (
                   <>
                     <span className="text-xs opacity-90 mb-0.5">💍</span>
-                    <span className="text-2xl font-bold leading-none" style={{ fontFamily: envelope.titleFont }}>{envelope.initialsCoupleText}</span>
+                    <span className="text-2xl font-bold leading-none" style={{ fontFamily: banner.titleFont, color: banner.textColor }}>{banner.subtextMsg}</span>
                   </>
                 ) : (
                   <>

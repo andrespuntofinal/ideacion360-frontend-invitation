@@ -41,7 +41,14 @@ const AdminSettings = () => (
         <Settings size={16} color="var(--color-purple-light)" />Información del Sistema
       </h3>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-        {[{ label: 'Frontend', value: 'React + Vite + TailwindCSS' }, { label: 'Backend', value: 'Node.js + Express' }, { label: 'Base de Datos', value: 'MongoDB Atlas' }, { label: 'Versión', value: 'v1.0.0' }, { label: 'Puerto API', value: 'localhost:5001' }, { label: 'Puerto UI', value: 'localhost:5173' }].map(({ label, value }) => (
+        {[
+          { label: 'Frontend', value: 'React + Vite + TailwindCSS' },
+          { label: 'Backend', value: 'Node.js + Express' },
+          { label: 'Base de Datos', value: 'MongoDB Atlas' },
+          { label: 'Versión', value: 'v1.0.0' },
+          { label: 'API URL', value: import.meta.env.VITE_API_URL },
+          { label: 'UI Port', value: import.meta.env.VITE_PORT }
+        ].map(({ label, value }) => (
           <div key={label}>
             <div style={{ color: 'var(--text-muted)', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.2rem' }}>{label}</div>
             <div style={{ color: 'var(--color-purple-light)', fontSize: '0.875rem', fontWeight: 500 }}>{value}</div>

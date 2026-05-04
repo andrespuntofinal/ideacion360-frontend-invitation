@@ -77,11 +77,7 @@ const AdminLogin = () => {
           </motion.button>
         </form>
 
-        <div style={{ marginTop: '1.5rem', padding: '0.75rem', borderRadius: 8, background: 'rgba(138,196,224,0.08)', border: '1px solid rgba(138,196,224,0.15)', textAlign: 'center' }}>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>
-            Credenciales demo: <strong style={{ color: 'var(--color-purple-light)' }}>admin</strong> / <strong style={{ color: 'var(--color-purple-light)' }}>12345</strong>
-          </p>
-        </div>
+
       </motion.div>
     </div>
   );

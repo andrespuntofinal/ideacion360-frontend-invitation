@@ -296,7 +296,6 @@ const componentSchemas: Record<string, any> = {
 
 export const GuestManagementForm = ({ data, onChange }: { data: any, onChange: (val: any) => void }) => {
   const { id: eventId } = useParams<{ id: string }>();
-  const appUrl = import.meta.env.VITE_APP_URL || window.location.origin;
   const [showMessage, setShowMessage] = useState<string | null>(null);
 
   const totalGuests = data?.totalGuests || 0;
@@ -356,7 +355,7 @@ export const GuestManagementForm = ({ data, onChange }: { data: any, onChange: (
       </div>
 
       {guests.length > 0 && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           {guests.map((g: any, i: number) => {
             let bgColor = 'var(--bg-card2)';
             let borderColor = 'var(--border-glass)';
@@ -371,11 +370,15 @@ export const GuestManagementForm = ({ data, onChange }: { data: any, onChange: (
               borderColor = 'rgba(156, 163, 175, 0.3)';
             }
 
+            const cDate = g.confirmationDate ? new Date(g.confirmationDate) : null;
+            const dateStr = cDate ? cDate.toLocaleDateString('es-CO', { day: '2-digit', month: 'long', year: 'numeric' }) : 'No confirmada';
+            const timeStr = cDate ? cDate.toLocaleTimeString('es-CO', { hour: 'numeric', minute: '2-digit', hour12: true }) : '—';
+
             return (
-              <div key={i} style={{ background: bgColor, borderRadius: 12, border: `1px solid ${borderColor}`, padding: '1rem', boxShadow: `0 4px 12px ${bgColor}` }}>
+              <div key={i} style={{ background: bgColor, borderRadius: 16, border: `1px solid ${borderColor}`, padding: '1.25rem', boxShadow: `0 4px 12px ${bgColor}`, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {/* Fila 1: Nombre y Acompañantes */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '0.75rem', alignItems: 'end' }}>
-                  <div style={{ flex: '1 1 250px' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'end' }}>
+                  <div style={{ flex: '2 1 300px' }}>
                     <label className="input-label">Invitado {i + 1}</label>
                     <input type="text" className="input-field" placeholder="Nombre completo" value={g.name || ''}
                       onChange={e => setGuest(i, 'name', e.target.value)} />
@@ -387,65 +390,63 @@ export const GuestManagementForm = ({ data, onChange }: { data: any, onChange: (
                   </div>
                 </div>
 
-                {/* Fila 2: Confirmación, Fecha, Mensaje */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '0.75rem', alignItems: 'center' }}>
-                  <div style={{ flex: '1 1 150px' }}>
+                {/* Fila 2: Confirmación, Fecha, Hora */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'end' }}>
+                  <div style={{ flex: '1 1 180px' }}>
                     <label className="input-label">Confirmación</label>
-                    <div style={{ padding: '0.5rem 0.75rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, fontSize: '0.85rem', color: 'var(--text-primary)', height: '38px', display: 'flex', alignItems: 'center' }}>
-                      {g.confirmation === 'si' ? 'Sí asistirá' : g.confirmation === 'no' ? 'No asistirá' : 'Pendiente por confirmar'}
+                    <div style={{ padding: '0.5rem 0.75rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, fontSize: '0.85rem', color: 'var(--text-primary)', height: '42px', display: 'flex', alignItems: 'center', fontWeight: 500 }}>
+                      {g.confirmation === 'si' ? '✅ Sí asistirá' : g.confirmation === 'no' ? '❌ No asistirá' : '⏳ Pendiente'}
                     </div>
                   </div>
-                  <div style={{ flex: '1 1 200px' }}>
-                    <label className="input-label">Fecha de confirmación</label>
-                    <div style={{ padding: '0.5rem 0.75rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, fontSize: '0.85rem', color: 'var(--text-primary)', height: '38px', display: 'flex', alignItems: 'center' }}>
-                      {g.confirmationDate ? new Date(g.confirmationDate).toLocaleString('es-CO', { month: 'long', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }) : 'No confirmada'}
+                  <div style={{ flex: '1 1 180px' }}>
+                    <label className="input-label">Fecha</label>
+                    <div style={{ padding: '0.5rem 0.75rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, fontSize: '0.85rem', color: 'var(--text-primary)', height: '42px', display: 'flex', alignItems: 'center' }}>
+                      {dateStr}
                     </div>
                   </div>
-                  {g.message && (
-                    <div style={{ alignSelf: 'end', flex: '0 0 auto' }}>
-                      <label className="input-label" style={{ opacity: 0, marginBottom: 0, display: 'block' }}>Msj</label>
-                      <button type="button" onClick={() => setShowMessage(g.message)} className="btn-secondary" style={{ padding: '0.5rem', borderRadius: 8, height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Ver mensaje">
-                        <MessageSquare size={18} />
-                      </button>
+                  <div style={{ flex: '1 1 100px' }}>
+                    <label className="input-label">Hora</label>
+                    <div style={{ padding: '0.5rem 0.75rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, fontSize: '0.85rem', color: 'var(--text-primary)', height: '42px', display: 'flex', alignItems: 'center' }}>
+                      {timeStr}
                     </div>
-                  )}
+                  </div>
                 </div>
 
-                {/* Fila 3: Url Tarjeta */}
-                {g.urlCard && (
-                  <div>
-                    <label className="input-label">Url Tarjeta</label>
-                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                      <div style={{ flex: '1 1 200px', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, padding: '0.5rem 0.75rem', fontSize: '0.75rem', color: 'var(--color-purple-light)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                        <Link2 size={12} style={{ flexShrink: 0 }} />
-                        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{g.urlCard}</span>
-                      </div>
-                      <button type="button" onClick={() => copyToClipboard(g.urlCard)} className="btn-secondary" style={{ flex: '0 0 auto', padding: '0.5rem', borderRadius: 8, minWidth: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Copy size={14} />
-                      </button>
+                {/* Fila 3: Mensaje (si existe) */}
+                {g.message && (
+                  <div style={{ width: '100%' }}>
+                    <label className="input-label">Mensaje del invitado</label>
+                    <div style={{ padding: '0.75rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.5, minHeight: '60px', whiteSpace: 'pre-wrap' }}>
+                      {g.message}
                     </div>
                   </div>
                 )}
+
+                {/* Fila 4: Url Tarjeta */}
+                {g.urlCard && (() => {
+                  const frontUrl = import.meta.env.VITE_FRONT_URL || window.location.origin;
+                  const fullUrl = g.urlCard.startsWith('http') ? g.urlCard : `${frontUrl.replace(/\/$/, '')}/${g.urlCard}`;
+                  return (
+                  <div>
+                    <label className="input-label">URL de la Tarjeta</label>
+                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                      <div style={{ flex: '1 1 250px', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, padding: '0.5rem 0.75rem', fontSize: '0.75rem', color: 'var(--color-purple-light)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '0.4rem', height: '42px' }}>
+                        <Link2 size={14} style={{ flexShrink: 0 }} />
+                        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{fullUrl}</span>
+                      </div>
+                      <button type="button" onClick={() => copyToClipboard(fullUrl)} className="btn-secondary" style={{ flex: '0 0 42px', padding: '0', borderRadius: 8, width: '42px', height: '42px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Copy size={16} />
+                      </button>
+                    </div>
+                  </div>
+                  );
+                })()}
               </div>
             );
           })}
         </div>
       )}
 
-      <AnimatePresence>
-        {showMessage && (
-          <div style={{ position: 'fixed', inset: 0, zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowMessage(null)} style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }} />
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} style={{ position: 'relative', width: '100%', maxWidth: 400, background: 'var(--bg-card)', borderRadius: 16, border: '1px solid var(--border-glass)', padding: '2rem', boxShadow: '0 20px 40px rgba(0,0,0,0.4)', zIndex: 10 }}>
-              <h3 style={{ fontSize: '1.2rem', marginBottom: '1rem', color: 'var(--color-purple-light)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <MessageSquare size={20} /> Mensaje del Invitado
-              </h3>
-              <p style={{ color: 'var(--text-primary)', lineHeight: 1.6, marginBottom: '1.5rem', whiteSpace: 'pre-wrap', maxHeight: '300px', overflowY: 'auto' }}>{showMessage}</p>
-              <button onClick={() => setShowMessage(null)} className="btn-primary" style={{ width: '100%' }}>Cerrar</button>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </div>
   );
 };
@@ -722,13 +723,12 @@ const ComponentsManager = () => {
     if (compKey === 'guestManagement' && data.guests && Array.isArray(data.guests)) {
       const rawInitials = event?.components?.envelope?.initialsCoupleText || 'EVT';
       const initials = rawInitials.replace(/[^A-Za-z]/g, '').toUpperCase().substring(0, 3).padEnd(3, 'X');
-      const appUrl = import.meta.env.VITE_APP_URL || window.location.origin;
       
       data.guests = data.guests.map((g: any) => {
         if (!g.token) {
           const randomStr = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
           g.token = `${initials}${randomStr}`;
-          g.urlCard = `${appUrl}/wedding/card/${g.token}`;
+          g.urlCard = `wedding/card/${g.token}`;
         }
         return g;
       });

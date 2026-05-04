@@ -164,7 +164,7 @@ export function CardProvider({ eventId, children }: CardProviderProps) {
     const urlGuestName = searchParams.get('guestName');
     const urlNumberGuests = searchParams.get('numberGuests');
 
-    const merge = <T extends Record<string, unknown>>(defaults: T, overrides?: Partial<T> | null): T => {
+    const merge = <T extends object>(defaults: T, overrides?: any): T => {
       if (!overrides) return defaults;
       const result = { ...defaults };
       for (const key of Object.keys(overrides) as (keyof T)[]) {
@@ -206,33 +206,33 @@ export function CardProvider({ eventId, children }: CardProviderProps) {
             coupleNames: wedding.coupleNames || DEFAULT_CONFIG.weddingData.coupleNames,
           },
           webhookUrl: event.components?.rsvp?.webhookUrl || DEFAULT_CONFIG.webhookUrl,
-          envelope: merge(DEFAULT_CONFIG.envelope, comps.envelope as Record<string, unknown>),
-          banner: merge(DEFAULT_CONFIG.banner, comps.banner as Record<string, unknown>),
+          envelope: merge(DEFAULT_CONFIG.envelope, comps.envelope),
+          banner: merge(DEFAULT_CONFIG.banner, comps.banner),
           message: {
-            ...merge(DEFAULT_CONFIG.message, comps.message as Record<string, unknown>),
-            backgroundColor: (comps.message as Record<string, unknown>)?.backgroundColor as string || DEFAULT_CONFIG.message.backgroundColor as string,
+            ...merge(DEFAULT_CONFIG.message, comps.message),
+            backgroundColor: (comps.message as any)?.backgroundColor || DEFAULT_CONFIG.message.backgroundColor,
           },
-          countdown: merge(DEFAULT_CONFIG.countdown, comps.countdown as Record<string, unknown>),
-          calendar: merge(DEFAULT_CONFIG.calendar, comps.calendar as Record<string, unknown>),
-          carousel: merge(DEFAULT_CONFIG.carousel, comps.carousel as Record<string, unknown>),
-          dressCode: merge(DEFAULT_CONFIG.dressCode, comps.dressCode as Record<string, unknown>),
+          countdown: merge(DEFAULT_CONFIG.countdown, comps.countdown),
+          calendar: merge(DEFAULT_CONFIG.calendar, comps.calendar),
+          carousel: merge(DEFAULT_CONFIG.carousel, comps.carousel),
+          dressCode: merge(DEFAULT_CONFIG.dressCode, comps.dressCode),
           eventDetails: {
-            ...merge(DEFAULT_CONFIG.eventDetails, comps.eventDetails as Record<string, unknown>),
-            ceremony: merge(DEFAULT_CONFIG.eventDetails.ceremony as Record<string, unknown>, (comps.eventDetails as Record<string, unknown>)?.ceremony as Record<string, unknown>),
-            celebration: merge(DEFAULT_CONFIG.eventDetails.celebration as Record<string, unknown>, (comps.eventDetails as Record<string, unknown>)?.celebration as Record<string, unknown>),
-          },
-          timeline: merge(DEFAULT_CONFIG.timeline, comps.timeline as Record<string, unknown>),
-          presents: merge(DEFAULT_CONFIG.presents, comps.presents as Record<string, unknown>),
-          childRestriction: merge(DEFAULT_CONFIG.childRestriction, comps.childRestriction as Record<string, unknown>),
+            ...merge(DEFAULT_CONFIG.eventDetails, comps.eventDetails),
+            ceremony: merge(DEFAULT_CONFIG.eventDetails.ceremony, (comps.eventDetails as any)?.ceremony),
+            celebration: merge(DEFAULT_CONFIG.eventDetails.celebration, (comps.eventDetails as any)?.celebration),
+          } as any,
+          timeline: merge(DEFAULT_CONFIG.timeline, comps.timeline),
+          presents: merge(DEFAULT_CONFIG.presents, comps.presents),
+          childRestriction: merge(DEFAULT_CONFIG.childRestriction, comps.childRestriction),
           rsvp: {
-            ...merge(DEFAULT_CONFIG.rsvp, comps.rsvp as Record<string, unknown>),
-            buttonYes1Style: merge(DEFAULT_CONFIG.rsvp.buttonYes1Style as Record<string, unknown>, (comps.rsvp as Record<string, unknown>)?.buttonYes1Style as Record<string, unknown>),
-            buttonYes2Style: merge(DEFAULT_CONFIG.rsvp.buttonYes2Style as Record<string, unknown>, (comps.rsvp as Record<string, unknown>)?.buttonYes2Style as Record<string, unknown>),
-            buttonNot1Style: merge(DEFAULT_CONFIG.rsvp.buttonNot1Style as Record<string, unknown>, (comps.rsvp as Record<string, unknown>)?.buttonNot1Style as Record<string, unknown>),
-            buttonNot2Style: merge(DEFAULT_CONFIG.rsvp.buttonNot2Style as Record<string, unknown>, (comps.rsvp as Record<string, unknown>)?.buttonNot2Style as Record<string, unknown>),
-            buttonSendStyle: merge(DEFAULT_CONFIG.rsvp.buttonSendStyle as Record<string, unknown>, (comps.rsvp as Record<string, unknown>)?.buttonSendStyle as Record<string, unknown>),
-            textareaStyle: merge(DEFAULT_CONFIG.rsvp.textareaStyle as Record<string, unknown>, (comps.rsvp as Record<string, unknown>)?.textareaStyle as Record<string, unknown>),
-          },
+            ...merge(DEFAULT_CONFIG.rsvp, comps.rsvp),
+            buttonYes1Style: merge(DEFAULT_CONFIG.rsvp.buttonYes1Style as object, (comps.rsvp as any)?.buttonYes1Style),
+            buttonYes2Style: merge(DEFAULT_CONFIG.rsvp.buttonYes2Style as object, (comps.rsvp as any)?.buttonYes2Style),
+            buttonNot1Style: merge(DEFAULT_CONFIG.rsvp.buttonNot1Style as object, (comps.rsvp as any)?.buttonNot1Style),
+            buttonNot2Style: merge(DEFAULT_CONFIG.rsvp.buttonNot2Style as object, (comps.rsvp as any)?.buttonNot2Style),
+            buttonSendStyle: merge(DEFAULT_CONFIG.rsvp.buttonSendStyle as object, (comps.rsvp as any)?.buttonSendStyle),
+            textareaStyle: merge(DEFAULT_CONFIG.rsvp.textareaStyle as object, (comps.rsvp as any)?.textareaStyle),
+          } as any,
         }));
         setActiveComponents({ ...DEFAULT_CONFIG.activeComponents, ...active });
         setLoading(false);

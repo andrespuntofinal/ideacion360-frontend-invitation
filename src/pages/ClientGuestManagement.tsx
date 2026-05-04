@@ -66,7 +66,6 @@ const ClientGuestManagement = () => {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      const appUrl = import.meta.env.VITE_APP_URL || window.location.origin;
       const updatedData = { ...data };
 
       // Ensure all guests have a token and urlCard
@@ -75,7 +74,7 @@ const ClientGuestManagement = () => {
           if (!g.token) {
             const randomStr = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
             g.token = `${initials}${randomStr}`;
-            g.urlCard = `${appUrl}/wedding/card/${g.token}`;
+            g.urlCard = `wedding/card/${g.token}`;
           }
           return g;
         });
