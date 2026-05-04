@@ -18,10 +18,10 @@ export default function EventDetails() {
     <section className="w-full py-6 md:py-10 px-0 md:px-4">
       {/* Section title */}
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
+        initial={{ opacity: 0, y: -30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         className="text-center mb-8 md:mb-12"
       >
         <p className="text-sm sm:text-xl font-bold tracking-widest mb-1 uppercase" style={{ color: eventDetails.detailsColor, fontFamily: eventDetails.detailsFont }}>
@@ -34,14 +34,18 @@ export default function EventDetails() {
       </motion.div>
 
       {/* Cards */}
-      <div className="flex flex-row gap-2 md:gap-6 w-full">
+      <div className="flex flex-row gap-2 md:gap-6 w-full" style={{ perspective: '1000px' }}>
         {details.map((item, i) => (
           <motion.div
             key={item.title}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.15, duration: 0.8 }}
+            initial={{ opacity: 0, y: 60, scale: 0.9, rotateX: 15 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ 
+              delay: i * 0.2, 
+              duration: 1.2, 
+              ease: [0.215, 0.61, 0.355, 1] 
+            }}
             className="relative flex-1 flex flex-col items-center text-center rounded-2xl md:rounded-3xl shadow-xl mt-10"
             style={{
               background: `linear-gradient(160deg, ${eventDetails.backgroundColorFrom}, ${eventDetails.backgroundColorVia}, ${eventDetails.backgroundColorTo})`,

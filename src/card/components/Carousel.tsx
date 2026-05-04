@@ -37,11 +37,6 @@ export default function Carousel() {
 
   if (images.length === 0) return null;
 
-  const variants = {
-    enter: { scale: 1.1, opacity: 0 },
-    center: { scale: 1, opacity: 1 },
-    exit: { scale: 0.95, opacity: 0 },
-  };
 
   return (
     <section className="w-full py-20 md:py-32 px-4 flex flex-col items-center">
@@ -60,41 +55,48 @@ export default function Carousel() {
 
       {/* Slider */}
       <div className="relative w-full max-w-6xl mx-auto group">
-        {/* Main image */}
-        <div className="relative overflow-hidden aspect-video md:aspect-[21/9] rounded-none md:rounded-2xl shadow-2xl">
-          <AnimatePresence mode="popLayout">
-            <motion.img
+        {/* Main image container */}
+        <div className="relative overflow-hidden aspect-[4/5] sm:aspect-video md:aspect-[16/9] rounded-none md:rounded-2xl">
+          <AnimatePresence mode="popLayout" initial={false} custom={direction}>
+            <motion.div
               key={currentIndex}
-              variants={variants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 1.5, ease: [0.33, 1, 0.68, 1] }}
-              src={images[currentIndex]}
-              className="absolute inset-0 w-full h-full object-cover cursor-zoom-in"
-              onClick={() => setSelectedImage(images[currentIndex])}
-              referrerPolicy="no-referrer"
-            />
+              custom={direction}
+              initial={{ opacity: 0, scale: 1, x: direction > 0 ? 30 : -30, y: 10 }}
+              animate={{ opacity: 1, scale: 1.05, x: 0, y: 0 }}
+              exit={{ opacity: 0, scale: 1.1, x: direction > 0 ? -30 : 30, y: -10 }}
+              transition={{ 
+                opacity: { duration: 1.5, ease: "easeInOut" },
+                scale: { duration: 10, ease: "linear" },
+                x: { duration: 1.5, ease: [0.32, 0.72, 0, 1] },
+                y: { duration: 1.5, ease: [0.32, 0.72, 0, 1] }
+              }}
+              className="absolute inset-0 w-full h-full flex items-center justify-center"
+            >
+              {/* Main Focused Image */}
+              <img
+                src={images[currentIndex]}
+                className="w-full h-full object-contain cursor-zoom-in drop-shadow-2xl"
+                onClick={() => setSelectedImage(images[currentIndex])}
+                referrerPolicy="no-referrer"
+                alt={`Imagen ${currentIndex + 1}`}
+              />
+            </motion.div>
           </AnimatePresence>
-
-          {/* Gradient overlay on sides for depth */}
-          <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-black/20 to-transparent pointer-events-none" />
-          <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-black/20 to-transparent pointer-events-none" />
 
           {/* Nav arrows */}
           {images.length > 1 && (
             <>
               <button
                 onClick={prev}
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-black/50 hover:scale-110"
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/20 backdrop-blur-md flex items-center justify-center text-white z-20 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-black/40 hover:scale-110"
               >
-                <ChevronLeft className="w-5 h-5" />
+                <ChevronLeft className="w-6 h-6" />
               </button>
               <button
                 onClick={next}
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-black/50 hover:scale-110"
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/20 backdrop-blur-md flex items-center justify-center text-white z-20 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-black/40 hover:scale-110"
               >
-                <ChevronRight className="w-5 h-5" />
+                <ChevronRight className="w-6 h-6" />
               </button>
             </>
           )}
