@@ -425,7 +425,9 @@ export const GuestManagementForm = ({ data, onChange }: { data: any, onChange: (
                 {/* Fila 4: Url Tarjeta */}
                 {g.urlCard && (() => {
                   const frontUrl = import.meta.env.VITE_FRONT_URL || window.location.origin;
-                  const fullUrl = g.urlCard.startsWith('http') ? g.urlCard : `${frontUrl.replace(/\/$/, '')}/${g.urlCard}`;
+                  const baseUrl = frontUrl.replace(/\/$/, '');
+                  const cardPath = g.urlCard.startsWith('/') ? g.urlCard : `/${g.urlCard}`;
+                  const fullUrl = g.urlCard.startsWith('http') ? g.urlCard : `${baseUrl}${cardPath}`;
                   return (
                   <div>
                     <label className="input-label">URL de la Tarjeta</label>
