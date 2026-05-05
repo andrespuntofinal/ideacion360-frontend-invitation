@@ -36,7 +36,7 @@ export default function ChildRestriction() {
         <br />
         <br />
         <h3
-          className="text-xl sm:text-2xl font-bold tracking-widest mb-6"
+          className="text-base sm:text-2xl italic leading-relaxed uppercase mb-2"
           style={{ color: childRestriction.titleColor, fontFamily: childRestriction.titleFont }}
         >
           {childRestriction.childrestrictionTitle}
@@ -50,6 +50,7 @@ export default function ChildRestriction() {
         >
           {childRestriction.childrestrictionMessage}
         </p>
+        <br />
       </motion.div>
     </section>
   );

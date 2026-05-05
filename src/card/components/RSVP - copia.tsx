@@ -57,7 +57,7 @@ export default function RSVP() {
   const buttonSendStyle = rsvp.buttonSendStyle as Record<string, string>;
 
   return (
-    <section className="w-full py-12 md:py-20 px-0 md:px-4 flex flex-col items-center">
+    <section className="w-full py-12 md:py-20 px-2 md:px-4 flex flex-col items-center">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -70,12 +70,11 @@ export default function RSVP() {
 
       </motion.div>
 
-      <div className="w-full max-w-2xl flex flex-col items-center">
+      <div className="w-full max-w-5xl flex flex-col items-center">
         <AnimatePresence mode="wait">
           {!isSubmitted && (
             <motion.div
               key="form-area"
-              className="w-full flex flex-col items-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0, y: -20 }}
@@ -133,42 +132,54 @@ export default function RSVP() {
                   initial={{ opacity: 0, scale: 0.9, y: 30 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                  className="w-full rounded-2xl md:rounded-3xl shadow-[0_40px_100px_rgba(0,0,0,0.15)] backdrop-blur-xl border border-white/60 relative overflow-visible"
+                  className="w-full rounded-2xl md:rounded-3xl overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.15)] backdrop-blur-xl border border-white/60 relative"
                   style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.98) 100%)' }}
                 >
-                  {/* Floating Icon based on selection */}
-                  <motion.div
-                    key={formData.attendance}
-                    initial={{ scale: 0, rotate: -20, x: '-50%' }}
-                    animate={{ scale: 1, rotate: 0, x: '-50%' }}
-                    transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                    className="absolute -top-10 left-1/2 w-20 h-20 rounded-full flex items-center justify-center shadow-2xl z-20 border-4"
-                    style={{
-                      background: rsvp.confirmationTitleTextColor,
-                      border: `3px solid ${rsvp.confirmationTextColor}`,
-
-                    }}
-                  >
-                    {formData.attendance === 'si' ? (
-                      <Smile className="w-10 h-10" style={{ color: rsvp.confirmationTextColor, opacity: 0.8 }} />
-                    ) : (
-                      <Frown className="w-10 h-10" style={{ color: rsvp.confirmationTextColor, opacity: 0.8 }} />
-                    )}
-                  </motion.div>
-
                   {/* Decorative elements in corners */}
                   <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-[#D7B272]/10 to-transparent pointer-events-none" />
                   <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-[#D7B272]/10 to-transparent pointer-events-none" />
 
-                  <div className="p-6 md:p-12 pt-14 md:pt-16 relative z-0 flex flex-col items-center">
+                  <div className="p-6 md:p-12 relative z-0 flex flex-col items-center">
+                    {/* Dynamic Icon based on selection */}
+                    <motion.div
+                      key={formData.attendance}
+                      initial={{ scale: 0, rotate: -20 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                      className="mb-6"
+                    >
+                      {formData.attendance === 'si' ? (
+                        <div
+                          className="w-16 h-16 rounded-full flex items-center justify-center border"
+                          style={{
+                            background: rsvp.confirmationTitleTextColor,
+                            border: `3px solid ${rsvp.confirmationTextColor}`,
+
+                          }}
+                        >
+                          <Smile
+                            className="w-10 h-10"
+                            style={{ color: rsvp.msgTextColor, opacity: 0.3 }}
+                          />
+                        </div>
+                      ) : (
+                        <div
+                          className="w-16 h-16 rounded-full flex items-center justify-center border"
+                          style={{
+                            backgroundColor: '#E8E2D9',
+                            borderColor: '#A5ADB8'
+                          }}
+                        >
+                          <Frown className="w-10 h-10 text-red-600" />
+                        </div>
+                      )}
+                    </motion.div>
 
 
                     <label
                       className="block text-2xl md:text-2xl tracking-[0.1em] uppercase text-center mb-6 mt-2"
                       style={{ fontFamily: rsvp.title3TextFont, color: rsvp.title3TextColor, fontWeight: '700' }}
                     >
-                      <br />
-                      <br />
                       {rsvp.title3TextMsg}
                     </label>
                     <br />
@@ -177,27 +188,29 @@ export default function RSVP() {
                     <form onSubmit={handleSubmit} className="space-y-6 w-full">
                       {/* Attendance toggle */}
                       <div>
-                        <div className="flex flex-row gap-4 justify-center">
+                        <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md mx-auto">
                           <button
                             type="button"
                             onClick={() => setFormData({ ...formData, attendance: 'si' })}
-                            className="py-3 px-8 rounded-xl border-2 font-bold transition-all duration-300 text-base tracking-[0.05em] uppercase flex items-center justify-center shadow-sm min-w-[120px]"
+                            className="flex-1 py-3 px-4 rounded-xl border-2 font-bold transition-all duration-300 text-sm md:text-base tracking-[0.1em] uppercase flex items-center justify-center gap-2 shadow-sm"
                             style={formData.attendance === 'si'
                               ? { background: 'linear-gradient(135deg, #19284c 0%, #2a407c 100%)', color: '#ffffff', borderColor: '#19284c', transform: 'scale(1.05)' }
                               : { backgroundColor: 'white', color: '#19284c', borderColor: '#19284c20' }
                             }
                           >
+                            <CheckCircle2 className={`w-4 h-4 ${formData.attendance === 'si' ? 'text-white' : 'text-[#19284c]'}`} />
                             {rsvp.buttonYesMsg}
                           </button>
                           <button
                             type="button"
                             onClick={() => setFormData({ ...formData, attendance: 'no' })}
-                            className="py-3 px-8 rounded-xl border-2 font-bold transition-all duration-300 text-base tracking-[0.05em] uppercase flex items-center justify-center shadow-sm min-w-[120px]"
+                            className="flex-1 py-3 px-4 rounded-xl border-2 font-bold transition-all duration-300 text-sm md:text-base tracking-[0.1em] uppercase flex items-center justify-center gap-2 shadow-sm"
                             style={formData.attendance === 'no'
                               ? { background: 'linear-gradient(135deg, #444 0%, #666 100%)', color: '#ffffff', borderColor: '#444', transform: 'scale(1.05)' }
                               : { backgroundColor: 'white', color: '#444', borderColor: '#44420' }
                             }
                           >
+                            <X className={`w-4 h-4 ${formData.attendance === 'no' ? 'text-white' : 'text-[#444]'}`} />
                             {rsvp.buttonNotMsg}
                           </button>
                         </div>
@@ -218,7 +231,7 @@ export default function RSVP() {
                             value={formData.message}
                             onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                             rows={5}
-                            placeholder="Escribe tu mensaje para los novios.."
+                            placeholder="Tu mensaje para nosotros..."
                             className="w-full p-6 rounded-2xl border-2 outline-none resize-none transition-all duration-500 bg-white/40 focus:bg-white focus:border-[#D7B272]/50 focus:shadow-lg"
                             style={{
                               color: '#19284c',
@@ -312,7 +325,7 @@ export default function RSVP() {
                   handleClose();
                 }}
                 className="absolute top-4 right-4 w-12 h-12 rounded-full flex items-center justify-center transition-all hover:bg-black/5 active:scale-95 z-[60] cursor-pointer"
-                style={{ color: rsvp.title3TextColor }}
+                style={{ color: rsvp.confirmationTitleTextColor }}
                 aria-label="Cerrar"
               >
                 <X className="w-6 h-6" strokeWidth={2.5} />
@@ -335,7 +348,7 @@ export default function RSVP() {
               <div className="relative z-10">
                 <h3
                   className="text-3xl md:text-3xl mb-2 font-bold"
-                  style={{ color: rsvp.title2TextColor, fontFamily: rsvp.confirmationTitleTextFont }}
+                  style={{ color: rsvp.confirmationTitleTextColor, fontFamily: rsvp.confirmationTitleTextFont }}
                 >
                   {paramsGeneral.guestName}
                 </h3>

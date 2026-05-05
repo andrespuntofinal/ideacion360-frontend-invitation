@@ -48,9 +48,11 @@ export default function Carousel() {
         transition={{ duration: 0.8 }}
         className="text-center mb-12 md:mb-16"
       >
-        <p className="text-base sm:text-2xl tracking-widest uppercase mb-2" style={{ color: carousel.titleColor, fontFamily: carousel.titleFont }}>
+        <p className="text-base sm:text-2xl italic leading-relaxed uppercase mb-2" style={{ color: carousel.titleColor, fontFamily: carousel.titleFont }}>
           ♥ &nbsp; {carousel.carouselMsg} &nbsp; ♥
         </p>
+        <br />
+        <br />
       </motion.div>
 
       {/* Slider */}
@@ -64,7 +66,7 @@ export default function Carousel() {
               initial={{ opacity: 0, scale: 1, x: direction > 0 ? 30 : -30, y: 10 }}
               animate={{ opacity: 1, scale: 1.05, x: 0, y: 0 }}
               exit={{ opacity: 0, scale: 1.1, x: direction > 0 ? -30 : 30, y: -10 }}
-              transition={{ 
+              transition={{
                 opacity: { duration: 1.5, ease: "easeInOut" },
                 scale: { duration: 10, ease: "linear" },
                 x: { duration: 1.5, ease: [0.32, 0.72, 0, 1] },

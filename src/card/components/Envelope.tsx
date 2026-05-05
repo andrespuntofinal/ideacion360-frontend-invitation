@@ -24,17 +24,18 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
 
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center z-50 overflow-hidden">
-      {/* Background Image */}
+      {/* Background Image with Bright White Base */}
+      <div className="fixed inset-0 z-0 bg-white" />
       <div
-        className="fixed inset-0 z-0 opacity-70 pointer-events-none"
+        className="fixed inset-0 z-0 opacity-50 pointer-events-none"
         style={{
           backgroundImage: envelope.backgroundImage ? `url(${envelope.backgroundImage})` : 'none',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
       />
-      {/* Light overlay to ensure text readability */}
-      <div className="absolute inset-0 z-0 backdrop-blur-[2px]" style={{ backgroundColor: envelope.overlayColor }} />
+      {/* Soft Light overlay to ensure text readability */}
+      <div className="absolute inset-0 z-0 backdrop-blur-[1px]" style={{ backgroundColor: envelope.overlayColor || 'rgba(255,255,255,0.4)' }} />
 
       {/* Message ABOVE Envelope */}
       <motion.div
@@ -72,16 +73,26 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
       {/* Envelope Container */}
       <div className="relative w-full max-w-lg aspect-[4/3] z-10">
         <div className="absolute inset-0 flex items-center justify-center">
-          {/* Back of envelope (inside) */}
+          {/* Back of envelope (inside) with Liner */}
           <div
-            className="absolute w-[90%] h-[90%] rounded-2xl shadow-inner"
+            className="absolute w-full h-full rounded-2xl shadow-inner overflow-hidden"
             style={{
-              backgroundColor: envelope.cardBackgroundColor,
+              backgroundColor: envelope.envelopeColor,
               backgroundImage: envelope.textureUrl ? `url(${envelope.textureUrl})` : 'none',
               backgroundBlendMode: 'multiply',
-              opacity: 0.9
+              opacity: 1
             }}
-          />
+          >
+            {/* Inner Liner to fill the gaps and provide contrast */}
+            <div 
+              className="absolute inset-1 rounded-xl opacity-80"
+              style={{ 
+                backgroundColor: envelope.cardBackgroundColor,
+                backgroundImage: envelope.textureUrl ? `url(${envelope.textureUrl})` : 'none',
+                backgroundBlendMode: 'multiply',
+              }}
+            />
+          </div>
 
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             {/* Card 1: Guest Info */}
@@ -149,13 +160,14 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
             />
           </div>
 
-          {/* Top Flap */}
+          {/* Top Flap with Rounded Corners at Hinge */}
           <motion.div
-            className="absolute top-0 left-0 w-full h-[65%] origin-top z-30 rounded-t-2xl"
+            className="absolute top-0 left-0 w-full h-[65%] origin-top z-30"
             style={{
               backgroundImage: `linear-gradient(to bottom right, ${envelope.envelopeColor}, ${envelope.envelopeColorDeg}, ${envelope.envelopeColor})${envelope.textureUrl ? `, url(${envelope.textureUrl})` : ''}`,
               backgroundBlendMode: 'multiply',
-              clipPath: 'polygon(0 10%, 2% 5%, 5% 2%, 10% 0, 90% 0, 95% 2%, 98% 5%, 100% 10%, 50% 100%)'
+              // Use a polygon that simulates rounded corners at the hinge (y=0)
+              clipPath: 'polygon(0 10%, 2% 4%, 4% 2%, 10% 0, 90% 0, 96% 2%, 98% 4%, 100% 10%, 50% 100%)'
             }}
             animate={{ rotateX: step === 'opening' ? -180 : 0, zIndex: step === 'opening' ? 5 : 30 }}
             transition={{ duration: 0.8, ease: 'easeInOut' }}

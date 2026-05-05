@@ -66,10 +66,10 @@ export default function Countdown() {
           className="mb-16 md:mb-20"
         >
           <p
-            className="text-base sm:text-2xl tracking-widest uppercase mb-2"
+            className="text-base sm:text-2xl italic leading-relaxed uppercase mb-2"
             style={{ color: countdown.titleTextColor, opacity: 0.8, fontFamily: countdown.titleTextFont }}
           >
-            {countdown.titleTextMsg}
+            ♥ &nbsp; {countdown.titleTextMsg} &nbsp; ♥
           </p>
           <br />
           <br />
@@ -120,6 +120,7 @@ export default function Countdown() {
               >
                 {item.label}
               </span>
+              <br />
             </motion.div>
           ))}
         </div>

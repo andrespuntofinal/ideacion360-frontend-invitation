@@ -21,7 +21,7 @@ export default function DressCode() {
         transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         className="text-center mb-8 md:mb-12"
       >
-        <p className="text-sm sm:text-xl font-bold tracking-widest mb-1 uppercase" style={{ color: dressCode.titleColor, fontFamily: dressCode.titleFont }}>
+        <p className="text-base sm:text-2xl italic leading-relaxed uppercase mb-2" style={{ color: dressCode.titleColor, fontFamily: dressCode.titleFont }}>
           {dressCode.titletext}
         </p>
         <br />
@@ -37,10 +37,10 @@ export default function DressCode() {
             initial={{ opacity: 0, y: 60, scale: 0.9, rotateX: 15 }}
             whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            transition={{ 
-              delay: i * 0.2, 
-              duration: 1.2, 
-              ease: [0.215, 0.61, 0.355, 1] 
+            transition={{
+              delay: i * 0.2,
+              duration: 1.2,
+              ease: [0.215, 0.61, 0.355, 1]
             }}
             className="relative flex-1 flex flex-col items-center text-center rounded-2xl md:rounded-3xl shadow-xl px-2 sm:px-6 pt-16 pb-6 sm:pb-8 mt-10"
             style={{
@@ -87,6 +87,7 @@ export default function DressCode() {
             >
               {item.text}
             </p>
+            <br />
             <br />
 
 

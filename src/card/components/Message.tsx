@@ -71,6 +71,7 @@ export default function Message() {
           </motion.div>
         )}
         <br />
+        <br />
 
         {/* Second text */}
         {message.text2 && (
