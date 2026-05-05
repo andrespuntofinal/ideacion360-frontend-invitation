@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Lock, User, Eye, EyeOff, Zap, AlertCircle } from 'lucide-react';
+import { Lock, User, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import useAuthStore from '../stores/authStore';
+import logoSitio from '../assets/logositio.jpg';
 
 const AdminLogin = () => {
   const [username, setUsername] = useState('');
@@ -28,8 +29,8 @@ const AdminLogin = () => {
         className="glass-card" style={{ width: '100%', maxWidth: 420, padding: '2.5rem', position: 'relative', zIndex: 1 }}>
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
           <motion.div animate={{ rotate: [0, 5, -5, 0] }} transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-            style={{ width: 64, height: 64, borderRadius: '50%', background: 'var(--gradient-brand)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem', boxShadow: 'var(--shadow-glow)' }}>
-            <Zap size={28} color="white" />
+            style={{ width: 80, height: 80, borderRadius: '50%', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem', boxShadow: 'var(--shadow-glow)', overflow: 'hidden', border: '2px solid var(--border-glass)' }}>
+            <img src={logoSitio} alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </motion.div>
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', color: 'var(--text-primary)', marginBottom: '0.35rem' }}>Panel Admin</h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Ideación 360 — Wedding Invitations</p>

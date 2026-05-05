@@ -11,7 +11,7 @@ const ClientGuestManagement = () => {
   const { eventId } = useParams<{ eventId: string }>();
   const navigate = useNavigate();
   const { user, token } = useAuthStore();
-  
+
   const [data, setData] = useState<any>({});
   const [initials, setInitials] = useState<string>('BOD');
   const [isLoading, setIsLoading] = useState(true);
@@ -102,12 +102,12 @@ const ClientGuestManagement = () => {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-main)', color: 'var(--text-primary)', padding: '1rem' }}>
       <div className="container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        
+
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
           <button onClick={() => navigate('/')} className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1rem' }}>
             <ArrowLeft size={18} /> <span className="hide-on-mobile">Volver al Home</span>
           </button>
-          
+
           <button onClick={() => {
             useAuthStore.setState({ token: null, user: null, isAuthenticated: false });
             localStorage.removeItem('auth_token');
@@ -120,8 +120,8 @@ const ClientGuestManagement = () => {
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-card" style={{ padding: '1.5rem' }}>
           <div style={{ borderBottom: '1px solid var(--border-glass)', paddingBottom: '1rem', marginBottom: '1.5rem' }}>
-            <h1 style={{ fontSize: '1.5rem', fontFamily: 'var(--font-display)', color: 'var(--color-purple-light)', marginBottom: '0.5rem' }}>
-              Gestión de Invitados
+            <h1 style={{ fontSize: '1.5rem', fontFamily: 'var(--font-display)', color: 'var(--color-purple-light)', marginBottom: '1.5rem', textAlign: 'center' }}>
+              GESTIÓN DE INVITADOS
             </h1>
             <p style={{ color: 'var(--text-muted)' }}>Administra la lista de invitados para tu evento.</p>
           </div>

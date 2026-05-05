@@ -111,7 +111,7 @@ export default function RSVP() {
                       backgroundSize: '200% 100%',
                       color: '#ffffff',
                       fontFamily: rsvp.buttonTextFont,
-                      textShadow: '0 2px 10px rgba(0,0,0,0.4)',
+
                     }}
                   >
                     {/* Inner light sweep effect */}
@@ -358,6 +358,7 @@ export default function RSVP() {
           </motion.div>
         )}
       </AnimatePresence>
+      <br /><br />
     </section>
   );
 }

@@ -5,8 +5,10 @@ import { Mail, ShieldCheck, ArrowRight, ArrowLeft } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { authService } from '../services/api';
 import useAuthStore from '../stores/authStore';
+import logoSitio from '../assets/logositio.jpg';
 
 const ClientLogin = () => {
+  // ... existing state ...
   const [step, setStep] = useState<'email' | 'otp'>('email');
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
@@ -99,9 +101,12 @@ const ClientLogin = () => {
         className="glass-card" style={{ width: '100%', maxWidth: 420, padding: '2.5rem', position: 'relative', zIndex: 1 }}
       >
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <motion.div animate={{ rotate: [0, 5, -5, 0] }} transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-            style={{ width: 64, height: 64, borderRadius: '50%', background: 'var(--gradient-brand)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem', boxShadow: 'var(--shadow-glow)' }}>
-            {step === 'email' ? <Mail size={28} color="white" /> : <ShieldCheck size={28} color="white" />}
+          <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem', overflow: 'hidden', border: '1px solid var(--border-glass)', boxShadow: 'var(--shadow-glow)' }}>
+            <img src={logoSitio} alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          </div>
+          <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
+            style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--gradient-brand)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem', boxShadow: 'var(--shadow-glow)' }}>
+            {step === 'email' ? <Mail size={20} color="white" /> : <ShieldCheck size={20} color="white" />}
           </motion.div>
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', color: 'var(--text-primary)', marginBottom: '0.35rem' }}>
             {step === 'email' ? 'Gestión de Mi Boda' : 'Verificación'}

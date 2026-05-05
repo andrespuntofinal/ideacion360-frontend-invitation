@@ -1,8 +1,9 @@
 import { ReactNode, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LayoutDashboard, Calendar, LogOut, Menu, Zap, ChevronRight, Settings, Bell } from 'lucide-react';
+import { LayoutDashboard, Calendar, LogOut, Menu, ChevronRight, Settings, Bell } from 'lucide-react';
 import useAuthStore from '../../stores/authStore';
+import logoSitio from '../../assets/logositio.jpg';
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -25,8 +26,8 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const SidebarContent = () => (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <div style={{ padding: '1.5rem', borderBottom: '1px solid var(--border-glass)', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-        <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--gradient-brand)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-          <Zap size={16} color="white" />
+        <div style={{ width: 42, height: 42, borderRadius: '50%', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden', border: '1px solid var(--border-glass)' }}>
+          <img src={logoSitio} alt="Ideación 360" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </div>
         <div>
           <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1rem', background: 'var(--gradient-brand)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Ideación 360</div>
