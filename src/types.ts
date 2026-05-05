@@ -19,6 +19,7 @@ export interface AuthState {
   isLoading: boolean;
   error: string | null;
   login: (credentials: LoginCredentials) => Promise<{ success: boolean; message?: string }>;
+  loginWithFirebaseToken: (idToken: string) => Promise<{ success: boolean; message?: string; user?: AuthUser }>;
   logout: () => void;
 }
 

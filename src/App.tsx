@@ -58,19 +58,19 @@ const App = () => {
 
         {/* Protected Admin Routes */}
         <Route path="/wedding/Admin/dashboard" element={
-          <ProtectedRoute><AdminDashboard /></ProtectedRoute>
+          <ProtectedRoute requiredRole="admin"><AdminDashboard /></ProtectedRoute>
         } />
         <Route path="/wedding/Admin/events/new" element={
-          <ProtectedRoute><EventForm /></ProtectedRoute>
+          <ProtectedRoute requiredRole="admin"><EventForm /></ProtectedRoute>
         } />
         <Route path="/wedding/Admin/events/:id" element={
-          <ProtectedRoute><EventDetail /></ProtectedRoute>
+          <ProtectedRoute requiredRole="admin"><EventDetail /></ProtectedRoute>
         } />
         <Route path="/wedding/Admin/events/:id/edit" element={
-          <ProtectedRoute><EventForm /></ProtectedRoute>
+          <ProtectedRoute requiredRole="admin"><EventForm /></ProtectedRoute>
         } />
         <Route path="/wedding/Admin/events/:id/components" element={
-          <ProtectedRoute><ComponentsManager /></ProtectedRoute>
+          <ProtectedRoute requiredRole="admin"><ComponentsManager /></ProtectedRoute>
         } />
 
         {/* Public Card (Invitation View) */}
@@ -78,7 +78,7 @@ const App = () => {
         <Route path="/wedding/control-user/*" element={<ControlUser />} />
 
         <Route path="/wedding/Admin/settings" element={
-          <ProtectedRoute><AdminSettings /></ProtectedRoute>
+          <ProtectedRoute requiredRole="admin"><AdminSettings /></ProtectedRoute>
         } />
 
         {/* 404 */}

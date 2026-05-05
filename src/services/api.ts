@@ -37,6 +37,9 @@ api.interceptors.response.use(
 // Auth
 export const authService = {
   login: (credentials: LoginCredentials) => api.post('/auth/login', credentials),
+  loginWithToken: (idToken: string) => api.post('/auth/login', {}, {
+    headers: { Authorization: `Bearer ${idToken}` }
+  }),
   logout: () => api.post('/auth/logout'),
   requestOtp: (email: string) => api.post('/auth/client/request-otp', { email }),
   verifyOtp: (email: string, otp: string) => api.post('/auth/client/verify-otp', { email, otp }),
