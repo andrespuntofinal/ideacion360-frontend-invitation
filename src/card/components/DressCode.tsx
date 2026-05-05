@@ -15,10 +15,10 @@ export default function DressCode() {
     <section className="w-full py-6 md:py-10 px-0 md:px-4">
       {/* Section title */}
       <motion.div
-        initial={{ opacity: 0, y: -30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+        initial={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
+        whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+        viewport={{ once: false, amount: 0.5 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
         className="text-center mb-8 md:mb-12"
       >
         <p className="text-base sm:text-2xl italic leading-relaxed uppercase mb-2" style={{ color: dressCode.titleColor, fontFamily: dressCode.titleFont }}>
@@ -34,13 +34,15 @@ export default function DressCode() {
         {details.map((item, i) => (
           <motion.div
             key={item.title}
-            initial={{ opacity: 0, y: 60, scale: 0.9, rotateX: 15 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
+            initial={{ opacity: 0, y: 50, scale: 0.95, filter: 'blur(10px)' }}
+            whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+            viewport={{ once: false, amount: 0.2 }}
             transition={{
-              delay: i * 0.2,
-              duration: 1.2,
-              ease: [0.215, 0.61, 0.355, 1]
+              delay: i * 0.15,
+              duration: 0.8,
+              type: "spring",
+              stiffness: 100,
+              damping: 20
             }}
             className="relative flex-1 flex flex-col items-center text-center rounded-2xl md:rounded-3xl shadow-xl px-2 sm:px-6 pt-16 pb-6 sm:pb-8 mt-10"
             style={{
