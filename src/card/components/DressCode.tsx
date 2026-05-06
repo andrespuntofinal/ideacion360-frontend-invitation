@@ -22,7 +22,7 @@ export default function DressCode() {
         className="text-center mb-8 md:mb-12"
       >
         <p className="text-base sm:text-2xl italic leading-relaxed uppercase mb-2" style={{ color: dressCode.titleColor, fontFamily: dressCode.titleFont }}>
-          {dressCode.titletext}
+          ♥ &nbsp; {dressCode.titletext} &nbsp; ♥
         </p>
         <br />
         <br />

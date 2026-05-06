@@ -32,16 +32,18 @@ export default function Message() {
         >
           "{message.text1}"
         </motion.p>
+        <br />
 
         {/* Divider */}
         <motion.div
           initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
+          whileInView={{ scaleX: 3 }}
           viewport={{ once: true }}
           transition={{ delay: 0.4, duration: 0.8 }}
-          className="h-px w-24 mx-auto mb-10"
+          className=""
           style={{ backgroundColor: message.colorParents, opacity: 0.4 }}
         />
+
 
         {/* Parents */}
         {(message.groomParents || message.brideParents) && (
@@ -70,6 +72,15 @@ export default function Message() {
             )}
           </motion.div>
         )}
+        {/* Divider */}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 3 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4, duration: 0.8 }}
+          className="h-px w-94 mx-auto mb-10"
+          style={{ backgroundColor: message.colorParents, opacity: 0.4 }}
+        />
         <br />
         <br />
 
