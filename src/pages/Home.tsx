@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Heart, Globe, Sparkles, ArrowRight, CheckCircle, Star, Users, Award, Zap, Play } from 'lucide-react';
+import { Heart, Globe, Sparkles, ArrowRight, CheckCircle, Star, Users, Award, Zap, Play, ShieldCheck } from 'lucide-react';
 import Navbar from '../components/common/Navbar';
 import Footer from '../components/common/Footer';
+
+import bannerImg from '../assets/banner.png';
 
 const services = [
   {
@@ -86,7 +88,7 @@ const itemVariants = {
 
 const Home = () => {
   return (
-    <div style={{ minHeight: '100vh' }}>
+    <div style={{ minHeight: '100vh', background: '#090721', color: 'white' }}>
       <Navbar />
 
       {/* ===== HERO ===== */}
@@ -96,109 +98,183 @@ const Home = () => {
         alignItems: 'center',
         position: 'relative',
         overflow: 'hidden',
-        paddingTop: 'var(--nav-height)',
+        paddingTop: 'calc(var(--nav-height) + 2rem)',
+        paddingBottom: '4rem'
       }}>
         {/* Background orbs */}
-        <div className="orb orb-purple" style={{ width: 600, height: 600, top: '-100px', left: '-200px', opacity: 0.4 }} />
-        <div className="orb orb-blue" style={{ width: 400, height: 400, top: '50%', right: '-100px', opacity: 0.3 }} />
-        <div className="orb orb-pink" style={{ width: 300, height: 300, bottom: '10%', left: '40%', opacity: 0.25 }} />
-
-        {/* Grid pattern */}
-        <div style={{
-          position: 'absolute', inset: 0, opacity: 0.03,
-          backgroundImage: 'linear-gradient(var(--border-glass) 1px, transparent 1px), linear-gradient(90deg, var(--border-glass) 1px, transparent 1px)',
-          backgroundSize: '50px 50px',
-        }} />
+        <div className="orb orb-purple" style={{ width: 600, height: 600, top: '-100px', left: '-200px', opacity: 0.3 }} />
+        <div className="orb orb-blue" style={{ width: 400, height: 400, top: '50%', right: '-100px', opacity: 0.2 }} />
+        <div className="orb orb-pink" style={{ width: 300, height: 300, bottom: '10%', left: '40%', opacity: 0.15 }} />
 
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-          <div style={{ maxWidth: 800, margin: '0 auto', textAlign: 'center' }}>
-            {/* Pill badge */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-                background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.4)',
-                borderRadius: 50, padding: '0.35rem 1rem', marginBottom: '2rem',
-              }}
-            >
-              <Zap size={14} color="var(--color-purple-light)" />
-              <span style={{ color: 'var(--color-purple-light)', fontSize: '0.8rem', fontWeight: 600 }}>
-                Soluciones Digitales Creativas
-              </span>
-            </motion.div>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)',
+            gap: '3rem',
+            alignItems: 'center'
+          }} className="hero-grid">
 
-            {/* Title */}
-            <motion.h1
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', marginBottom: '1.5rem', lineHeight: 1.1 }}
-            >
-              Transformamos{' '}
-              <span className="gradient-text">ideas</span>
-              {' '}en soluciones{' '}
-              <span className="gradient-text-alt">digitales</span>
-            </motion.h1>
+            {/* Left Column: Content */}
+            <div style={{ textAlign: 'left' }}>
 
-            {/* Subtitle */}
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.25 }}
-              style={{
-                color: 'var(--text-secondary)', fontSize: 'clamp(1rem, 2.5vw, 1.2rem)',
-                lineHeight: 1.7, marginBottom: '2.5rem', maxWidth: 600, margin: '0 auto 2.5rem',
-              }}
-            >
-              Diseñamos invitaciones de boda digitales, sitios web modernos y animaciones que
-              <strong style={{ color: 'var(--color-purple-light)' }}> emocionan y conectan</strong> con tu audiencia.
-            </motion.p>
+              {/* Pill badge */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
+                  background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.4)',
+                  borderRadius: 50, padding: '0.35rem 1rem', marginBottom: '2rem',
+                }}
+              >
+                <Zap size={14} color="var(--color-purple-light)" />
+                <span style={{ color: 'var(--color-purple-light)', fontSize: '0.8rem', fontWeight: 600 }}>
+                  Soluciones Digitales Creativas
+                </span>
+              </motion.div>
 
-            {/* CTAs */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}
-            >
-              <Link to="/wedding">
-                <button className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.9rem 2rem', fontSize: '1rem' }}>
-                  <Heart size={18} />
-                  Ver Invitaciones de Boda
+              {/* Title */}
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.1 }}
+                style={{ fontSize: 'clamp(2.8rem, 5vw, 4.5rem)', marginBottom: '1.5rem', lineHeight: 1.1, fontWeight: 800, letterSpacing: '-0.02em' }}
+              >
+                Transformamos{' '}
+                <span style={{ background: 'linear-gradient(to right, #f472b6, #fb923c)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>ideas</span>
+                <br />en soluciones{' '}
+                <span style={{ background: 'linear-gradient(to right, #8b5cf6, #d946ef)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>digitales</span>
+              </motion.h1>
+
+              {/* Subtitle */}
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.2 }}
+                style={{
+                  color: 'rgba(255,255,255,0.7)', fontSize: 'clamp(1rem, 2vw, 1.15rem)',
+                  lineHeight: 1.6, marginBottom: '2.5rem', maxWidth: 500,
+                }}
+              >
+                Diseñamos invitaciones de boda digitales, sitios web modernos y animaciones que{' '}
+                <strong style={{ background: 'linear-gradient(to right, #3b82f6, #8b5cf6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', fontWeight: 600 }}>emocionan y conectan</strong>{' '}
+                con tu audiencia.
+              </motion.p>
+
+              {/* CTAs */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}
+              >
+                <Link to="/wedding" style={{ textDecoration: 'none' }}>
+                  <button style={{
+                    display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '1rem 2rem', fontSize: '1rem',
+                    background: 'linear-gradient(to right, #8b5cf6, #fb923c)', border: 'none', borderRadius: '30px',
+                    color: 'white', fontWeight: 600, cursor: 'pointer', boxShadow: '0 10px 25px rgba(139, 92, 246, 0.4)',
+                    transition: 'transform 0.2s, box-shadow 0.2s'
+                  }}
+                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 16px 35px rgba(139, 92, 246, 0.6)'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 10px 25px rgba(139, 92, 246, 0.4)'; }}
+                  >
+                    <Heart size={18} />
+                    Ver Invitaciones de Boda
+                  </button>
+                </Link>
+                <button style={{
+                  display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '1rem 2rem', fontSize: '1rem',
+                  background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '30px',
+                  color: 'white', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s, border-color 0.2s'
+                }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.07)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.4)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'; }}
+                >
+                  <Play size={18} />
+                  Ver Demo
                 </button>
-              </Link>
-              <button className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.9rem 2rem', fontSize: '1rem' }}>
-                <Play size={18} />
-                Ver Demo
-              </button>
-            </motion.div>
+              </motion.div>
 
-            {/* Stats */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              style={{
-                display: 'flex', justifyContent: 'center', gap: '3rem',
-                marginTop: '4rem', flexWrap: 'wrap',
-              }}
-            >
-              {stats.map(({ value, label }) => (
-                <div key={label} style={{ textAlign: 'center' }}>
-                  <div style={{
-                    fontSize: '2rem', fontWeight: 800, fontFamily: 'var(--font-display)',
-                    background: 'var(--gradient-brand)',
-                    WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-                  }}>
-                    {value}
+              {/* Features List */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', marginTop: '3rem' }}
+              >
+                {[
+                  { label: 'Diseños Exclusivos' },
+                  { label: '100% Personalizados' },
+                  { label: 'Entrega Rápida' },
+                  { label: 'Soporte Premium' }
+                ].map((item, i) => (
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'rgba(255,255,255,0.55)', fontSize: '0.82rem', fontWeight: 500 }}>
+                    <ShieldCheck size={15} color="#8b5cf6" />
+                    {item.label}
                   </div>
-                  <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '0.25rem' }}>{label}</div>
-                </div>
-              ))}
+                ))}
+              </motion.div>
+            </div>
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}
+            >
+              {/* Static image wrapper */}
+              <motion.div
+                style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: 620 }}
+              >
+                <img
+                  src={bannerImg}
+                  alt="Banner Ideación 360"
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    objectFit: 'contain',
+                    filter: 'drop-shadow(0 10px 25px rgba(0,0,0,0.6))',
+                    display: 'block',
+                  }}
+                />
+              </motion.div>
             </motion.div>
           </div>
+
+          <style>{`
+            @media (max-width: 768px) {
+              .hero-grid {
+                grid-template-columns: 1fr !important;
+              }
+            }
+          `}</style>
+
+
+
+          {/* Stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            style={{
+              display: 'flex', justifyContent: 'center', gap: 'clamp(2rem, 5vw, 4rem)',
+              marginTop: '5rem', flexWrap: 'wrap',
+              borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '3rem'
+            }}
+          >
+            {stats.map(({ value, label }) => (
+              <div key={label} style={{ textAlign: 'center' }}>
+                <div style={{
+                  fontSize: 'clamp(1.5rem, 3vw, 2.2rem)', fontWeight: 800, fontFamily: 'var(--font-display)',
+                  background: 'var(--gradient-brand)',
+                  WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+                }}>
+                  {value}
+                </div>
+                <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '0.4rem', fontWeight: 500 }}>{label}</div>
+              </div>
+            ))}
+          </motion.div>
         </div>
 
         {/* Scroll indicator */}

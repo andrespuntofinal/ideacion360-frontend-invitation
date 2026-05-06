@@ -49,7 +49,7 @@ const App = () => {
 
         {/* Admin Login */}
         <Route path="/wedding/Admin" element={<AdminLogin />} />
-        
+
         {/* Client Auth & Dashboard */}
         <Route path="/wedding/login" element={<ClientLogin />} />
         <Route path="/wedding/mi-boda/:eventId" element={
