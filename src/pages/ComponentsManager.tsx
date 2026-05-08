@@ -29,8 +29,8 @@ const Field = ({ label, fieldKey, value, onChange, type = 'text', placeholder = 
       </label>
       {isColor ? (
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-          <input type="color" className="input-color" value={value || '#7C3AED'} onChange={e => onChange(fieldKey, e.target.value)} style={{ width: 56, flexShrink: 0 }} />
-          <input type="text" className="input-field" value={value || ''} onChange={e => onChange(fieldKey, e.target.value)} placeholder="#7C3AED" style={{ fontFamily: 'monospace', fontSize: '0.85rem' }} />
+          <input type="color" className="input-color" value={value || '#8b5cf6'} onChange={e => onChange(fieldKey, e.target.value)} style={{ width: 56, flexShrink: 0 }} />
+          <input type="text" className="input-field" value={value || ''} onChange={e => onChange(fieldKey, e.target.value)} placeholder="#8b5cf6" style={{ fontFamily: 'monospace', fontSize: '0.85rem' }} />
         </div>
       ) : type === 'textarea' ? (
         <textarea className="input-field" value={value || ''} onChange={e => onChange(fieldKey, e.target.value)} placeholder={placeholder} rows={3} style={{ resize: 'vertical' }} />
@@ -521,7 +521,7 @@ const ComponentPanel = ({ compKey, schema, data, onSave, onUpload, saving }: any
 
   return (
     <div style={{
-      border: `1px solid ${open ? 'rgba(124,58,237,0.4)' : 'var(--border-glass)'}`,
+      border: `1px solid ${open ? 'rgba(139, 92, 246, 0.4)' : 'var(--border-glass)'}`,
       borderRadius: 'var(--radius-md)', overflow: 'hidden',
       transition: 'border-color 0.2s',
     }}>
@@ -531,13 +531,13 @@ const ComponentPanel = ({ compKey, schema, data, onSave, onUpload, saving }: any
         onClick={() => setOpen(!open)}
         style={{
           width: '100%', padding: '1rem 1.25rem',
-          background: open ? 'rgba(124,58,237,0.1)' : 'var(--bg-card2)',
+          background: open ? 'rgba(139, 92, 246, 0.1)' : 'var(--bg-card2)',
           border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.75rem',
           transition: 'background 0.2s',
         }}
       >
         <span style={{ fontSize: '1.4rem', flexShrink: 0 }}>{schema.emoji}</span>
-        <span style={{ fontWeight: 600, fontSize: '0.9rem', color: open ? 'var(--color-purple-light)' : 'var(--text-primary)', flex: 1, textAlign: 'left' }}>
+        <span style={{ fontWeight: 600, fontSize: '0.9rem', color: open ? '#a78bfa' : 'var(--text-primary)', flex: 1, textAlign: 'left' }}>
           {schema.label}
         </span>
         {saved && <CheckCircle size={16} color="#4ade80" />}
@@ -751,7 +751,7 @@ const ComponentsManager = () => {
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
         <button
           onClick={() => navigate('/wedding/Admin/dashboard')}
-          style={{ background: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.3)', color: 'var(--color-purple-light)', padding: '0.5rem', borderRadius: 8, cursor: 'pointer', display: 'flex' }}
+          style={{ background: 'rgba(139, 92, 246, 0.1)', border: '1px solid rgba(139, 92, 246, 0.3)', color: '#a78bfa', padding: '0.5rem', borderRadius: 8, cursor: 'pointer', display: 'flex' }}
         >
           <ArrowLeft size={18} />
         </button>

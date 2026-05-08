@@ -38,14 +38,67 @@ const Navbar = () => {
       }}
     >
       <div className="container" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <div style={{ width: 42, height: 42, borderRadius: '50%', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-            <img src={logoSitio} alt="Ideación 360" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.1 }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1rem',
+            flexWrap: 'wrap',
+            fontSize: 'clamp(3rem, 4vw, 3.5rem)',
+            marginBottom: '1rem',
+            lineHeight: 1.05,
+            fontWeight: 900,
+            letterSpacing: '-0.04em'
+          }}
+        >
+          {/* Logo */}
+          <div
+            style={{
+              width: 62,
+              height: 62,
+              borderRadius: '50%',
+              background: 'white',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              overflow: 'hidden',
+              flexShrink: 0,
+              boxShadow: '0 10px 30px rgba(0,0,0,0.25)'
+            }}
+          >
+            <img
+              src={logoSitio}
+              alt="Ideación 360"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover'
+              }}
+            />
           </div>
-          <span style={{ fontFamily: 'var(--font-display)', fontSize: '1.2rem', fontWeight: 700, background: 'var(--gradient-brand)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-            Ideación 360
-          </span>
-        </Link>
+
+          {/* Texto */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+            <span style={{ fontSize: '0.8em', color: '#FFFFFF' }}>
+              Ideación
+            </span>
+
+            <span
+              style={{
+                fontSize: '0.8em',
+                background: 'linear-gradient(to right, #3b82f6, #8b5cf6, #D7B272)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}
+            >
+              360
+            </span>
+          </div>
+        </motion.h1>
 
         <nav style={{ display: 'flex', alignItems: 'center', gap: '2rem' }} className="desktop-nav">
           {navLinks.map((link) => (
@@ -62,7 +115,7 @@ const Navbar = () => {
               <button className="btn-secondary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.8rem' }}>Mi boda</button>
             </Link>
             <Link to="/wedding/Admin/dashboard">
-              <button className="btn-primary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.8rem' }}>Admin</button>
+              <button className="btn-primary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.8rem', background: 'linear-gradient(to right,  #3b82f6, #8b5cf6)' }}>Admin</button>
             </Link>
           </div>
         </nav>

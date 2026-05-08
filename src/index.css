@@ -8,36 +8,34 @@
 /* CSS Custom Properties (Design Tokens) */
 :root {
   /* Brand Colors */
-  --color-purple: #7C3AED;
-  --color-purple-light: #8ac4e0ff;
-  --color-purple-dark: #5B21B6;
-  --color-blue: #8ac4e0;
-  --color-blue-dark: #6aabcc;
-  --color-cyan: #5070b4;
-  --color-cyan-light: #6b8fc9;
-  --color-gray: #9fb1bd;
-  --color-white: #eef3f4;
+  --color-purple: #8b5cf6;
+  --color-purple-light: #a78bfa;
+  --color-purple-dark: #6d28d9;
+  --color-blue: #3b82f6;
+  --color-blue-dark: #1d4ed8;
+  --color-gold: #D7B272;
+  --color-white: #ffffff;
 
   /* Background Colors */
-  --bg-primary: #27253b;
-  --bg-secondary: #0f0e1a;
-  --bg-card: #15132a;
-  --bg-card2: #1c1a30;
-  --bg-card3: #221f38;
-  --bg-glass: rgba(21, 19, 42, 0.7);
+  --bg-primary: #090721;
+  --bg-secondary: #050414;
+  --bg-card: #0d0b2e;
+  --bg-card2: #14123d;
+  --bg-card3: #1a184a;
+  --bg-glass: rgba(9, 7, 33, 0.85);
 
   /* Text Colors */
-  --text-primary: #eef3f4;
-  --text-secondary: #9fb1bd;
-  --text-muted: #6b7a87;
+  --text-primary: #ffffff;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
 
   /* Gradients */
-  --gradient-brand: linear-gradient(135deg, #7C3AED 0%, #c96dd8 40%, #f472b6 70%, #fb923c 100%);
-  --gradient-brand-alt: linear-gradient(135deg, #5070b4 0%, #7C3AED 50%, #c96dd8 100%);
-  --gradient-card: linear-gradient(135deg, rgba(124, 58, 237, 0.15) 0%, rgba(80, 112, 180, 0.1) 100%);
-  --gradient-hero: radial-gradient(ellipse at 20% 50%, rgba(124, 58, 237, 0.3) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 20%, rgba(138, 196, 224, 0.2) 0%, transparent 50%),
-    radial-gradient(ellipse at 60% 80%, rgba(201, 109, 216, 0.2) 0%, transparent 50%);
+  --gradient-brand: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #D7B272 100%);
+  --gradient-brand-alt: linear-gradient(135deg, #8b5cf6 0%, #D7B272 100%);
+  --gradient-card: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+  --gradient-hero: radial-gradient(ellipse at 20% 50%, rgba(59, 130, 246, 0.2) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 80%, rgba(215, 178, 114, 0.1) 0%, transparent 50%);
 
   /* Border */
   --border-glass: rgba(138, 196, 224, 0.15);

@@ -94,7 +94,7 @@ const EventForm = () => {
     <AdminLayout>
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
         <button onClick={() => navigate('/wedding/Admin/dashboard')}
-          style={{ background: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.3)', color: 'var(--color-purple-light)', padding: '0.5rem', borderRadius: 8, cursor: 'pointer', display: 'flex' }}>
+          style={{ background: 'rgba(139, 92, 246, 0.1)', border: '1px solid rgba(139, 92, 246, 0.3)', color: '#a78bfa', padding: '0.5rem', borderRadius: 8, cursor: 'pointer', display: 'flex' }}>
           <ArrowLeft size={18} />
         </button>
         <div>
@@ -106,7 +106,7 @@ const EventForm = () => {
       <div style={{ display: 'flex', gap: 0, marginBottom: '2rem', overflowX: 'auto', paddingBottom: '0.5rem' }}>
         {steps.map((step, i) => (
           <button key={step} onClick={() => setActiveStep(i)}
-            style={{ flex: 1, minWidth: 100, padding: '0.75rem 0.5rem', background: activeStep === i ? 'rgba(124,58,237,0.15)' : 'var(--bg-card2)', border: '1px solid', borderColor: activeStep === i ? 'rgba(124,58,237,0.4)' : 'var(--border-glass)', color: activeStep === i ? 'var(--color-purple-light)' : 'var(--text-muted)', fontSize: '0.8rem', fontWeight: activeStep === i ? 600 : 400, cursor: 'pointer', fontFamily: 'var(--font-body)', borderRadius: i === 0 ? '10px 0 0 10px' : i === steps.length - 1 ? '0 10px 10px 0' : '0', transition: 'all 0.2s' }}>
+            style={{ flex: 1, minWidth: 100, padding: '0.75rem 0.5rem', background: activeStep === i ? 'rgba(139, 92, 246, 0.15)' : 'var(--bg-card2)', border: '1px solid', borderColor: activeStep === i ? 'rgba(139, 92, 246, 0.4)' : 'var(--border-glass)', color: activeStep === i ? '#a78bfa' : 'var(--text-muted)', fontSize: '0.8rem', fontWeight: activeStep === i ? 600 : 400, cursor: 'pointer', fontFamily: 'var(--font-body)', borderRadius: i === 0 ? '10px 0 0 10px' : i === steps.length - 1 ? '0 10px 10px 0' : '0', transition: 'all 0.2s' }}>
             <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 20, height: 20, borderRadius: '50%', background: activeStep === i ? 'var(--color-purple)' : 'var(--border-glass)', color: 'white', fontSize: '0.7rem', fontWeight: 700, marginRight: '0.4rem' }}>{i + 1}</span>
             {step}
           </button>
@@ -128,9 +128,9 @@ const EventForm = () => {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
                 {[{ value: 'web', label: 'Boda Web', emoji: '🌐', desc: 'Página web interactiva' }, { value: 'video', label: 'Boda Video', emoji: '🎬', desc: 'Video animado' }, { value: 'card', label: 'Boda Card', emoji: '💌', desc: 'Tarjeta digital' }].map((opt) => (
                   <div key={opt.value} onClick={() => setForm((f) => ({ ...f, type: opt.value as "web" | "video" | "card" }))}
-                    style={{ padding: '1.5rem', borderRadius: 'var(--radius-md)', cursor: 'pointer', border: `2px solid ${form.type === opt.value ? 'var(--color-purple)' : 'var(--border-glass)'}`, background: form.type === opt.value ? 'rgba(124,58,237,0.12)' : 'var(--bg-card2)', transition: 'all 0.2s', textAlign: 'center' }}>
+                    style={{ padding: '1.5rem', borderRadius: 'var(--radius-md)', cursor: 'pointer', border: `2px solid ${form.type === opt.value ? 'var(--color-purple)' : 'var(--border-glass)'}`, background: form.type === opt.value ? 'rgba(139, 92, 246, 0.12)' : 'var(--bg-card2)', transition: 'all 0.2s', textAlign: 'center' }}>
                     <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>{opt.emoji}</div>
-                    <div style={{ fontWeight: 600, color: form.type === opt.value ? 'var(--color-purple-light)' : 'var(--text-primary)', marginBottom: '0.4rem', fontSize: '0.9rem' }}>{opt.label}</div>
+                    <div style={{ fontWeight: 600, color: form.type === opt.value ? '#a78bfa' : 'var(--text-primary)', marginBottom: '0.4rem', fontSize: '0.9rem' }}>{opt.label}</div>
                     <div style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>{opt.desc}</div>
                   </div>
                 ))}
@@ -189,10 +189,10 @@ const EventForm = () => {
                   const isActive = form.activeComponents[key];
                   return (
                     <motion.div key={key} whileHover={{ scale: 1.01 }} onClick={() => toggleComponent(key)}
-                      style={{ display: 'flex', alignItems: 'center', gap: '0.875rem', padding: '1rem 1.15rem', borderRadius: 'var(--radius-md)', border: `1px solid ${isActive ? 'rgba(124,58,237,0.4)' : 'var(--border-glass)'}`, background: isActive ? 'rgba(124,58,237,0.08)' : 'var(--bg-card2)', cursor: 'pointer', transition: 'all 0.2s' }}>
+                      style={{ display: 'flex', alignItems: 'center', gap: '0.875rem', padding: '1rem 1.15rem', borderRadius: 'var(--radius-md)', border: `1px solid ${isActive ? 'rgba(139, 92, 246, 0.4)' : 'var(--border-glass)'}`, background: isActive ? 'rgba(139, 92, 246, 0.08)' : 'var(--bg-card2)', cursor: 'pointer', transition: 'all 0.2s' }}>
                       <span style={{ fontSize: '1.6rem', flexShrink: 0 }}>{emoji}</span>
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontWeight: 600, fontSize: '0.875rem', color: isActive ? 'var(--color-purple-light)' : 'var(--text-primary)', marginBottom: '0.2rem' }}>{label}</div>
+                        <div style={{ fontWeight: 600, fontSize: '0.875rem', color: isActive ? '#a78bfa' : 'var(--text-primary)', marginBottom: '0.2rem' }}>{label}</div>
                         <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{desc}</div>
                       </div>
                       <div style={{ width: 44, height: 24, borderRadius: 12, background: isActive ? 'var(--color-purple)' : 'rgba(80,80,100,0.5)', position: 'relative', transition: 'all 0.3s ease', flexShrink: 0, border: `1px solid ${isActive ? 'var(--color-purple)' : 'var(--border-glass)'}` }}>

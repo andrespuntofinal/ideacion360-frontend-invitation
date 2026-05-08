@@ -8,19 +8,6 @@ import bannerImg from '../assets/banner.png';
 
 const services = [
   {
-    id: 'wedding',
-    icon: Heart,
-    title: 'Wedding Invitation',
-    subtitle: 'Invitaciones Digitales de Boda',
-    description: 'Crea invitaciones de boda únicas, interactivas y memorables. Con animaciones, RSVP digital, cuenta regresiva y mucho más.',
-    features: ['Sobre animado', 'RSVP Digital', 'Cuenta regresiva', 'Detalles del evento'],
-    color: '#f472b6',
-    gradient: 'linear-gradient(135deg, rgba(244,114,182,0.2) 0%, rgba(124,58,237,0.2) 100%)',
-    border: 'rgba(244,114,182,0.3)',
-    href: '/wedding',
-    cta: 'Ver Invitaciones',
-  },
-  {
     id: 'websites',
     icon: Globe,
     title: 'Sitios Web',
@@ -28,10 +15,23 @@ const services = [
     description: 'Diseñamos y desarrollamos sitios web modernos, rápidos y optimizados para SEO. Desde landing pages hasta aplicaciones web complejas.',
     features: ['Diseño responsive', 'SEO optimizado', 'Alta performance', 'CMS incluido'],
     color: '#8ac4e0',
-    gradient: 'linear-gradient(135deg, rgba(138,196,224,0.2) 0%, rgba(80,112,180,0.2) 100%)',
+    gradient: 'linear-gradient(135deg, rgba(73, 139, 237, 0.44) 0%, #141228  100%)',
     border: 'rgba(138,196,224,0.3)',
     href: '/#sitios-web',
     cta: 'Cotizar Proyecto',
+  },
+  {
+    id: 'wedding',
+    icon: Heart,
+    title: 'Wedding Invitation',
+    subtitle: 'Invitaciones Digitales de Boda',
+    description: 'Crea invitaciones de boda únicas, interactivas y memorables. Con animaciones, RSVP digital, cuenta regresiva y mucho más.',
+    features: ['Sobre animado', 'RSVP Digital', 'Cuenta regresiva', 'Detalles del evento'],
+    color: '#f472b6',
+    gradient: 'linear-gradient(135deg, rgba(180, 153, 243, 0.46) 0%, #141228  100%)',
+    border: 'rgba(244,114,182,0.3)',
+    href: '/wedding',
+    cta: 'Ver Invitaciones',
   },
   {
     id: 'animation',
@@ -40,8 +40,8 @@ const services = [
     subtitle: 'Motion Design & Animation',
     description: 'Damos vida a tus ideas con animaciones digitales impactantes. Videos animados, motion graphics y efectos especiales que cautivan.',
     features: ['Motion graphics', 'Videos animados', '2D & 3D', 'Brand animations'],
-    color: '#fb923c',
-    gradient: 'linear-gradient(135deg, rgba(251,146,60,0.2) 0%, rgba(244,114,182,0.2) 100%)',
+    color: '#D7B272',
+    gradient: 'linear-gradient(135deg, rgba(235, 219, 141, 0.6) 0%, #141228 100%)',
     border: 'rgba(251,146,60,0.3)',
     href: '/#animacion',
     cta: 'Ver Portfolio',
@@ -106,7 +106,7 @@ const Home = () => {
         <div className="orb orb-blue" style={{ width: 400, height: 400, top: '50%', right: '-100px', opacity: 0.2 }} />
         <div className="orb orb-pink" style={{ width: 300, height: 300, bottom: '10%', left: '40%', opacity: 0.15 }} />
 
-        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
+        <div className="container" style={{ position: 'relative', zIndex: 1, padding: '0 1rem' }}>
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)',
@@ -115,104 +115,115 @@ const Home = () => {
           }} className="hero-grid">
 
             {/* Left Column: Content */}
-            <div style={{ textAlign: 'left' }}>
-
-              {/* Pill badge */}
+            <div style={{ textAlign: 'left' }} className="hero-content">
+              {/* Subtitle/Description */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
-                style={{
-                  display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-                  background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.4)',
-                  borderRadius: 50, padding: '0.35rem 1rem', marginBottom: '2rem',
-                }}
-              >
-                <Zap size={14} color="var(--color-purple-light)" />
-                <span style={{ color: 'var(--color-purple-light)', fontSize: '0.8rem', fontWeight: 600 }}>
-                  Soluciones Digitales Creativas
-                </span>
-              </motion.div>
-
-              {/* Title */}
-              <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.1 }}
-                style={{ fontSize: 'clamp(2.8rem, 5vw, 4.5rem)', marginBottom: '1.5rem', lineHeight: 1.1, fontWeight: 800, letterSpacing: '-0.02em' }}
-              >
-                Transformamos{' '}
-                <span style={{ background: 'linear-gradient(to right, #f472b6, #fb923c)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>ideas</span>
-                <br />en soluciones{' '}
-                <span style={{ background: 'linear-gradient(to right, #8b5cf6, #d946ef)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>digitales</span>
-              </motion.h1>
-
-              {/* Subtitle */}
-              <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
                 style={{
-                  color: 'rgba(255,255,255,0.7)', fontSize: 'clamp(1rem, 2vw, 1.15rem)',
-                  lineHeight: 1.6, marginBottom: '2.5rem', maxWidth: 500,
+                  color: 'rgba(255,255,255,0.9)',
+                  marginBottom: '2rem',
+                  maxWidth: 600,
                 }}
               >
-                Diseñamos invitaciones de boda digitales, sitios web modernos y animaciones que{' '}
-                <strong style={{ background: 'linear-gradient(to right, #3b82f6, #8b5cf6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', fontWeight: 600 }}>emocionan y conectan</strong>{' '}
-                con tu audiencia.
-              </motion.p>
-
-              {/* CTAs */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}
-              >
-                <Link to="/wedding" style={{ textDecoration: 'none' }}>
-                  <button style={{
-                    display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '1rem 2rem', fontSize: '1rem',
-                    background: 'linear-gradient(to right, #8b5cf6, #fb923c)', border: 'none', borderRadius: '30px',
-                    color: 'white', fontWeight: 600, cursor: 'pointer', boxShadow: '0 10px 25px rgba(139, 92, 246, 0.4)',
-                    transition: 'transform 0.2s, box-shadow 0.2s'
-                  }}
-                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 16px 35px rgba(139, 92, 246, 0.6)'; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 10px 25px rgba(139, 92, 246, 0.4)'; }}
-                  >
-                    <Heart size={18} />
-                    Ver Invitaciones de Boda
-                  </button>
-                </Link>
-                <button style={{
-                  display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '1rem 2rem', fontSize: '1rem',
-                  background: 'transparent', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '30px',
-                  color: 'white', fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s, border-color 0.2s'
-                }}
-                  onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.07)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.4)'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'; }}
-                >
-                  <Play size={18} />
-                  Ver Demo
-                </button>
+                <h2 style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', fontWeight: 600, lineHeight: 1.2 }}>
+                  Transformamos ideas en <br />
+                  <span style={{
+                    fontWeight: 800,
+                    background: 'linear-gradient(to right, #3b82f6, #8b5cf6, #D7B272)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  }}>soluciones digitales memorables</span>
+                </h2>
               </motion.div>
 
-              {/* Features List */}
+              {/* Hero Cards (3 components) */}
               <motion.div
+                className="hero-cards"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', marginTop: '3rem' }}
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+                  gap: '1rem',
+                  marginTop: '2rem',
+                }}
               >
                 {[
-                  { label: 'Diseños Exclusivos' },
-                  { label: '100% Personalizados' },
-                  { label: 'Entrega Rápida' },
-                  { label: 'Soporte Premium' }
-                ].map((item, i) => (
-                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'rgba(255,255,255,0.55)', fontSize: '0.82rem', fontWeight: 500 }}>
-                    <ShieldCheck size={15} color="#8b5cf6" />
-                    {item.label}
-                  </div>
+                  {
+                    icon: Globe,
+                    title: 'Sitios Web',
+                    desc: 'Modernos y estratégicos para impulsar tu marca',
+                    color: '#8ac4e0',
+                    gradient: 'linear-gradient(135deg, rgba(73, 139, 237, 0.44) 0%, #141228  100%)'
+                  },
+                  {
+                    icon: Heart,
+                    title: 'Invitaciones de Boda',
+                    desc: 'Modernas, interactivas y llenas de estilo.',
+                    color: '#8b5cf6',
+                    gradient: 'linear-gradient(135deg, rgba(180, 153, 243, 0.46) 0%, #141228  100%)'
+                  },
+                  {
+                    icon: Play,
+                    title: 'Animación Digital',
+                    desc: 'Historias que conectan y sorprenden.',
+                    color: '#D7B272',
+                    gradient: 'linear-gradient(135deg, rgba(235, 219, 141, 0.6) 0%, #141228 100%)'
+                  }
+                ].map((card, i) => (
+                  <motion.div
+                    key={i}
+                    whileHover={{
+                      y: -8,
+                      background: 'rgba(255,255,255,0.08)',
+                      borderColor: card.color,
+                      boxShadow: `0 10px 30px -10px ${card.color}50`
+                    }}
+                    style={{
+                      background: card.gradient,
+                      backdropFilter: 'blur(12px)',
+                      border: `1px solid ${card.color}40`,
+                      borderRadius: '20px',
+                      padding: '1.5rem',
+                      transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                      position: 'relative',
+                      overflow: 'hidden'
+                    }}
+                    className="hero-card-item"
+                  >
+                    {/* Subtle inner glow */}
+                    <div style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      background: `radial-gradient(circle at top right, ${card.color}15, transparent)`,
+                      pointerEvents: 'none'
+                    }} />
+
+                    <div style={{
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '12px',
+                      background: `${card.color}25`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginBottom: '1rem',
+                      border: `1px solid ${card.color}50`,
+                      position: 'relative',
+                      zIndex: 1
+                    }}>
+                      <card.icon size={20} color={card.color} />
+                    </div>
+                    <h4 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '0.5rem', color: '#FFFFFF', position: 'relative', zIndex: 1 }}>{card.title}</h4>
+                    <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.7)', lineHeight: 1.5, position: 'relative', zIndex: 1 }}>{card.desc}</p>
+                  </motion.div>
                 ))}
               </motion.div>
             </div>
@@ -221,10 +232,11 @@ const Home = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
               style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}
+              className="hero-image-container"
             >
               {/* Static image wrapper */}
               <motion.div
-                style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: 620 }}
+                style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: 580 }}
               >
                 <img
                   src={bannerImg}
@@ -233,45 +245,111 @@ const Home = () => {
                     width: '100%',
                     height: 'auto',
                     objectFit: 'contain',
-                    filter: 'drop-shadow(0 10px 25px rgba(0,0,0,0.6))',
+                    filter: 'drop-shadow(0 20px 50px rgba(0,0,0,0.8))',
                     display: 'block',
                   }}
                 />
+                {/* Glow behind image */}
+                <div style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: '80%',
+                  height: '80%',
+                  background: 'radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%)',
+                  filter: 'blur(60px)',
+                  zIndex: -1
+                }} />
               </motion.div>
             </motion.div>
           </div>
 
           <style>{`
-            @media (max-width: 768px) {
+            @media (max-width: 991px) {
               .hero-grid {
                 grid-template-columns: 1fr !important;
+                gap: 4rem !important;
+              }
+              .hero-content {
+                text-align: center !important;
+                order: 1;
+              }
+              .hero-content h2 {
+                margin: 0 auto !important;
+              }
+              .hero-image-container {
+                order: 2;
+                max-width: 100% !important;
+              }
+              .hero-cards {
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
+                justify-content: center !important;
+              }
+            }
+
+            @media (max-width: 576px) {
+              .hero-cards {
+                grid-template-columns: 1fr !important;
+              }
+              .hero-features {
+                justify-content: center !important;
+                gap: 0.5rem !important;
+              }
+              .hero-feature-item {
+                width: 100% !important;
+                justify-content: center !important;
               }
             }
           `}</style>
 
-
-
-          {/* Stats */}
+          {/* Bottom Features (4 components) moved to bottom of hero */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
+            transition={{ duration: 0.6, delay: 0.7 }}
             style={{
-              display: 'flex', justifyContent: 'center', gap: 'clamp(2rem, 5vw, 4rem)',
-              marginTop: '5rem', flexWrap: 'wrap',
-              borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '3rem'
+              display: 'flex',
+              justifyContent: 'space-between',
+              gap: '1rem',
+              flexWrap: 'wrap',
+              marginTop: '5rem',
+              padding: '1.5rem 0',
+              borderTop: '1px solid rgba(255,255,255,0.1)',
+              background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.02), transparent)'
             }}
+            className="hero-features"
           >
-            {stats.map(({ value, label }) => (
-              <div key={label} style={{ textAlign: 'center' }}>
+            {[
+              { label: 'Diseños Exclusivos' },
+              { label: '100% Personalizados' },
+              { label: 'Entrega Rápida' },
+              { label: 'Soporte Premium' }
+            ].map((item, i) => (
+              <div key={i} style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.8rem',
+                color: 'rgba(255,255,255,0.7)',
+                fontSize: '0.9rem',
+                fontWeight: 500,
+                padding: '0.5rem 1rem',
+                borderRadius: '50px',
+                transition: 'all 0.3s ease',
+              }} className="hero-feature-item">
                 <div style={{
-                  fontSize: 'clamp(1.5rem, 3vw, 2.2rem)', fontWeight: 800, fontFamily: 'var(--font-display)',
-                  background: 'var(--gradient-brand)',
-                  WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '24px',
+                  height: '24px',
+                  borderRadius: '50%',
+                  background: 'rgba(59, 130, 246, 0.1)',
+                  border: '1px solid rgba(59, 130, 246, 0.3)'
                 }}>
-                  {value}
+                  <CheckCircle size={14} color="#3b82f6" />
                 </div>
-                <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '0.4rem', fontWeight: 500 }}>{label}</div>
+                {item.label}
               </div>
             ))}
           </motion.div>
@@ -282,9 +360,10 @@ const Home = () => {
           animate={{ y: [0, 10, 0] }}
           transition={{ repeat: Infinity, duration: 2 }}
           style={{
-            position: 'absolute', bottom: '2rem', left: '50%', transform: 'translateX(-50%)',
+            position: 'absolute', bottom: '1.5rem', left: '50%', transform: 'translateX(-50%)',
             display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem',
           }}
+          className="scroll-indicator"
         >
           <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>Descubrir</span>
           <div style={{
@@ -299,6 +378,37 @@ const Home = () => {
         </motion.div>
       </section>
 
+      {/* ===== STATS ===== */}
+      <section style={{ padding: '4rem 0', background: '#090721', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            style={{
+              display: 'flex', justifyContent: 'center', gap: 'clamp(2rem, 5vw, 6rem)',
+              flexWrap: 'wrap',
+            }}
+          >
+            {stats.map(({ value, label, icon: Icon }) => (
+              <div key={label} style={{ textAlign: 'center', minWidth: '140px', padding: '1rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                  <Icon size={18} color="#8b5cf6" />
+                  <span style={{
+                    fontSize: 'clamp(1.8rem, 4vw, 2.5rem)', fontWeight: 800,
+                    background: 'linear-gradient(to right, #FFFFFF, #8b5cf6)',
+                    WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+                  }}>
+                    {value}
+                  </span>
+                </div>
+                <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem', fontWeight: 500 }}>{label}</div>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
       {/* ===== SERVICIOS ===== */}
       <section className="section">
         <div className="container">
@@ -307,7 +417,7 @@ const Home = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            style={{ textAlign: 'center', marginBottom: '4rem' }}
+            style={{ textAlign: 'center', marginBottom: '4rem', padding: '0 1rem' }}
           >
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
@@ -318,11 +428,11 @@ const Home = () => {
                 Nuestros Servicios
               </span>
             </div>
-            <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', marginBottom: '1rem' }}>
-              Todo lo que necesitas para{' '}
-              <span className="gradient-text">brillar digitalmente</span>
+            <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', marginBottom: '1rem', lineHeight: 1.2 }}>
+              Transformamos ideas en soluciones{' '}
+              <span className="gradient-text">digitales</span>
             </h2>
-            <p style={{ color: 'var(--text-secondary)', maxWidth: 600, margin: '0 auto', lineHeight: 1.7 }}>
+            <p style={{ color: 'var(--text-secondary)', maxWidth: 600, margin: '0 auto', lineHeight: 1.7, fontSize: '1rem' }}>
               Ofrecemos soluciones digitales completas que van desde la emocionante invitación de tu boda
               hasta tu presencia web profesional.
             </p>
@@ -335,8 +445,9 @@ const Home = () => {
             viewport={{ once: true }}
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
               gap: '1.5rem',
+              padding: '0 1rem'
             }}
           >
             {services.map((service) => {
@@ -402,6 +513,7 @@ const Home = () => {
                         color: service.color, padding: '0.6rem 1.2rem',
                         borderRadius: 50, fontSize: '0.85rem', fontWeight: 600,
                         cursor: 'pointer', transition: 'all 0.2s ease', fontFamily: 'var(--font-body)',
+                        width: '100%', justifyContent: 'center'
                       }}
                       onMouseEnter={e => { e.currentTarget.style.background = `${service.color}20`; e.currentTarget.style.transform = 'translateX(4px)'; }}
                       onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.transform = 'translateX(0)'; }}
@@ -417,9 +529,9 @@ const Home = () => {
       </section>
 
       {/* ===== WHY US ===== */}
-      <section className="section" style={{ background: 'var(--bg-secondary)' }}>
-        <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', alignItems: 'center' }}>
+      <section className="section" style={{ background: 'var(--bg-secondary)', padding: '6rem 0' }}>
+        <div className="container" style={{ padding: '0 1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'center' }}>
             <motion.div
               initial={{ opacity: 0, x: -40 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -435,16 +547,16 @@ const Home = () => {
                   ¿Por qué Ideación 360?
                 </span>
               </div>
-              <h2 style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)', marginBottom: '1.5rem' }}>
+              <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', marginBottom: '1.5rem', lineHeight: 1.2 }}>
                 Donde la tecnología{' '}
                 <span className="gradient-text">se encuentra</span>
                 {' '}con la emoción
               </h2>
-              <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '2rem' }}>
+              <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: '2rem', fontSize: '1.05rem' }}>
                 No solo creamos productos digitales, creamos experiencias que tocan el corazón.
                 Cada proyecto es único, personalizado y diseñado para superar tus expectativas.
               </p>
-              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
                 {[
                   { label: 'Diseño Premium', color: '#7C3AED' },
                   { label: 'Soporte 24/7', color: '#f472b6' },
@@ -452,8 +564,8 @@ const Home = () => {
                 ].map(tag => (
                   <span key={tag.label} style={{
                     background: `${tag.color}15`, border: `1px solid ${tag.color}40`,
-                    color: tag.color, padding: '0.3rem 0.8rem', borderRadius: 50,
-                    fontSize: '0.8rem', fontWeight: 600,
+                    color: tag.color, padding: '0.4rem 1rem', borderRadius: 50,
+                    fontSize: '0.85rem', fontWeight: 600,
                   }}>
                     {tag.label}
                   </span>
@@ -466,7 +578,7 @@ const Home = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
-              style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem' }}
             >
               {[
                 { icon: Heart, title: 'Emoción Digital', text: 'Creamos experiencias que generan una conexión emocional real', color: '#f472b6' },
@@ -478,19 +590,19 @@ const Home = () => {
                   key={title}
                   whileHover={{ scale: 1.03 }}
                   className="glass-card-sm"
-                  style={{ padding: '1.25rem' }}
+                  style={{ padding: '1.5rem', height: '100%' }}
                 >
                   <div style={{
-                    width: 40, height: 40, borderRadius: 10,
+                    width: 44, height: 44, borderRadius: 12,
                     background: `${color}15`, border: `1px solid ${color}30`,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '0.75rem',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem',
                   }}>
-                    <Icon size={18} color={color} />
+                    <Icon size={20} color={color} />
                   </div>
-                  <h4 style={{ fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primary)', marginBottom: '0.4rem' }}>
+                  <h4 style={{ fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '1rem', color: 'var(--text-primary)', marginBottom: '0.5rem' }}>
                     {title}
                   </h4>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '0.78rem', lineHeight: 1.5 }}>{text}</p>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', lineHeight: 1.6 }}>{text}</p>
                 </motion.div>
               ))}
             </motion.div>
@@ -500,19 +612,19 @@ const Home = () => {
 
       {/* ===== TESTIMONIOS ===== */}
       <section className="section">
-        <div className="container">
+        <div className="container" style={{ padding: '0 1rem' }}>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            style={{ textAlign: 'center', marginBottom: '3rem' }}
+            style={{ textAlign: 'center', marginBottom: '4rem' }}
           >
-            <h2 style={{ fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)', marginBottom: '1rem' }}>
+            <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', marginBottom: '1rem' }}>
               Lo que dicen nuestros <span className="gradient-text">clientes</span>
             </h2>
           </motion.div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
             {testimonials.map((t, i) => (
               <motion.div
                 key={i}
@@ -521,28 +633,28 @@ const Home = () => {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.15 }}
                 className="glass-card"
-                style={{ padding: '1.75rem' }}
+                style={{ padding: '2rem' }}
               >
-                <div style={{ display: 'flex', gap: '0.25rem', marginBottom: '1rem' }}>
+                <div style={{ display: 'flex', gap: '0.25rem', marginBottom: '1.25rem' }}>
                   {Array.from({ length: t.rating }).map((_, j) => (
                     <Star key={j} size={14} color="#fbbf24" fill="#fbbf24" />
                   ))}
                 </div>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.7, marginBottom: '1.5rem', fontStyle: 'italic' }}>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.7, marginBottom: '2rem', fontStyle: 'italic' }}>
                   "{t.text}"
                 </p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                   <div style={{
-                    width: 40, height: 40, borderRadius: '50%',
+                    width: 44, height: 44, borderRadius: '50%',
                     background: 'var(--gradient-brand)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '0.75rem', fontWeight: 700, color: 'white',
+                    fontSize: '0.85rem', fontWeight: 700, color: 'white',
                   }}>
                     {t.avatar}
                   </div>
                   <div>
-                    <div style={{ color: 'var(--text-primary)', fontWeight: 600, fontSize: '0.875rem' }}>{t.name}</div>
-                    <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>Cliente verificado</div>
+                    <div style={{ color: 'var(--text-primary)', fontWeight: 600, fontSize: '0.95rem' }}>{t.name}</div>
+                    <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>Cliente verificado</div>
                   </div>
                 </div>
               </motion.div>

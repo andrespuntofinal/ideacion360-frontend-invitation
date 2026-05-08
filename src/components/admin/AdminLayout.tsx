@@ -42,13 +42,24 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             const active = location.pathname === href || location.pathname.startsWith(href + '/');
             return (
               <Link key={href} to={href} style={{ textDecoration: 'none' }} onClick={() => setSidebarOpen(false)}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.7rem 0.75rem', borderRadius: 10, marginBottom: '0.25rem', cursor: 'pointer', background: active ? 'rgba(124,58,237,0.15)' : 'transparent', border: active ? '1px solid rgba(124,58,237,0.3)' : '1px solid transparent', transition: 'all 0.2s' }}
-                  onMouseEnter={(e) => { if (!active) e.currentTarget.style.background = 'rgba(124,58,237,0.07)'; }}
+                <div style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '0.75rem', 
+                  padding: '0.7rem 0.75rem', 
+                  borderRadius: 10, 
+                  marginBottom: '0.25rem', 
+                  cursor: 'pointer', 
+                  background: active ? 'rgba(139, 92, 246, 0.12)' : 'transparent', 
+                  border: active ? '1px solid rgba(139, 92, 246, 0.3)' : '1px solid transparent', 
+                  transition: 'all 0.2s' 
+                }}
+                  onMouseEnter={(e) => { if (!active) e.currentTarget.style.background = 'rgba(139, 92, 246, 0.05)'; }}
                   onMouseLeave={(e) => { if (!active) e.currentTarget.style.background = 'transparent'; }}
                 >
-                  <Icon size={17} color={active ? 'var(--color-purple-light)' : 'var(--text-muted)'} />
-                  <span style={{ fontSize: '0.875rem', fontWeight: active ? 600 : 400, color: active ? 'var(--color-purple-light)' : 'var(--text-secondary)' }}>{label}</span>
-                  {active && <ChevronRight size={14} color="var(--color-purple-light)" style={{ marginLeft: 'auto' }} />}
+                  <Icon size={17} color={active ? '#a78bfa' : 'var(--text-muted)'} />
+                  <span style={{ fontSize: '0.875rem', fontWeight: active ? 600 : 400, color: active ? '#a78bfa' : 'var(--text-secondary)' }}>{label}</span>
+                  {active && <ChevronRight size={14} color="#a78bfa" style={{ marginLeft: 'auto' }} />}
                 </div>
               </Link>
             );

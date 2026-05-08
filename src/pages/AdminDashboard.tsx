@@ -10,10 +10,10 @@ import type { WeddingEvent } from '../types';
 
 interface StatCard { label: string; value: number; icon: ElementType; color: string; bg: string; }
 const statCards = (events: WeddingEvent[]): StatCard[] => [
-  { label: 'Total Eventos', value: events.length, icon: Calendar, color: '#7C3AED', bg: 'rgba(124,58,237,0.15)' },
-  { label: 'Activos', value: events.filter(e => e.status === 'active').length, icon: CheckCircle, color: '#4ade80', bg: 'rgba(74,222,128,0.15)' },
-  { label: 'En Borrador', value: events.filter(e => e.status === 'draft').length, icon: Clock, color: '#fbbf24', bg: 'rgba(251,191,36,0.15)' },
-  { label: 'Tipo Web', value: events.filter(e => e.type === 'web').length, icon: TrendingUp, color: '#8ac4e0', bg: 'rgba(138,196,224,0.15)' },
+  { label: 'Total Eventos', value: events.length, icon: Calendar, color: '#8b5cf6', bg: 'rgba(139, 92, 246, 0.15)' },
+  { label: 'Activos', value: events.filter(e => e.status === 'active').length, icon: CheckCircle, color: '#10b981', bg: 'rgba(16, 185, 129, 0.15)' },
+  { label: 'En Borrador', value: events.filter(e => e.status === 'draft').length, icon: Clock, color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.15)' },
+  { label: 'Tipo Web', value: events.filter(e => e.type === 'web').length, icon: TrendingUp, color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.15)' },
 ];
 
 const typeLabels: Record<string, string> = { web: 'Inv. Boda Web', video: 'Inv. Boda Video', card: 'Inv. Boda Card' };

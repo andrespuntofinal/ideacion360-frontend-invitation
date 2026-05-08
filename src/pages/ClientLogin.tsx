@@ -1,14 +1,14 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Mail, ShieldCheck, ArrowRight, ArrowLeft } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Mail, ShieldCheck, ArrowRight, ArrowLeft, CheckCircle, Heart } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { authService } from '../services/api';
 import useAuthStore from '../stores/authStore';
-import logoSitio from '../assets/logositio.jpg';
+import Navbar from '../components/common/Navbar';
+import Footer from '../components/common/Footer';
 
 const ClientLogin = () => {
-  // ... existing state ...
   const [step, setStep] = useState<'email' | 'otp'>('email');
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
@@ -16,14 +16,10 @@ const ClientLogin = () => {
   const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
   const navigate = useNavigate();
 
-  // Ensure authStore is updated properly if needed
-  // Note: We might just want to store the token locally or use useAuthStore directly
-  // since verifyOtp returns token and user. We will update the store manually if useAuthStore doesn't have a direct loginClient.
-  
   const handleRequestOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) return toast.error('Ingresa tu correo electrónico');
-    
+
     setIsLoading(true);
     try {
       const res = await authService.requestOtp(email);
@@ -39,12 +35,11 @@ const ClientLogin = () => {
   };
 
   const handleOtpChange = (index: number, value: string) => {
-    if (value.length > 1) value = value.slice(0, 1); // Only 1 digit
+    if (value.length > 1) value = value.slice(0, 1);
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
 
-    // Auto-focus next input
     if (value !== '' && index < 5) {
       otpRefs.current[index + 1]?.focus();
     }
@@ -66,18 +61,13 @@ const ClientLogin = () => {
       const res = await authService.verifyOtp(email, otpCode);
       if (res.data.success) {
         toast.success('Acceso permitido');
-        
-        // Save to local storage
         localStorage.setItem('auth_token', res.data.token);
         localStorage.setItem('auth_user', JSON.stringify(res.data.user));
-        
-        // Update authStore
-        useAuthStore.setState({ 
-          token: res.data.token, 
-          user: res.data.user, 
-          isAuthenticated: true 
+        useAuthStore.setState({
+          token: res.data.token,
+          user: res.data.user,
+          isAuthenticated: true
         });
-
         navigate(`/wedding/mi-boda/${res.data.eventId}`);
       }
     } catch (error: any) {
@@ -87,100 +77,218 @@ const ClientLogin = () => {
     }
   };
 
+  const serviceColor = '#8b5cf6';
+  const serviceGradient = 'linear-gradient(135deg, rgba(139, 92, 246, 0.4) 0%, #090721 100%)';
+  const serviceBorder = 'rgba(139, 92, 246, 0.3)';
+
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-primary)', position: 'relative', overflow: 'hidden', padding: '1.5rem' }}>
-      <div className="orb orb-purple" style={{ width: 500, height: 500, top: '-150px', left: '-100px', opacity: 0.4 }} />
-      <div className="orb orb-pink" style={{ width: 350, height: 350, bottom: '-100px', right: '-50px', opacity: 0.3 }} />
-      <div className="orb orb-blue" style={{ width: 300, height: 300, top: '50%', right: '20%', opacity: 0.2 }} />
-      <div style={{ position: 'absolute', inset: 0, opacity: 0.03, backgroundImage: 'linear-gradient(var(--border-glass) 1px, transparent 1px), linear-gradient(90deg, var(--border-glass) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+    <div style={{ minHeight: '100vh', background: '#090721', color: 'white' }}>
+      <Navbar />
 
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="glass-card" style={{ width: '100%', maxWidth: 420, padding: '2.5rem', position: 'relative', zIndex: 1 }}
-      >
-        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem', overflow: 'hidden', border: '1px solid var(--border-glass)', boxShadow: 'var(--shadow-glow)' }}>
-            <img src={logoSitio} alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      <main style={{
+        minHeight: 'calc(100vh - 160px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '4rem 1.5rem',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        <div className="orb orb-purple" style={{ width: 600, height: 600, top: '-150px', left: '-100px', opacity: 0.15 }} />
+        <div className="orb orb-pink" style={{ width: 400, height: 400, bottom: '-100px', right: '-50px', opacity: 0.1 }} />
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          whileHover={{ y: -8, transition: { duration: 0.3 } }}
+          style={{
+            width: '100%',
+            maxWidth: 420,
+            background: serviceGradient,
+            border: `1px solid ${serviceBorder}`,
+            borderRadius: 'var(--radius-xl)',
+            padding: '3rem 2.5rem',
+            position: 'relative',
+            zIndex: 1,
+            overflow: 'hidden',
+            boxShadow: '0 20px 40px rgba(0,0,0,0.4)'
+          }}
+        >
+          <div style={{
+            position: 'absolute', top: -40, right: -40,
+            width: 120, height: 120, borderRadius: '50%',
+            background: serviceColor, opacity: 0.15, filter: 'blur(30px)',
+          }} />
+
+          <div style={{
+            width: 64, height: 64, borderRadius: 16,
+            background: `linear-gradient(135deg, ${serviceColor}30, ${serviceColor}10)`,
+            border: `1px solid ${serviceBorder}`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            marginBottom: '2rem',
+          }}>
+            <Heart size={32} color={serviceColor} />
           </div>
-          <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-            style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--gradient-brand)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem', boxShadow: 'var(--shadow-glow)' }}>
-            {step === 'email' ? <Mail size={20} color="white" /> : <ShieldCheck size={20} color="white" />}
-          </motion.div>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', color: 'var(--text-primary)', marginBottom: '0.35rem' }}>
-            {step === 'email' ? 'Gestión de Mi Boda' : 'Verificación'}
-          </h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-            {step === 'email' 
-              ? 'Ingresa tu correo registrado para acceder a tu panel.' 
-              : 'Ingresa el código de 6 dígitos que enviamos a tu correo.'}
-          </p>
-        </div>
 
-        {step === 'email' ? (
-          <form onSubmit={handleRequestOtp}>
-            <div style={{ marginBottom: '1.25rem' }}>
-              <label className="input-label">Correo Electrónico</label>
-              <input
-                type="email"
-                className="input-field"
-                placeholder="ejemplo@correo.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                autoFocus
-              />
-            </div>
+          <div style={{ marginBottom: '2.5rem' }}>
+            <p style={{ color: serviceColor, fontSize: '0.85rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.6rem' }}>
+              Acceso Clientes
+            </p>
+            <h1 style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '2.5rem',
+              fontWeight: 800,
+              color: 'white',
+              marginBottom: '1rem',
+              letterSpacing: '-0.02em'
+            }}>
+              {step === 'email' ? 'Mi Boda' : 'Verificación'}
+            </h1>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', lineHeight: 1.7, marginBottom: '2rem' }}>
+              {step === 'email'
+                ? 'Ingresa tu correo registrado para gestionar tu lista de invitados y detalles.'
+                : 'Ingresa el código de 6 dígitos que enviamos a tu correo electrónico.'}
+            </p>
 
-            <motion.button type="submit" className="btn-primary" disabled={isLoading}
-              whileHover={{ scale: isLoading ? 1 : 1.02 }} whileTap={{ scale: isLoading ? 1 : 0.98 }}
-              style={{ width: '100%', padding: '0.9rem', fontSize: '0.95rem', opacity: isLoading ? 0.7 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-              {isLoading ? 'Enviando...' : (
-                <>Solicitar Código <ArrowRight size={18} /></>
-              )}
-            </motion.button>
-          </form>
-        ) : (
-          <form onSubmit={handleVerifyOtp}>
-            <div style={{ marginBottom: '2rem' }}>
-              <label className="input-label" style={{ textAlign: 'center', display: 'block', marginBottom: '1rem' }}>Código OTP</label>
-              <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
-                {otp.map((digit, index) => (
+            <ul style={{ listStyle: 'none', marginBottom: '2.5rem', padding: 0 }}>
+              {['Gestión de invitados', 'Confirmaciones RSVP'].map(f => (
+                <li key={f} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '0.75rem' }}>
+                  <CheckCircle size={16} color={serviceColor} />
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <AnimatePresence mode="wait">
+            {step === 'email' ? (
+              <motion.form
+                key="email-form"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                onSubmit={handleRequestOtp}
+              >
+                <div style={{ marginBottom: '1.5rem' }}>
+                  <label style={{ display: 'block', color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', marginBottom: '0.5rem', fontWeight: 500 }}>Correo Electrónico</label>
                   <input
-                    key={index}
-                    ref={(el) => { otpRefs.current[index] = el; }}
-                    type="text"
-                    inputMode="numeric"
+                    type="email"
                     className="input-field"
-                    style={{ width: '45px', height: '55px', textAlign: 'center', fontSize: '1.5rem', padding: '0', borderRadius: '10px' }}
-                    value={digit}
-                    onChange={(e) => handleOtpChange(index, e.target.value)}
-                    onKeyDown={(e) => handleOtpKeyDown(index, e)}
+                    placeholder="ejemplo@correo.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
+                    style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
                   />
-                ))}
-              </div>
-            </div>
+                </div>
 
-            <motion.button type="submit" className="btn-primary" disabled={isLoading}
-              whileHover={{ scale: isLoading ? 1 : 1.02 }} whileTap={{ scale: isLoading ? 1 : 0.98 }}
-              style={{ width: '100%', padding: '0.9rem', fontSize: '0.95rem', opacity: isLoading ? 0.7 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-              {isLoading ? 'Verificando...' : (
-                <>Ingresar <ShieldCheck size={18} /></>
-              )}
-            </motion.button>
-            <button 
-              type="button" 
-              className="btn-secondary" 
-              onClick={() => setStep('email')}
-              style={{ width: '100%', marginTop: '1rem', padding: '0.9rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}
-            >
-              <ArrowLeft size={16} /> Volver
-            </button>
-          </form>
-        )}
-      </motion.div>
+                <motion.button
+                  type="submit"
+                  disabled={isLoading}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  style={{
+                    width: '100%',
+                    padding: '1rem 1.5rem',
+                    fontSize: '1rem',
+                    background: 'transparent',
+                    color: 'white',
+                    border: `1px solid ${serviceBorder}`,
+                    borderRadius: '50px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.8rem',
+                    cursor: 'pointer',
+                    fontWeight: 700,
+                    transition: 'all 0.3s ease',
+                    fontFamily: 'var(--font-body)'
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.background = `${serviceColor}20`; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
+                >
+                  {isLoading ? (
+                    <div style={{ width: 22, height: 22, border: '3px solid rgba(255,255,255,0.1)', borderTopColor: 'white', borderRadius: '50%', animation: 'spin-slow 0.8s linear infinite' }} />
+                  ) : (
+                    <>Solicitar Código <ArrowRight size={18} /></>
+                  )}
+                </motion.button>
+              </motion.form>
+            ) : (
+              <motion.form
+                key="otp-form"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                onSubmit={handleVerifyOtp}
+              >
+                <div style={{ marginBottom: '2rem' }}>
+                  <label style={{ display: 'block', color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', marginBottom: '1rem', fontWeight: 500, textAlign: 'center' }}>Código de Verificación</label>
+                  <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
+                    {otp.map((digit, index) => (
+                      <input
+                        key={index}
+                        ref={(el) => { otpRefs.current[index] = el; }}
+                        type="text"
+                        inputMode="numeric"
+                        className="input-field"
+                        style={{ width: '45px', height: '55px', textAlign: 'center', fontSize: '1.5rem', padding: '0', borderRadius: '12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
+                        value={digit}
+                        onChange={(e) => handleOtpChange(index, e.target.value)}
+                        onKeyDown={(e) => handleOtpKeyDown(index, e)}
+                        required
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                <motion.button
+                  type="submit"
+                  disabled={isLoading}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  style={{
+                    width: '100%',
+                    padding: '1rem 1.5rem',
+                    fontSize: '1rem',
+                    background: 'transparent',
+                    color: 'white',
+                    border: `1px solid ${serviceBorder}`,
+                    borderRadius: '50px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.8rem',
+                    cursor: 'pointer',
+                    fontWeight: 700,
+                    transition: 'all 0.3s ease',
+                    fontFamily: 'var(--font-body)'
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.background = `${serviceColor}20`; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
+                >
+                  {isLoading ? (
+                    <div style={{ width: 22, height: 22, border: '3px solid rgba(255,255,255,0.1)', borderTopColor: 'white', borderRadius: '50%', animation: 'spin-slow 0.8s linear infinite' }} />
+                  ) : (
+                    <>Verificar e Ingresar <ShieldCheck size={18} /></>
+                  )}
+                </motion.button>
+
+                <button
+                  type="button"
+                  onClick={() => setStep('email')}
+                  style={{ width: '100%', marginTop: '1.5rem', background: 'none', border: 'none', color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+                >
+                  <ArrowLeft size={14} /> Volver a ingresar correo
+                </button>
+              </motion.form>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      </main>
+
+      <Footer />
     </div>
   );
 };

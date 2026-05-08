@@ -10,6 +10,7 @@ export interface AuthUser {
   username: string;
   role: string;
   name: string;
+  estado?: string;
 }
 
 export interface AuthState {

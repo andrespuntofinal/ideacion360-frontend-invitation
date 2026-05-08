@@ -6,10 +6,10 @@ import AdminLayout from '../components/admin/AdminLayout';
 interface SettingSection { icon: ElementType; title: string; desc: string; color: string; status: string; }
 
 const settingSections: SettingSection[] = [
-  { icon: Database, title: 'Base de Datos', desc: 'Conexión MongoDB Atlas activa', color: '#4ade80', status: 'Conectado' },
-  { icon: Shield, title: 'Autenticación', desc: 'Credenciales fijas (Firebase Auth — próximamente)', color: '#8ac4e0', status: 'Básico' },
-  { icon: Bell, title: 'Notificaciones', desc: 'n8n workflow integration — próximamente', color: '#fbbf24', status: 'Pendiente' },
-  { icon: Palette, title: 'Cloudinary', desc: 'Gestión de imágenes y media — próximamente', color: '#f472b6', status: 'Pendiente' },
+  { icon: Database, title: 'Base de Datos', desc: 'Conexión MongoDB Atlas activa', color: '#10b981', status: 'Conectado' },
+  { icon: Shield, title: 'Autenticación', desc: 'Firebase Google Auth activa', color: '#3b82f6', status: 'Seguro' },
+  { icon: Bell, title: 'Notificaciones', desc: 'Sincronización con CRM activa', color: '#8b5cf6', status: 'En Línea' },
+  { icon: Palette, title: 'Cloudinary', desc: 'Gestión de media activa', color: '#D7B272', status: 'Conectado' },
 ];
 
 const AdminSettings = () => (
@@ -28,7 +28,19 @@ const AdminSettings = () => (
             <div style={{ flex: 1 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
                 <h3 style={{ fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '0.95rem', color: 'var(--text-primary)' }}>{title}</h3>
-                <span style={{ fontSize: '0.68rem', fontWeight: 600, padding: '0.2rem 0.5rem', borderRadius: 50, textTransform: 'uppercase', letterSpacing: '0.05em', background: status === 'Conectado' ? 'rgba(74,222,128,0.15)' : status === 'Básico' ? 'rgba(138,196,224,0.15)' : 'rgba(107,114,128,0.15)', color: status === 'Conectado' ? '#4ade80' : status === 'Básico' ? '#8ac4e0' : '#9ca3af', border: `1px solid ${status === 'Conectado' ? 'rgba(74,222,128,0.3)' : status === 'Básico' ? 'rgba(138,196,224,0.3)' : 'rgba(107,114,128,0.3)'}` }}>{status}</span>
+                <span style={{ 
+                  fontSize: '0.68rem', 
+                  fontWeight: 600, 
+                  padding: '0.2rem 0.6rem', 
+                  borderRadius: 50, 
+                  textTransform: 'uppercase', 
+                  letterSpacing: '0.05em', 
+                  background: `${color}15`, 
+                  color: color, 
+                  border: `1px solid ${color}40` 
+                }}>
+                  {status}
+                </span>
               </div>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.82rem', lineHeight: 1.5 }}>{desc}</p>
             </div>
