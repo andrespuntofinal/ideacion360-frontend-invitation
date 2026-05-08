@@ -156,21 +156,21 @@ const Home = () => {
                   {
                     icon: Globe,
                     title: 'Sitios Web',
-                    desc: 'Modernos y estratégicos para impulsar tu marca',
+                    desc: '',
                     color: '#8ac4e0',
                     gradient: 'linear-gradient(135deg, rgba(73, 139, 237, 0.44) 0%, #141228  100%)'
                   },
                   {
                     icon: Heart,
                     title: 'Invitaciones de Boda',
-                    desc: 'Modernas, interactivas y llenas de estilo.',
+                    desc: '',
                     color: '#8b5cf6',
                     gradient: 'linear-gradient(135deg, rgba(180, 153, 243, 0.46) 0%, #141228  100%)'
                   },
                   {
                     icon: Play,
                     title: 'Animación Digital',
-                    desc: 'Historias que conectan y sorprenden.',
+                    desc: '',
                     color: '#D7B272',
                     gradient: 'linear-gradient(135deg, rgba(235, 219, 141, 0.6) 0%, #141228 100%)'
                   }
