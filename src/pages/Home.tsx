@@ -146,10 +146,11 @@ const Home = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
                 style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-                  gap: '1rem',
+                  display: 'flex',
+                  gap: '1.2rem',
                   marginTop: '2rem',
+                  justifyContent: 'flex-start',
+                  flexWrap: 'nowrap',
                 }}
               >
                 {[
@@ -187,11 +188,19 @@ const Home = () => {
                       background: card.gradient,
                       backdropFilter: 'blur(12px)',
                       border: `1px solid ${card.color}40`,
-                      borderRadius: '20px',
-                      padding: '1.5rem',
+                      borderRadius: '50%',
+                      width: '130px',
+                      height: '130px',
+                      padding: '1rem',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      textAlign: 'center',
                       transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
                       position: 'relative',
-                      overflow: 'hidden'
+                      overflow: 'hidden',
+                      flexShrink: 0
                     }}
                     className="hero-card-item"
                   >
@@ -207,22 +216,32 @@ const Home = () => {
                     }} />
 
                     <div style={{
-                      width: '40px',
-                      height: '40px',
+                      width: '36px',
+                      height: '36px',
                       borderRadius: '12px',
                       background: `${card.color}25`,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      marginBottom: '1rem',
+                      marginBottom: '0.6rem',
                       border: `1px solid ${card.color}50`,
                       position: 'relative',
                       zIndex: 1
                     }}>
-                      <card.icon size={20} color={card.color} />
+                      <card.icon size={18} color={card.color} />
                     </div>
-                    <h4 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '0.5rem', color: '#FFFFFF', position: 'relative', zIndex: 1 }}>{card.title}</h4>
-                    <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.7)', lineHeight: 1.5, position: 'relative', zIndex: 1 }}>{card.desc}</p>
+                    <h4 style={{ 
+                      fontSize: '0.78rem', 
+                      fontWeight: 600, 
+                      margin: 0, 
+                      color: '#FFFFFF', 
+                      fontFamily: "'Montserrat', sans-serif",
+                      position: 'relative', 
+                      zIndex: 1,
+                      lineHeight: 1.3,
+                      maxWidth: '85%',
+                      letterSpacing: '0.02em'
+                    }}>{card.title}</h4>
                   </motion.div>
                 ))}
               </motion.div>
@@ -283,14 +302,33 @@ const Home = () => {
                 max-width: 100% !important;
               }
               .hero-cards {
-                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
                 justify-content: center !important;
+                gap: 1rem !important;
               }
             }
 
             @media (max-width: 576px) {
               .hero-cards {
-                grid-template-columns: 1fr !important;
+                gap: 0.6rem !important;
+                margin-top: 1.5rem !important;
+              }
+              .hero-card-item {
+                width: 105px !important;
+                height: 105px !important;
+                padding: 0.8rem !important;
+              }
+              .hero-card-item h4 {
+                font-size: 0.7rem !important;
+                font-family: 'Montserrat', sans-serif !important;
+              }
+              .hero-card-item div {
+                width: 30px !important;
+                height: 30px !important;
+                margin-bottom: 0.4rem !important;
+              }
+              .hero-card-item svg {
+                width: 15px !important;
+                height: 15px !important;
               }
               .hero-features {
                 justify-content: center !important;
