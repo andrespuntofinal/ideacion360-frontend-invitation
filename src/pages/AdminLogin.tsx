@@ -50,7 +50,7 @@ const AdminLogin = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '2rem 1.5rem',
+        padding: '6rem 1.5rem 4rem',
         position: 'relative'
       }}>
         {/* Animated Background Elements */}
@@ -72,13 +72,13 @@ const AdminLogin = () => {
           transition={{ duration: 1, ease: "easeOut" }}
           style={{
             width: '100%',
-            maxWidth: 440,
+            maxWidth: 400,
             background: glassGradient,
             backdropFilter: 'blur(16px)',
             WebkitBackdropFilter: 'blur(16px)',
             border: glassBorder,
-            borderRadius: '32px',
-            padding: '3.5rem 2.5rem',
+            borderRadius: '28px',
+            padding: '2.5rem 2rem',
             position: 'relative',
             zIndex: 1,
             boxShadow: '0 40px 100px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255,255,255,0.1)'
@@ -89,38 +89,38 @@ const AdminLogin = () => {
 
           {/* Icon Section */}
           <div style={{
-            width: 72, height: 72, borderRadius: 20,
-            background: 'rgba(59, 130, 246, 0.1)',
-            border: '1px solid rgba(59, 130, 246, 0.2)',
+            width: 60, height: 60, borderRadius: 16,
+            background: 'rgba(138, 196, 224, 0.1)',
+            border: '1px solid rgba(138, 196, 224, 0.2)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            marginBottom: '2.5rem',
+            marginBottom: '2rem',
             boxShadow: '0 10px 20px rgba(0,0,0,0.2)'
           }}>
-            <ShieldCheck size={36} color={serviceColor} />
+            <ShieldCheck size={30} color={serviceColor} />
           </div>
 
-          <div style={{ marginBottom: '3rem' }}>
-            <p style={{ color: serviceColor, fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.75rem', opacity: 0.8 }}>
+          <div style={{ marginBottom: '2rem' }}>
+            <p style={{ color: serviceColor, fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.5rem', opacity: 0.8 }}>
               Acceso Administrativo
             </p>
             <h1 style={{
               fontFamily: 'var(--font-display)',
-              fontSize: '3rem',
+              fontSize: '2.5rem',
               fontWeight: 800,
               color: 'white',
-              marginBottom: '1.25rem',
+              marginBottom: '1rem',
               letterSpacing: '-0.03em',
               lineHeight: 1.1
             }}>
               Panel Admin
             </h1>
-            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.95rem', lineHeight: 1.6, marginBottom: '2.5rem' }}>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', lineHeight: 1.5, marginBottom: '2rem' }}>
               Gestiona todos los eventos, invitados y configuraciones de Ideación 360 desde un solo lugar.
             </p>
 
             {/* Features */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'rgba(255,255,255,0.9)', fontSize: '0.9rem', marginBottom: '2rem', fontWeight: 500 }}>
-              <CheckCircle size={18} color={serviceColor} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'rgba(255,255,255,0.9)', fontSize: '0.85rem', marginBottom: '1.5rem', fontWeight: 500 }}>
+              <CheckCircle size={16} color={serviceColor} />
               Autenticación segura
             </div>
           </div>
