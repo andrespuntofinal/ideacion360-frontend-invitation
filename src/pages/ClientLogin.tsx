@@ -77,12 +77,12 @@ const ClientLogin = () => {
     }
   };
 
-  const serviceColor = '#8b5cf6';
-  const serviceGradient = 'linear-gradient(135deg, rgba(139, 92, 246, 0.4) 0%, #090721 100%)';
-  const serviceBorder = 'rgba(139, 92, 246, 0.3)';
+  const serviceColor = '#8ac4e0';
+  const glassGradient = 'linear-gradient(135deg, rgba(73, 139, 237, 0.44) 0%, #141228 100%)';
+  const glassBorder = '1px solid rgba(138, 196, 224, 0.3)';
 
   return (
-    <div style={{ minHeight: '100vh', background: '#090721', color: 'white' }}>
+    <div style={{ minHeight: '100vh', background: '#090721', color: 'white', overflow: 'hidden' }}>
       <Navbar />
 
       <main style={{
@@ -90,49 +90,56 @@ const ClientLogin = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '4rem 1.5rem',
-        position: 'relative',
-        overflow: 'hidden'
+        padding: '6rem 1.5rem 4rem',
+        position: 'relative'
       }}>
-        <div className="orb orb-purple" style={{ width: 600, height: 600, top: '-150px', left: '-100px', opacity: 0.15 }} />
-        <div className="orb orb-pink" style={{ width: 400, height: 400, bottom: '-100px', right: '-50px', opacity: 0.1 }} />
+        {/* Animated Background Elements */}
+        <motion.div 
+          animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.15, 0.1] }}
+          transition={{ duration: 10, repeat: Infinity }}
+          style={{ position: 'absolute', width: 600, height: 600, background: 'radial-gradient(circle, rgba(138, 196, 224, 0.2) 0%, transparent 70%)', top: '-10%', left: '-10%', filter: 'blur(80px)', pointerEvents: 'none' }} 
+        />
+        <motion.div 
+          animate={{ scale: [1, 1.3, 1], opacity: [0.05, 0.1, 0.05] }}
+          transition={{ duration: 15, repeat: Infinity, delay: 2 }}
+          style={{ position: 'absolute', width: 500, height: 500, background: 'radial-gradient(circle, rgba(138, 196, 224, 0.15) 0%, transparent 70%)', bottom: '-10%', right: '-5%', filter: 'blur(60px)', pointerEvents: 'none' }} 
+        />
 
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          whileHover={{ y: -8, transition: { duration: 0.3 } }}
+          transition={{ duration: 1, ease: "easeOut" }}
           style={{
             width: '100%',
-            maxWidth: 420,
-            background: serviceGradient,
-            border: `1px solid ${serviceBorder}`,
-            borderRadius: 'var(--radius-xl)',
-            padding: '3rem 2.5rem',
+            maxWidth: 400,
+            background: glassGradient,
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            border: glassBorder,
+            borderRadius: '28px',
+            padding: '2.5rem 2rem',
             position: 'relative',
             zIndex: 1,
-            overflow: 'hidden',
-            boxShadow: '0 20px 40px rgba(0,0,0,0.4)'
+            boxShadow: '0 40px 100px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255,255,255,0.1)'
           }}
         >
-          <div style={{
-            position: 'absolute', top: -40, right: -40,
-            width: 120, height: 120, borderRadius: '50%',
-            background: serviceColor, opacity: 0.15, filter: 'blur(30px)',
-          }} />
+          {/* Top highlight line */}
+          <div style={{ position: 'absolute', top: 0, left: '15%', right: '15%', height: '1px', background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)' }} />
 
+          {/* Icon Section */}
           <div style={{
-            width: 64, height: 64, borderRadius: 16,
-            background: `linear-gradient(135deg, ${serviceColor}30, ${serviceColor}10)`,
-            border: `1px solid ${serviceBorder}`,
+            width: 60, height: 60, borderRadius: 16,
+            background: 'rgba(138, 196, 224, 0.1)',
+            border: '1px solid rgba(138, 196, 224, 0.2)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             marginBottom: '2rem',
+            boxShadow: '0 10px 20px rgba(0,0,0,0.2)'
           }}>
-            <Heart size={32} color={serviceColor} />
+            <Heart size={30} color={serviceColor} />
           </div>
 
-          <div style={{ marginBottom: '2.5rem' }}>
-            <p style={{ color: serviceColor, fontSize: '0.85rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.6rem' }}>
+          <div style={{ marginBottom: '2rem' }}>
+            <p style={{ color: serviceColor, fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.5rem', opacity: 0.8 }}>
               Acceso Clientes
             </p>
             <h1 style={{
@@ -141,25 +148,28 @@ const ClientLogin = () => {
               fontWeight: 800,
               color: 'white',
               marginBottom: '1rem',
-              letterSpacing: '-0.02em'
+              letterSpacing: '-0.03em',
+              lineHeight: 1.1
             }}>
               {step === 'email' ? 'Mi Boda' : 'Verificación'}
             </h1>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', lineHeight: 1.7, marginBottom: '2rem' }}>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', lineHeight: 1.5, marginBottom: '2rem' }}>
               {step === 'email'
                 ? 'Ingresa tu correo registrado para gestionar tu lista de invitados y detalles.'
                 : 'Ingresa el código de 6 dígitos que enviamos a tu correo electrónico.'}
             </p>
 
-            <ul style={{ listStyle: 'none', marginBottom: '2.5rem', padding: 0 }}>
+            {/* Features */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
               {['Gestión de invitados', 'Confirmaciones RSVP'].map(f => (
-                <li key={f} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '0.75rem' }}>
+                <div key={f} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'rgba(255,255,255,0.9)', fontSize: '0.85rem', fontWeight: 500 }}>
                   <CheckCircle size={16} color={serviceColor} />
                   {f}
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
+
 
           <AnimatePresence mode="wait">
             {step === 'email' ? (
@@ -170,8 +180,8 @@ const ClientLogin = () => {
                 exit={{ opacity: 0, x: 20 }}
                 onSubmit={handleRequestOtp}
               >
-                <div style={{ marginBottom: '1.5rem' }}>
-                  <label style={{ display: 'block', color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', marginBottom: '0.5rem', fontWeight: 500 }}>Correo Electrónico</label>
+                <div style={{ marginBottom: '2rem' }}>
+                  <label style={{ display: 'block', color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', marginBottom: '0.75rem', fontWeight: 500 }}>Correo Electrónico</label>
                   <input
                     type="email"
                     className="input-field"
@@ -179,39 +189,49 @@ const ClientLogin = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
+                    style={{ 
+                      background: 'rgba(255,255,255,0.03)', 
+                      border: '1px solid rgba(255,255,255,0.1)', 
+                      color: 'white',
+                      padding: '1.1rem 1.5rem',
+                      borderRadius: '16px',
+                      width: '100%',
+                      fontSize: '1rem',
+                      outline: 'none',
+                      transition: 'all 0.3s ease'
+                    }}
+                    onFocus={e => e.currentTarget.style.borderColor = serviceColor}
+                    onBlur={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'}
                   />
                 </div>
 
                 <motion.button
                   type="submit"
                   disabled={isLoading}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: 1.03, boxShadow: '0 15px 30px rgba(0,0,0,0.4)' }}
+                  whileTap={{ scale: 0.97 }}
                   style={{
                     width: '100%',
-                    padding: '1rem 1.5rem',
+                    padding: '1.1rem 2rem',
                     fontSize: '1rem',
-                    background: 'transparent',
+                    background: 'rgba(255,255,255,0.03)',
                     color: 'white',
-                    border: `1px solid ${serviceBorder}`,
-                    borderRadius: '50px',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    borderRadius: '100px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: '0.8rem',
+                    gap: '1rem',
                     cursor: 'pointer',
                     fontWeight: 700,
                     transition: 'all 0.3s ease',
-                    fontFamily: 'var(--font-body)'
+                    boxShadow: '0 10px 20px rgba(0,0,0,0.2)'
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.background = `${serviceColor}20`; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
                 >
                   {isLoading ? (
                     <div style={{ width: 22, height: 22, border: '3px solid rgba(255,255,255,0.1)', borderTopColor: 'white', borderRadius: '50%', animation: 'spin-slow 0.8s linear infinite' }} />
                   ) : (
-                    <>Solicitar Código <ArrowRight size={18} /></>
+                    <>Solicitar Código <ArrowRight size={20} /></>
                   )}
                 </motion.button>
               </motion.form>
@@ -223,17 +243,30 @@ const ClientLogin = () => {
                 exit={{ opacity: 0, x: 20 }}
                 onSubmit={handleVerifyOtp}
               >
-                <div style={{ marginBottom: '2rem' }}>
-                  <label style={{ display: 'block', color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', marginBottom: '1rem', fontWeight: 500, textAlign: 'center' }}>Código de Verificación</label>
-                  <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
+                <div style={{ marginBottom: '2.5rem' }}>
+                  <label style={{ display: 'block', color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', marginBottom: '1.25rem', fontWeight: 500, textAlign: 'center' }}>Código de Verificación</label>
+                  <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
                     {otp.map((digit, index) => (
                       <input
                         key={index}
                         ref={(el) => { otpRefs.current[index] = el; }}
                         type="text"
                         inputMode="numeric"
-                        className="input-field"
-                        style={{ width: '45px', height: '55px', textAlign: 'center', fontSize: '1.5rem', padding: '0', borderRadius: '12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
+                        style={{ 
+                          width: '50px', 
+                          height: '60px', 
+                          textAlign: 'center', 
+                          fontSize: '1.5rem', 
+                          padding: '0', 
+                          borderRadius: '14px', 
+                          background: 'rgba(255,255,255,0.03)', 
+                          border: '1px solid rgba(255,255,255,0.1)', 
+                          color: 'white',
+                          outline: 'none',
+                          transition: 'all 0.3s ease'
+                        }}
+                        onFocus={e => e.currentTarget.style.borderColor = serviceColor}
+                        onBlur={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'}
                         value={digit}
                         onChange={(e) => handleOtpChange(index, e.target.value)}
                         onKeyDown={(e) => handleOtpKeyDown(index, e)}
@@ -246,39 +279,37 @@ const ClientLogin = () => {
                 <motion.button
                   type="submit"
                   disabled={isLoading}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: 1.03, boxShadow: '0 15px 30px rgba(0,0,0,0.4)' }}
+                  whileTap={{ scale: 0.97 }}
                   style={{
                     width: '100%',
-                    padding: '1rem 1.5rem',
+                    padding: '1.1rem 2rem',
                     fontSize: '1rem',
-                    background: 'transparent',
+                    background: 'rgba(255,255,255,0.03)',
                     color: 'white',
-                    border: `1px solid ${serviceBorder}`,
-                    borderRadius: '50px',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    borderRadius: '100px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: '0.8rem',
+                    gap: '1rem',
                     cursor: 'pointer',
                     fontWeight: 700,
                     transition: 'all 0.3s ease',
-                    fontFamily: 'var(--font-body)'
+                    boxShadow: '0 10px 20px rgba(0,0,0,0.2)'
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.background = `${serviceColor}20`; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
                 >
                   {isLoading ? (
                     <div style={{ width: 22, height: 22, border: '3px solid rgba(255,255,255,0.1)', borderTopColor: 'white', borderRadius: '50%', animation: 'spin-slow 0.8s linear infinite' }} />
                   ) : (
-                    <>Verificar e Ingresar <ShieldCheck size={18} /></>
+                    <>Verificar e Ingresar <ShieldCheck size={20} /></>
                   )}
                 </motion.button>
 
                 <button
                   type="button"
                   onClick={() => setStep('email')}
-                  style={{ width: '100%', marginTop: '1.5rem', background: 'none', border: 'none', color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+                  style={{ width: '100%', marginTop: '2rem', background: 'none', border: 'none', color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', fontWeight: 500 }}
                 >
                   <ArrowLeft size={14} /> Volver a ingresar correo
                 </button>
