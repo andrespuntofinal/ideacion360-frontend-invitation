@@ -139,45 +139,49 @@ const ClientGuestManagement = () => {
 
   if (isLoading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-main)' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-primary)' }}>
         <div style={{ width: 40, height: 40, border: '3px solid var(--border-glass)', borderTopColor: 'var(--color-purple)', borderRadius: '50%', animation: 'spin-slow 0.8s linear infinite' }} />
       </div>
     );
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#15132a', color: theme.white, padding: '0', fontFamily: 'var(--font-body)' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-primary)', color: 'var(--text-primary)', position: 'relative', overflow: 'hidden' }}>
+      {/* Background orbs */}
+      <div className="orb orb-purple" style={{ width: 600, height: 600, top: '-200px', left: '-200px', opacity: 0.2 }} />
+      <div className="orb orb-blue" style={{ width: 400, height: 400, bottom: '-100px', right: '-100px', opacity: 0.15 }} />
       {/* Header Section from Image Reference */}
       <header 
-        className="app-header"
+        className="main-header"
         style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '0.75rem 2rem',
-          background: 'rgba(0,0,0,0.3)',
-          borderBottom: '1px solid rgba(255,255,255,0.1)',
-          backdropFilter: 'blur(10px)',
-          position: 'relative',
+          padding: '1rem 2rem',
+          background: 'rgba(9, 7, 33, 0.7)',
+          borderBottom: '1px solid var(--border-glass)',
+          backdropFilter: 'blur(12px)',
+          position: 'sticky',
+          top: 0,
           zIndex: 100
         }}
       >
-        {/* Left: Brand */}
-        <Link to="/" style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.1rem', flexShrink: 0 }}>
-          <div className="header-logo" style={{ width: 45, height: 45, borderRadius: '50%', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '2px solid white' }}>
+        <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '1px solid var(--border-glass)', flexShrink: 0 }}>
             <img src={logoSitio} alt="Ideación 360" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
-          <span className="header-brand-text" style={{ fontSize: '0.75rem', fontWeight: 'bold', background: 'var(--gradient-brand)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Ideación 360</span>
+          <div className="header-brand">
+            <div style={{ fontSize: '1rem', fontWeight: 700, fontFamily: 'var(--font-display)', background: 'var(--gradient-brand)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Ideación 360</div>
+            <div style={{ color: 'var(--text-muted)', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Gestión de Invitados</div>
+          </div>
         </Link>
 
-        {/* Center: Title */}
-        <div style={{ textAlign: 'center', flex: 1, padding: '0 0.5rem', minWidth: 0 }}>
-          <h1 style={{ fontSize: 'clamp(0.9rem, 2.5vw, 1.4rem)', fontWeight: '500', margin: 0, letterSpacing: '0.01em', color: theme.white, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-            Administrar invitados
+        <div style={{ textAlign: 'center', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }} className="header-title-container">
+          <h1 style={{ fontSize: '1rem', fontWeight: 600, margin: 0, color: 'var(--text-primary)', fontFamily: 'var(--font-body)', whiteSpace: 'nowrap' }}>
+            Boda <span className="gradient-text" style={{ fontWeight: 700 }}>{coupleNames}</span>
           </h1>
         </div>
 
-        {/* Right: Exit */}
         <button
           onClick={() => {
             useAuthStore.setState({ token: null, user: null, isAuthenticated: false });
@@ -185,226 +189,321 @@ const ClientGuestManagement = () => {
             localStorage.removeItem('auth_user');
             navigate('/');
           }}
-          className="exit-button"
+          className="btn-secondary"
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '0.4rem',
+            gap: '0.5rem',
             padding: '0.5rem 1rem',
-            background: 'transparent',
-            border: `1px solid ${theme.gold}88`,
-            color: theme.gold,
-            borderRadius: '25px',
-            cursor: 'pointer',
             fontSize: '0.8rem',
-            transition: 'all 0.3s ease',
             flexShrink: 0
           }}
-          onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)'}
-          onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
         >
-          <ArrowLeft size={14} /> <span>Salir</span>
+          <ArrowLeft size={14} /> <span className="btn-text">Salir</span>
         </button>
       </header>
 
-      <div className="container" style={{ maxWidth: '100%', width: '100%', padding: '1.5rem', margin: '0 auto' }}>
-
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-
-          {/* Summary Panels Grid */}
-          <div style={{ textAlign: 'center', flex: 1 }}>
-
-            <h2 style={{ fontSize: 'clamp(0.9rem, 2.5vw, 1.4rem)', fontWeight: '300', margin: '0.2rem 0 0', opacity: 0.9 }}>Boda &nbsp;{coupleNames}</h2>
-            <br />
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
-
-            {/* Left Panel: Resumen de Asistencia */}
-            <div style={{ flex: '2 1 0', border: `1.5px solid ${theme.gold}88`, borderRadius: '12px', padding: '1.25rem', background: theme.bgFrom, display: 'flex', flexDirection: 'column' }}>
-              <h3 style={{ color: theme.gold, fontSize: '0.85rem', fontWeight: 'bold', marginBottom: '1.25rem', letterSpacing: '0.05em' }}>Resumen de Asistencia</h3>
-
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.75rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: theme.bgVia, padding: '1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                  <Check size={28} color="#4ade80" style={{ flexShrink: 0, opacity: 0.8 }} />
-                  <div>
-                    <div style={{ fontSize: '0.7rem', color: theme.white, opacity: 0.7, lineHeight: '1.2' }}>Confirmados que asistirán:</div>
-                    <div style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>{attendingGuests}</div>
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: theme.bgVia, padding: '1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                  <X size={28} color="#ef4444" style={{ flexShrink: 0, opacity: 0.8 }} />
-                  <div>
-                    <div style={{ fontSize: '0.7rem', color: theme.white, opacity: 0.7, lineHeight: '1.2' }}>Confirmados que no asistirán:</div>
-                    <div style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>{notAttendingGuests}</div>
-                  </div>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: theme.bgVia, padding: '1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                  <Clock size={28} color={theme.gold} style={{ flexShrink: 0, opacity: 0.8 }} />
-                  <div>
-                    <div style={{ fontSize: '0.7rem', color: theme.white, opacity: 0.7, lineHeight: '1.2' }}>Faltan por confirmar:</div>
-                    <div style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>{pendingGuests}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Panel: Cantidad de Invitados */}
-            <div style={{ flex: '1 1 0', border: `1.5px solid ${theme.gold}88`, borderRadius: '12px', padding: '1.25rem', background: theme.bgFrom, display: 'flex', flexDirection: 'column' }}>
-              <h3 style={{ color: theme.gold, fontSize: '0.85rem', fontWeight: 'bold', marginBottom: '1.25rem', letterSpacing: '0.05em' }}>Cantidad de Invitados</h3>
-
-              <div style={{
-                position: 'relative',
-                marginTop: '0.5rem',
-                border: '1px solid rgba(255,255,255,0.2)',
-                borderRadius: '8px',
-                padding: '0.75rem 1rem',
-                backgroundColor: theme.bgVia,
+      <div className="container" style={{ position: 'relative', zIndex: 1, padding: '1rem 1.5rem' }}>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <div style={{
+            position: 'sticky',
+            top: '72px',
+            zIndex: 90,
+            background: 'var(--bg-primary)',
+            padding: '0.75rem 0',
+            marginBottom: '1rem',
+            borderBottom: '1px solid var(--border-glass)'
+          }}>
+            <div className="stats-grid" style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(4, 1fr)',
+              gap: '0.75rem',
+              marginBottom: '1rem'
+            }}>
+              <div className="glass-card-sm" style={{
+                padding: '0.75rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.75rem',
+                background: 'linear-gradient(135deg, rgba(74, 222, 128, 0.2) 0%, rgba(9, 7, 33, 0.8) 100%)',
+                border: '1px solid rgba(74, 222, 128, 0.3)'
               }}>
+                <div className="stat-icon-container" style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(74, 222, 128, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Check size={18} color="#4ade80" />
+                </div>
+                <div>
+                  <div style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-primary)', fontFamily: 'var(--font-display)', lineHeight: 1 }}>{attendingGuests}</div>
+                  <div style={{ color: 'var(--text-muted)', fontSize: '0.6rem', marginTop: '0.1rem' }}>Asistirán</div>
+                </div>
+              </div>
 
-                <input
-                  type="number"
-                  value={totalGuests}
-                  onChange={e => setTotal(e.target.value)}
-                  style={{ width: '100%', background: 'transparent', border: 'none', color: theme.white, fontSize: '1.2rem', fontWeight: 'bold', outline: 'none' }}
-                />
+              <div className="glass-card-sm" style={{
+                padding: '0.75rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.75rem',
+                background: 'linear-gradient(135deg, rgba(248, 113, 113, 0.2) 0%, rgba(9, 7, 33, 0.8) 100%)',
+                border: '1px solid rgba(248, 113, 113, 0.3)'
+              }}>
+                <div className="stat-icon-container" style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(248, 113, 113, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <X size={18} color="#f87171" />
+                </div>
+                <div>
+                  <div style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-primary)', fontFamily: 'var(--font-display)', lineHeight: 1 }}>{notAttendingGuests}</div>
+                  <div style={{ color: 'var(--text-muted)', fontSize: '0.6rem', marginTop: '0.1rem' }}>No asistirán</div>
+                </div>
+              </div>
+
+              <div className="glass-card-sm" style={{
+                padding: '0.75rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.75rem',
+                background: 'linear-gradient(135deg, rgba(167, 139, 250, 0.2) 0%, rgba(9, 7, 33, 0.8) 100%)',
+                border: '1px solid rgba(167, 139, 250, 0.3)'
+              }}>
+                <div className="stat-icon-container" style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(122, 160, 232, 0.27)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Clock size={18} color="#a78bfa" />
+                </div>
+                <div>
+                  <div style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-primary)', fontFamily: 'var(--font-display)', lineHeight: 1 }}>{pendingGuests}</div>
+                  <div style={{ color: 'var(--text-muted)', fontSize: '0.6rem', marginTop: '0.1rem' }}>Pendientes</div>
+                </div>
+              </div>
+
+              <div className="glass-card-sm" style={{
+                padding: '0.75rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.75rem',
+                background: 'linear-gradient(135deg, rgba(215, 178, 114, 0.2) 0%, rgba(9, 7, 33, 0.8) 100%)',
+                border: '1px solid rgba(215, 178, 114, 0.3)'
+              }}>
+                <div className="stat-icon-container" style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(215, 178, 114, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <span style={{ fontSize: '1rem', fontWeight: 'bold', color: 'var(--color-gold)' }}>#</span>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <input
+                    type="number"
+                    value={totalGuests}
+                    onChange={e => setTotal(e.target.value)}
+                    className="input-field"
+                    style={{ padding: '0.2rem 0.4rem', fontSize: '1rem', fontWeight: 'bold', textAlign: 'center', height: 'auto', background: 'transparent' }}
+                  />
+                  <div style={{ color: 'var(--text-muted)', fontSize: '0.6rem', marginTop: '0.1rem', textAlign: 'center' }}>Total</div>
+                </div>
               </div>
             </div>
 
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <motion.button
+                onClick={handleSave}
+                disabled={isSaving}
+                className="btn-primary"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                style={{
+                  width: 'auto',
+                  minWidth: '240px',
+                  padding: '0.7rem 2rem',
+                  fontSize: '0.9rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.6rem',
+                  boxShadow: '0 4px 15px rgba(139, 92, 246, 0.3)',
+                  background: 'linear-gradient(to right,  #3b82f6, #8b5cf6)',
+                }}
+              >
+                <Save size={18} /> {isSaving ? 'Guardando...' : 'Guardar Cambios'}
+              </motion.button>
+            </div>
           </div>
 
-          {/* Gestión Individual */}
-          <div style={{ border: `1.5px solid ${theme.gold}88`, borderRadius: '12px', padding: '1.25rem', background: theme.bgFrom }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.5rem', marginTop: '1rem' }}>
+            {guests.map((g: any, i: number) => {
+              const cardUrl = g.urlCard ? (() => {
+                const frontUrl = import.meta.env.VITE_FRONT_URL || window.location.origin;
+                const baseUrl = frontUrl.replace(/\/$/, '');
+                const cardPath = g.urlCard.startsWith('/') ? g.urlCard : `/${g.urlCard}`;
+                return g.urlCard.startsWith('http') ? g.urlCard : `${baseUrl}${cardPath}`;
+              })() : '';
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-              {guests.map((g: any, i: number) => {
-                const cDate = g.confirmationDate ? new Date(g.confirmationDate) : null;
-                const dateStr = cDate ? cDate.toLocaleDateString('es-CO', { day: '2-digit', month: 'long', year: 'numeric' }) : '';
-                const timeStr = cDate ? cDate.toLocaleTimeString('es-CO', { hour: 'numeric', minute: '2-digit', hour12: true }) : '';
+              const cDate = g.confirmationDate ? new Date(g.confirmationDate) : null;
+              const dateStr = cDate ? cDate.toLocaleDateString('es-CO', { day: '2-digit', month: 'long' }) : '';
+              const timeStr = cDate ? cDate.toLocaleTimeString('es-CO', { hour: 'numeric', minute: '2-digit', hour12: true }) : '';
 
-                const cardUrl = g.urlCard ? (() => {
-                  const frontUrl = import.meta.env.VITE_FRONT_URL || window.location.origin;
-                  const baseUrl = frontUrl.replace(/\/$/, '');
-                  const cardPath = g.urlCard.startsWith('/') ? g.urlCard : `/${g.urlCard}`;
-                  return g.urlCard.startsWith('http') ? g.urlCard : `${baseUrl}${cardPath}`;
-                })() : '';
+              const StatusIcon = g.confirmation === 'si' ? Check : g.confirmation === 'no' ? X : Clock;
+              const iconColor = g.confirmation === 'si' ? '#4ade80' : g.confirmation === 'no' ? '#f87171' : '#9ca3af';
 
-                return (
-                  <div key={i} style={{ background: theme.white, borderRadius: '12px', overflow: 'hidden', border: `2.5px solid ${theme.gold}`, boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
-                    {/* Primary Guest Info Row */}
-                    <div style={{ padding: '0.85rem', background: 'rgba(0,0,0,0.02)', borderBottom: '1px solid rgba(0,0,0,0.05)', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                      <div style={{ flex: '2 1 200px' }}>
-                        <label style={{ display: 'block', color: theme.gold, fontSize: '0.75rem', fontWeight: '600', marginBottom: '0.25rem' }}>Invitado {i + 1}: Nombre</label>
-                        <input
-                          type="text"
-                          placeholder="Ingrese nombre del invitado"
-                          value={g.name || ''}
-                          onChange={e => setGuest(i, 'name', e.target.value)}
-                          style={{ width: '100%', padding: '0.6rem 0.8rem', border: `2px solid ${theme.gold}44`, borderRadius: '8px', background: 'white', color: theme.dark, outline: 'none', fontSize: '0.9rem', transition: 'border-color 0.2s' }}
-                          onFocus={(e) => e.target.style.borderColor = theme.gold}
-                          onBlur={(e) => e.target.style.borderColor = `${theme.gold}44`}
-                        />
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className="glass-card"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(73, 139, 237, 0.44) 0%, #141228 100%)',
+                    padding: '1.25rem',
+                    position: 'relative',
+                    border: '1px solid #A5ADB8'
+                  }}
+                >
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    {/* Row 1: Name and Companions */}
+                    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                      <div style={{ flex: '1 1 200px' }}>
+                        <label className="input-label" style={{ fontSize: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Invitado {i + 1}</label>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <div style={{ width: 28, height: 28, borderRadius: '50%', background: `${iconColor}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            <StatusIcon size={14} color={iconColor} />
+                          </div>
+                          <input
+                            type="text"
+                            value={g.name || ''}
+                            onChange={e => setGuest(i, 'name', e.target.value)}
+                            className="input-field"
+                            placeholder="Nombre del invitado"
+                            style={{ opacity: 0.8, fontSize: '0.85rem', padding: '0.4rem 0.75rem' }}
+                          />
+                        </div>
                       </div>
-                      <div style={{ flex: '1 1 100px' }}>
-                        <label style={{ display: 'block', color: theme.gold, fontSize: '0.75rem', fontWeight: '600', marginBottom: '0.25rem' }}>Acompañantes</label>
+                      <div style={{ width: '100px', flexShrink: 0 }}>
+                        <label className="input-label" style={{ fontSize: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Acompañantes</label>
                         <input
                           type="number"
                           min={0}
-                          max={20}
                           value={g.companions || 0}
                           onChange={e => setGuest(i, 'companions', e.target.value)}
-                          style={{ width: '100%', padding: '0.6rem 0.8rem', border: `2px solid ${theme.gold}44`, borderRadius: '8px', background: 'white', color: theme.dark, outline: 'none', textAlign: 'center', fontSize: '0.9rem' }}
-                          onFocus={(e) => e.target.style.borderColor = theme.gold}
-                          onBlur={(e) => e.target.style.borderColor = `${theme.gold}44`}
+                          className="input-field"
+                          style={{ textAlign: 'center', opacity: 0.8, fontSize: '0.85rem', padding: '0.4rem' }}
                         />
                       </div>
                     </div>
 
-                    <div style={{ padding: '0.85rem', display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-                      {/* Confirmation Row */}
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '0.75rem' }}>
-                        <div>
-                          <label style={{ display: 'block', color: theme.gold, fontSize: '0.75rem', fontWeight: '600', marginBottom: '0.25rem' }}>Confirmación</label>
-                          <select
-                            value={g.confirmation || 'pendiente'}
-                            onChange={e => setGuest(i, 'confirmation', e.target.value)}
-                            style={{ width: '100%', padding: '0.6rem', border: '1px solid #e5e7eb', borderRadius: '8px', color: theme.dark, outline: 'none', background: '#f9fafb', fontSize: '0.85rem' }}
-                          >
-                            <option value="pendiente">⏳ Pendiente</option>
-                            <option value="si">✅ Sí asistirá</option>
-                            <option value="no">❌ No asistirá</option>
-                          </select>
-                        </div>
-                        <div>
-                          <label style={{ display: 'block', color: theme.gold, fontSize: '0.75rem', fontWeight: '600', marginBottom: '0.25rem' }}>Fecha</label>
-                          <input type="text" readOnly value={dateStr || '—'} style={{ width: '100%', padding: '0.6rem', border: '1px solid #e5e7eb', borderRadius: '8px', color: theme.dark, background: '#f3f4f6', fontSize: '0.8rem', outline: 'none' }} />
-                        </div>
-                        <div>
-                          <label style={{ display: 'block', color: theme.gold, fontSize: '0.75rem', fontWeight: '600', marginBottom: '0.25rem' }}>Hora</label>
-                          <input type="text" readOnly value={timeStr || '—'} style={{ width: '100%', padding: '0.6rem', border: '1px solid #e5e7eb', borderRadius: '8px', color: theme.dark, background: '#f3f4f6', fontSize: '0.8rem', outline: 'none' }} />
+                    {/* Row 2: Status, Combined Date & Time */}
+                    <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-end' }}>
+                      <div style={{ flex: '1 1 40%', minWidth: '0' }}>
+                        <label className="input-label" style={{ fontSize: '0.6rem', textTransform: 'uppercase', marginBottom: '0.4rem', display: 'block' }}>Confirmación</label>
+                        <select
+                          value={g.confirmation || 'pendiente'}
+                          onChange={e => setGuest(i, 'confirmation', e.target.value)}
+                          className="input-field"
+                          style={{
+                            opacity: 0.8,
+                            fontSize: '0.8rem',
+                            padding: '0 0.75rem',
+                            width: '100%',
+                            maxWidth: '100%',
+                            height: '40px',
+                            cursor: 'pointer',
+                            appearance: 'auto',
+                            boxSizing: 'border-box'
+                          }}
+                        >
+                          <option value="pendiente" style={{ background: '#141228', color: 'white' }}>⏳ Pendiente</option>
+                          <option value="si" style={{ background: '#141228', color: 'white' }}>✅ Sí asistirá</option>
+                          <option value="no" style={{ background: '#141228', color: 'white' }}>❌ No asistirá</option>
+                        </select>
+                      </div>
+                      <div style={{ flex: '1 1 60%', minWidth: '0' }}>
+                        <label className="input-label" style={{ fontSize: '0.6rem', textTransform: 'uppercase', marginBottom: '0.4rem', display: 'block' }}>Fecha y Hora de Confirmación</label>
+                        <div className="input-field" style={{
+                          opacity: 0.7,
+                          fontSize: '0.8rem',
+                          padding: '0 0.75rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          background: 'rgba(0,0,0,0.2)',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          height: '40px',
+                          boxSizing: 'border-box'
+                        }}>
+                          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            {dateStr ? `${dateStr} — ${timeStr}` : 'Pendiente'}
+                          </span>
                         </div>
                       </div>
+                    </div>
 
-                      {g.message && (
-                        <div>
-                          <label style={{ display: 'block', color: theme.gold, fontSize: '0.75rem', fontWeight: '600', marginBottom: '0.25rem' }}>Mensaje:</label>
-                          <div style={{ width: '100%', padding: '0.75rem', border: '1px solid #e5e7eb', borderRadius: '8px', color: theme.dark, background: '#f9fafb', minHeight: '40px', position: 'relative', fontSize: '0.85rem', lineHeight: '1.4' }}>
-                            <div style={{ position: 'absolute', opacity: 0.1, bottom: 2, right: 5, fontSize: '1.2rem' }}>❀</div>
-                            {g.message}
-                          </div>
+                    {/* Row 3: Message and URL Card */}
+                    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                      <div style={{ flex: '2 1 250px' }}>
+                        <label className="input-label" style={{ fontSize: '0.6rem', textTransform: 'uppercase' }}>Mensaje del Invitado</label>
+                        <div className="input-field" style={{ opacity: 0.7, minHeight: '38px', height: 'auto', padding: '0.4rem 0.75rem', fontSize: '0.85rem', color: g.message ? 'var(--text-primary)' : 'var(--text-muted)' }}>
+                          {g.message || 'Sin mensaje aún'}
                         </div>
-                      )}
-
-                      {cardUrl && (
-                        <div>
-                          <label style={{ display: 'block', color: theme.gold, fontSize: '0.75rem', fontWeight: '600', marginBottom: '0.25rem' }}>URL Tarjeta</label>
-                          <div style={{ display: 'flex', gap: '0.5rem' }}>
-                            <div style={{ flex: 1, padding: '0.6rem', background: `linear-gradient(to right, ${theme.gold}22, #E8E2D944)`, border: `1px solid ${theme.gold}44`, borderRadius: '8px', color: theme.dark, display: 'flex', alignItems: 'center', gap: '0.5rem', overflow: 'hidden' }}>
-                              <Link2 size={14} style={{ color: theme.gold, flexShrink: 0 }} />
-                              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: '500', fontSize: '0.75rem' }}>{cardUrl}</span>
-                            </div>
-                            <button onClick={() => copyToClipboard(cardUrl)} style={{ width: '42px', flexShrink: 0, background: 'white', border: `1px solid ${theme.gold}`, borderRadius: '8px', color: theme.gold, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.2s' }}>
-                              <Copy size={16} />
-                            </button>
+                      </div>
+                      <div style={{ flex: '1 1 200px' }}>
+                        <label className="input-label" style={{ fontSize: '0.6rem', textTransform: 'uppercase' }}>URL de la Tarjeta</label>
+                        <div style={{ display: 'flex', gap: '0.25rem' }}>
+                          <div className="input-field" style={{ opacity: 0.7, padding: '0.4rem 0.6rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.4rem', overflow: 'hidden', flex: 1 }}>
+                            <Link2 size={12} color="var(--color-gold)" style={{ flexShrink: 0 }} />
+                            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{cardUrl || 'Pendiente'}</span>
                           </div>
+                          <button
+                            onClick={() => copyToClipboard(cardUrl)}
+                            disabled={!cardUrl}
+                            className="btn-secondary"
+                            style={{ padding: '0.4rem', width: '38px', height: '38px', flexShrink: 0 }}
+                          >
+                            <Copy size={14} />
+                          </button>
                         </div>
-                      )}
+                      </div>
                     </div>
                   </div>
-                );
-              })}
-
-              {guests.length === 0 && (
-                <div style={{ textAlign: 'center', padding: '1.5rem', color: theme.white, opacity: 0.7, fontSize: '0.85rem' }}>
-                  No hay invitados en la lista.
-                </div>
-              )}
-            </div>
-          </div>
-
-
-          <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-            <button onClick={handleSave} disabled={isSaving} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 2rem', background: `linear-gradient(to right, ${theme.gold}, #b8860b)`, border: 'none', borderRadius: '25px', color: theme.dark, fontWeight: 'bold', fontSize: '0.95rem', cursor: 'pointer', transition: 'all 0.3s ease', boxShadow: '0 4px 15px rgba(0,0,0,0.2)', width: '100%', maxWidth: '280px', justifyContent: 'center' }}>
-              <Save size={18} /> {isSaving ? 'Guardando...' : 'Guardar Cambios'}
-            </button>
+                </motion.div>
+              );
+            })}
           </div>
 
         </motion.div>
       </div>
 
       <style>{`
-        @media (max-width: 768px) {
-          .container { padding: 0 0.5rem !important; }
-          .main-card { padding: 0.25rem !important; }
-          .app-header { padding: 0.5rem 0.5rem !important; }
-          .header-logo { width: 35px !important; height: 35px !important; }
-          .header-brand-text { fontSize: 0.65rem !important; }
-          .exit-button { padding: 0.4rem 0.75rem !important; font-size: 0.75rem !important; }
+        .companions-container { width: 100px; }
+        
+        @media (max-width: 991px) {
+          .main-header { padding: 0.5rem 0.75rem !important; height: 56px !important; }
+          .header-brand { display: none !important; }
+          .header-title-container { position: static !important; transform: none !important; margin: 0 auto; }
+          .header-title-container h1 { fontSize: 0.8rem !important; }
+          .btn-text { display: none !important; }
+          
+          .companions-container { width: 100% !important; }
+          .stats-grid { 
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 0.5rem !important;
+          }
+          .glass-card-sm {
+            padding: 0.5rem !important;
+          }
+          .stat-icon-container {
+            width: 28px !important;
+            height: 28px !important;
+          }
+          .stat-icon-container svg {
+            width: 14px !important;
+            height: 14px !important;
+          }
         }
-        @media (min-width: 768px) {
-          .main-card { padding: 1rem !important; }
-          .container { max-width: 1300px !important; }
+
+        @media (max-width: 480px) {
+          .stats-grid {
+             grid-template-columns: repeat(2, 1fr) !important;
+          }
+          .glass-card-sm {
+            flex-direction: row !important;
+            justify-content: center !important;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .container { padding: 0.5rem !important; }
         }
       `}</style>
     </div>

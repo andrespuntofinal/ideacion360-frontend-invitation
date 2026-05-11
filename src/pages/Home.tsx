@@ -230,13 +230,13 @@ const Home = () => {
                     }}>
                       <card.icon size={18} color={card.color} />
                     </div>
-                    <h4 style={{ 
-                      fontSize: '0.78rem', 
-                      fontWeight: 600, 
-                      margin: 0, 
-                      color: '#FFFFFF', 
+                    <h4 style={{
+                      fontSize: '0.78rem',
+                      fontWeight: 600,
+                      margin: 0,
+                      color: '#FFFFFF',
                       fontFamily: "'Montserrat', sans-serif",
-                      position: 'relative', 
+                      position: 'relative',
                       zIndex: 1,
                       lineHeight: 1.3,
                       maxWidth: '85%',

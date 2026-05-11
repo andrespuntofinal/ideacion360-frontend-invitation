@@ -93,22 +93,16 @@ const AdminDashboard = () => {
       <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
         className="glass-card" style={{
           padding: '2rem',
-          background: 'linear-gradient(135deg, rgba(180, 153, 243, 0.18) 0%, #141228  100%)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
+          background: 'linear-gradient(135deg, rgba(73, 139, 237, 0.44) 0%, #141228  100%)',
+          border: 'rgba(138,196,224,0.3)',
           borderRadius: '24px',
           marginBottom: '2.5rem',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 15px rgba(59, 130, 246, 0.1)',
+          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.4)',
           display: 'flex',
           alignItems: 'center',
           gap: '3rem',
-          flexWrap: 'wrap',
-          position: 'relative',
-          overflow: 'hidden'
+          flexWrap: 'wrap'
         }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)' }} />
-
         {/* Primary Stat: Total Events */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flex: '1 1 200px' }}>
           <div style={{
