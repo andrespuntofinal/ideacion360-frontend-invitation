@@ -20,26 +20,26 @@
   --bg-primary: #090721;
   --bg-secondary: #050414;
   --bg-card: #0d0b2e;
-  --bg-card2: #14123d;
+  --bg-card2: #142c4b73;
   --bg-card3: #1a184a;
   --bg-glass: rgba(9, 7, 33, 0.85);
 
   /* Text Colors */
   --text-primary: #ffffff;
-  --text-secondary: #cbd5e1;
+  --text-secondary: #8ac4e0;
   --text-muted: #94a3b8;
 
   /* Gradients */
   --gradient-brand: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #D7B272 100%);
   --gradient-brand-alt: linear-gradient(135deg, #8b5cf6 0%, #D7B272 100%);
-  --gradient-card: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+  --gradient-card: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(114, 126, 185, 0.1) 100%);
   --gradient-hero: radial-gradient(ellipse at 20% 50%, rgba(59, 130, 246, 0.2) 0%, transparent 60%),
     radial-gradient(ellipse at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
     radial-gradient(ellipse at 60% 80%, rgba(215, 178, 114, 0.1) 0%, transparent 50%);
 
   /* Border */
-  --border-glass: rgba(138, 196, 224, 0.15);
-  --border-purple: rgba(124, 58, 237, 0.4);
+  --border-glass: rgba(71, 89, 137, 0.295);
+  --border-purple: rgba(77, 79, 128, 0.4);
 
   /* Shadows */
   --shadow-purple: 0 0 40px rgba(58, 115, 237, 0.3);
@@ -144,7 +144,7 @@ h6 {
 
 /* ===== Buttons ===== */
 .btn-primary {
-  background: var(--gradient-brand);
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
   color: white;
   border: none;
   padding: 0.75rem 1.75rem;
@@ -373,7 +373,7 @@ h6 {
 }
 
 .orb-purple {
-  background: rgba(124, 58, 237, 0.35);
+  background: rgba(42, 59, 105, 0.824);
 }
 
 .orb-blue {
@@ -410,7 +410,7 @@ h6 {
 }
 
 .data-table th {
-  background: rgba(28, 26, 48, 0.8);
+
   color: var(--text-secondary);
   font-size: 0.75rem;
   font-weight: 600;
@@ -430,7 +430,7 @@ h6 {
 }
 
 .data-table tr:hover td {
-  background: rgba(124, 58, 237, 0.04);
+  background: rgba(69, 71, 101, 0.281);
 }
 
 /* ===== Animations ===== */

@@ -250,12 +250,15 @@ const ClientGuestManagement = () => {
         <div className="sticky-stats-bar">
           <div className="container" style={{ padding: '0 1.5rem' }}>
             <div className="glass-card main-dashboard-card" style={{
-              padding: '1rem 1.5rem',
-              background: 'linear-gradient(135deg, rgba(41, 51, 75, 0.42) 100%, #3531478e  0%)',
-              border: '1px solid #0d122aff',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
+              padding: '1.25rem 1.75rem',
+              background: 'linear-gradient(135deg, rgba(20, 44, 75, 0.7) 0%, rgba(9, 7, 33, 0.8) 100%)',
+              border: '1px solid var(--border-glass)',
+              boxShadow: '0 12px 40px rgba(0, 0, 0, 0.5)',
+              position: 'relative',
               overflow: 'hidden'
             }}>
+              {/* Decorative background glow */}
+              <div style={{ position: 'absolute', top: '-50%', right: '-10%', width: '150px', height: '150px', background: 'rgba(138, 196, 224, 0.1)', filter: 'blur(40px)', borderRadius: '50%', pointerEvents: 'none' }} />
               <div className="dashboard-inner-layout">
                 {/* Total invitados section */}
                 <div className="total-section">
@@ -299,10 +302,10 @@ const ClientGuestManagement = () => {
                 <div className="stats-group">
                   {/* Asistirán */}
                   <div className="stat-item">
-                    <div className="stat-icon-wrapper" style={{ background: 'rgba(74, 222, 128, 0.1)' }}>
-                      <Check size={18} color="#4ade80" />
+                    <div className="stat-icon-wrapper" style={{ background: 'rgba(74, 222, 128, 0.15)', border: '1px solid rgba(74, 222, 128, 0.2)' }}>
+                      <Check size={22} color="#4ade80" />
                     </div>
-                    <div>
+                    <div className="stat-text">
                       <div className="stat-value">{attendingGuests}</div>
                       <div className="stat-label">Asistirán</div>
                     </div>
@@ -310,10 +313,10 @@ const ClientGuestManagement = () => {
 
                   {/* No Asistirán */}
                   <div className="stat-item">
-                    <div className="stat-icon-wrapper" style={{ background: 'rgba(248, 113, 113, 0.1)' }}>
-                      <X size={18} color="#f87171" />
+                    <div className="stat-icon-wrapper" style={{ background: 'rgba(248, 113, 113, 0.15)', border: '1px solid rgba(248, 113, 113, 0.2)' }}>
+                      <X size={22} color="#f87171" />
                     </div>
-                    <div>
+                    <div className="stat-text">
                       <div className="stat-value">{notAttendingGuests}</div>
                       <div className="stat-label">No asistirán</div>
                     </div>
@@ -321,10 +324,10 @@ const ClientGuestManagement = () => {
 
                   {/* Pendientes */}
                   <div className="stat-item">
-                    <div className="stat-icon-wrapper" style={{ background: 'rgba(167, 139, 250, 0.1)' }}>
-                      <Clock size={18} color="#a78bfa" />
+                    <div className="stat-icon-wrapper" style={{ background: 'rgba(167, 139, 250, 0.15)', border: '1px solid rgba(167, 139, 250, 0.2)' }}>
+                      <Clock size={22} color="#a78bfa" />
                     </div>
-                    <div>
+                    <div className="stat-text">
                       <div className="stat-value">{pendingGuests}</div>
                       <div className="stat-label">Pendientes</div>
                     </div>
@@ -663,32 +666,47 @@ const ClientGuestManagement = () => {
         .stat-item {
           display: flex;
           align-items: center;
-          gap: 0.75rem;
+          gap: 1rem;
         }
 
         .stat-icon-wrapper {
-          width: 36px;
-          height: 36px;
+          width: 44px;
+          height: 44px;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          border: 1px solid rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(8px);
+          flex-shrink: 0;
+          box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.05), 0 0 15px rgba(0, 0, 0, 0.2);
+          transition: transform 0.3s ease;
+        }
+
+        .stat-icon-wrapper:hover {
+          transform: scale(1.1);
+        }
+
+        .stat-text {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
         }
 
         .stat-value {
-          font-size: 1.25rem;
-          font-weight: 800;
+          font-size: 1.5rem;
+          font-weight: 900;
           color: var(--text-primary);
-          line-height: 1;
+          line-height: 1.1;
+          letter-spacing: -0.02em;
         }
 
         .stat-label {
           color: var(--text-muted);
-          font-size: 0.7rem;
+          font-size: 0.75rem;
+          font-weight: 600;
           text-transform: uppercase;
           margin-top: 0.1rem;
-          letter-spacing: 0.02em;
+          letter-spacing: 0.05em;
         }
 
         .guest-control-btn {

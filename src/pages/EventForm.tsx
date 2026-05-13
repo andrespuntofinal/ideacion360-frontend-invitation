@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Save, ArrowLeft, User, Heart, ToggleLeft, AlertCircle, CheckCircle } from 'lucide-react';
+import { Save, ArrowLeft, User, Heart, ToggleLeft, AlertCircle, CheckCircle, Mail, Phone, CreditCard, Calendar, Clock, LayoutGrid, Settings, Ban, CheckCircle2, FilePen } from 'lucide-react';
 import AdminLayout from '../components/admin/AdminLayout';
 import useEventsStore from '../stores/eventsStore';
 import toast from 'react-hot-toast';
@@ -25,7 +25,7 @@ const COMPONENTS_LIST: ComponentEntry[] = [
 
 interface FormState {
   type: "web" | "video" | "card";
-  status: "draft" | "active" | "inactive";
+  status: "draft" | "active" | "canceled" | "completed";
   contact: Record<string, string>;
   wedding: Record<string, string>;
   activeComponents: Record<string, boolean>;
@@ -53,7 +53,7 @@ const EventForm = () => {
         if (event) {
           setForm({
             type: event.type || 'web',
-            status: event.status || 'draft',
+            status: (event.status as any) || 'draft',
             contact: (event.contact as Record<string, string>) || defaultForm.contact,
             wedding: {
               coupleNames: (event.wedding as Record<string, string>)?.coupleNames || '',
@@ -88,7 +88,12 @@ const EventForm = () => {
     }
   };
 
-  const steps = ['Tipo de Evento', 'Contacto', 'Detalles Boda', 'Componentes'];
+  const steps = [
+    { label: 'Tipo de Evento', icon: LayoutGrid },
+    { label: 'Contacto', icon: User },
+    { label: 'Detalles Boda', icon: Heart },
+    { label: 'Componentes', icon: Settings }
+  ];
 
   return (
     <AdminLayout>
@@ -103,14 +108,36 @@ const EventForm = () => {
         </div>
       </div>
 
-      <div style={{ display: 'flex', gap: 0, marginBottom: '2rem', overflowX: 'auto', paddingBottom: '0.5rem' }}>
-        {steps.map((step, i) => (
-          <button key={step} onClick={() => setActiveStep(i)}
-            style={{ flex: 1, minWidth: 100, padding: '0.75rem 0.5rem', background: activeStep === i ? 'rgba(139, 92, 246, 0.15)' : 'var(--bg-card2)', border: '1px solid', borderColor: activeStep === i ? 'rgba(139, 92, 246, 0.4)' : 'var(--border-glass)', color: activeStep === i ? '#a78bfa' : 'var(--text-muted)', fontSize: '0.8rem', fontWeight: activeStep === i ? 600 : 400, cursor: 'pointer', fontFamily: 'var(--font-body)', borderRadius: i === 0 ? '10px 0 0 10px' : i === steps.length - 1 ? '0 10px 10px 0' : '0', transition: 'all 0.2s' }}>
-            <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 20, height: 20, borderRadius: '50%', background: activeStep === i ? 'var(--color-purple)' : 'var(--border-glass)', color: 'white', fontSize: '0.7rem', fontWeight: 700, marginRight: '0.4rem' }}>{i + 1}</span>
-            {step}
-          </button>
-        ))}
+      <div style={{ display: 'flex', gap: '0.25rem', marginBottom: '2rem', overflowX: 'auto', paddingBottom: '0.5rem', background: 'rgba(20, 44, 75, 0.3)', padding: '0.4rem', borderRadius: '14px', border: '1px solid var(--border-glass)' }}>
+        {steps.map((step, i) => {
+          const StepIcon = step.icon;
+          const isActive = activeStep === i;
+          return (
+            <button key={step.label} onClick={() => setActiveStep(i)}
+              style={{
+                flex: 1,
+                minWidth: 'max-content',
+                padding: '0.85rem 1.25rem',
+                background: isActive ? 'linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(138, 196, 224, 0.1) 100%)' : 'transparent',
+                border: 'none',
+                color: isActive ? 'var(--text-secondary)' : 'var(--text-muted)',
+                fontSize: '0.85rem',
+                fontWeight: isActive ? 700 : 500,
+                cursor: 'pointer',
+                fontFamily: 'var(--font-body)',
+                borderRadius: '10px',
+                transition: 'all 0.3s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.6rem',
+                whiteSpace: 'nowrap'
+              }}>
+              <StepIcon size={18} style={{ opacity: isActive ? 1 : 0.6 }} />
+              <span className="step-label">{step.label}</span>
+            </button>
+          );
+        })}
       </div>
 
       {notification && (
@@ -125,8 +152,8 @@ const EventForm = () => {
           {activeStep === 0 && (
             <div className="glass-card" style={{ padding: '2rem' }}>
               <h2 style={{ fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '1.1rem', color: 'var(--text-primary)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Heart size={18} color="var(--color-purple-light)" />Tipo de Invitación</h2>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-                {[{ value: 'web', label: 'Boda Web', emoji: '🌐', desc: 'Página web interactiva' }, { value: 'video', label: 'Boda Video', emoji: '🎬', desc: 'Video animado' }, { value: 'card', label: 'Boda Card', emoji: '💌', desc: 'Tarjeta digital' }].map((opt) => (
+              <div className="grid-responsive" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+                {[{ value: 'web', label: 'Card Web', emoji: '🌐', desc: 'Página web interactiva' }, { value: 'video', label: 'Card Video', emoji: '🎬', desc: 'Video animado' }, { value: 'card', label: 'Card Digital', emoji: '💌', desc: 'Tarjeta digital' }].map((opt) => (
                   <div key={opt.value} onClick={() => setForm((f) => ({ ...f, type: opt.value as "web" | "video" | "card" }))}
                     style={{ padding: '1.5rem', borderRadius: 'var(--radius-md)', cursor: 'pointer', border: `2px solid ${form.type === opt.value ? 'var(--color-purple)' : 'var(--border-glass)'}`, background: form.type === opt.value ? 'rgba(139, 92, 246, 0.12)' : 'var(--bg-card2)', transition: 'all 0.2s', textAlign: 'center' }}>
                     <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>{opt.emoji}</div>
@@ -135,11 +162,29 @@ const EventForm = () => {
                   </div>
                 ))}
               </div>
-              <div style={{ marginTop: '1.5rem' }}>
-                <label className="input-label">Estado</label>
-                <select value={form.status} onChange={(e) => setForm((f) => ({ ...f, status: e.target.value as "draft" | "active" | "inactive" }))} className="input-field" style={{ width: '100%', maxWidth: 300 }}>
-                  <option value="draft">Borrador</option><option value="active">Activo</option><option value="inactive">Inactivo</option>
-                </select>
+              <div style={{ marginTop: '2rem' }}>
+                <div style={{ maxWidth: '320px' }}>
+                  <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle size={14} color="var(--text-secondary)" />Estado del Evento</label>
+                  <div style={{ position: 'relative' }}>
+                    <select
+                      value={form.status}
+                      onChange={(e) => setForm((f) => ({ ...f, status: e.target.value as any }))}
+                      className="input-field"
+                      style={{ paddingLeft: '2.5rem', appearance: 'auto' }}
+                    >
+                      <option value="active">✅ Activo</option>
+                      <option value="draft">⏳ Borrador</option>
+                      <option value="canceled">❌ Cancelado</option>
+                      <option value="completed">🏆 Concluido</option>
+                    </select>
+                    <div style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', opacity: 0.7 }}>
+                      {form.status === 'active' ? <CheckCircle size={18} color="#4ade80" /> :
+                        form.status === 'draft' ? <FilePen size={18} color="#fbbf24" /> :
+                          form.status === 'canceled' ? <Ban size={18} color="#f87171" /> :
+                            <CheckCircle2 size={18} color="#3b82f6" />}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -147,11 +192,26 @@ const EventForm = () => {
           {activeStep === 1 && (
             <div className="glass-card" style={{ padding: '2rem' }}>
               <h2 style={{ fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '1.1rem', color: 'var(--text-primary)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><User size={18} color="var(--color-purple-light)" />Información de Contacto</h2>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
-                {[{ field: 'name', label: 'Nombre Contacto', placeholder: 'María García', type: 'text' }, { field: 'email', label: 'Correo Electrónico', placeholder: 'correo@ejemplo.com', type: 'email' }, { field: 'phone', label: 'Celular', placeholder: '+57 300 000 0000', type: 'tel' }, { field: 'identification', label: 'Identificación', placeholder: '1234567890', type: 'text' }].map(({ field, label, placeholder, type }) => (
+              <div className="grid-responsive" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
+                {[
+                  { field: 'name', label: 'Nombre Contacto', placeholder: 'María García', type: 'text', icon: User },
+                  { field: 'email', label: 'Correo Electrónico', placeholder: 'correo@ejemplo.com', type: 'email', icon: Mail },
+                  { field: 'phone', label: 'Celular', placeholder: '+57 300 000 0000', type: 'tel', icon: Phone },
+                  { field: 'identification', label: 'Identificación', placeholder: '1234567890', type: 'text', icon: CreditCard }
+                ].map(({ field, label, placeholder, type, icon: Icon }) => (
                   <div key={field}>
-                    <label className="input-label">{label}</label>
-                    <input type={type} className="input-field" placeholder={placeholder} value={form.contact[field] || ''} onChange={(e) => setField('contact', field, e.target.value)} />
+                    <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Icon size={14} color="var(--text-secondary)" />{label}</label>
+                    <div style={{ position: 'relative' }}>
+                      <input
+                        type={type}
+                        className="input-field"
+                        placeholder={placeholder}
+                        value={form.contact[field] || ''}
+                        onChange={(e) => setField('contact', field, e.target.value)}
+                        style={{ paddingLeft: '2.75rem' }}
+                      />
+                      <Icon size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', opacity: 0.4, color: 'var(--text-secondary)' }} />
+                    </div>
                   </div>
                 ))}
               </div>
@@ -161,18 +221,46 @@ const EventForm = () => {
           {activeStep === 2 && (
             <div className="glass-card" style={{ padding: '2rem' }}>
               <h2 style={{ fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '1.1rem', color: 'var(--text-primary)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Heart size={18} color="#f472b6" />Detalles de la Boda</h2>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
+              <div className="grid-responsive" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
                 <div style={{ gridColumn: '1 / -1' }}>
-                  <label className="input-label">Nombre de los Novios</label>
-                  <input type="text" className="input-field" placeholder="Sebastián & Laura" value={form.wedding.coupleNames || ''} onChange={(e) => setField('wedding', 'coupleNames', e.target.value)} />
+                  <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Heart size={14} color="var(--text-secondary)" />Nombre de los Novios</label>
+                  <div style={{ position: 'relative' }}>
+                    <input
+                      type="text"
+                      className="input-field"
+                      placeholder="Sebastián & Laura"
+                      value={form.wedding.coupleNames || ''}
+                      onChange={(e) => setField('wedding', 'coupleNames', e.target.value)}
+                      style={{ paddingLeft: '2.75rem' }}
+                    />
+                    <Heart size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', opacity: 0.4, color: '#f472b6' }} />
+                  </div>
                 </div>
                 <div>
-                  <label className="input-label">Fecha de la Boda</label>
-                  <input type="date" className="input-field" value={form.wedding.weddingDate || ''} onChange={(e) => setField('wedding', 'weddingDate', e.target.value)} />
+                  <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Calendar size={14} color="var(--text-secondary)" />Fecha de la Boda</label>
+                  <div style={{ position: 'relative' }}>
+                    <input
+                      type="date"
+                      className="input-field"
+                      value={form.wedding.weddingDate || ''}
+                      onChange={(e) => setField('wedding', 'weddingDate', e.target.value)}
+                      style={{ paddingLeft: '2.75rem' }}
+                    />
+                    <Calendar size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', opacity: 0.4, color: 'var(--text-secondary)' }} />
+                  </div>
                 </div>
                 <div>
-                  <label className="input-label">Hora de la Boda</label>
-                  <input type="time" className="input-field" value={form.wedding.weddingTime || ''} onChange={(e) => setField('wedding', 'weddingTime', e.target.value)} />
+                  <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Clock size={14} color="var(--text-secondary)" />Hora de la Boda</label>
+                  <div style={{ position: 'relative' }}>
+                    <input
+                      type="time"
+                      className="input-field"
+                      value={form.wedding.weddingTime || ''}
+                      onChange={(e) => setField('wedding', 'weddingTime', e.target.value)}
+                      style={{ paddingLeft: '2.75rem' }}
+                    />
+                    <Clock size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', opacity: 0.4, color: 'var(--text-secondary)' }} />
+                  </div>
                 </div>
               </div>
             </div>
@@ -184,7 +272,7 @@ const EventForm = () => {
                 <h2 style={{ fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '1.1rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><ToggleLeft size={18} color="var(--color-purple-light)" />Componentes</h2>
                 <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>{Object.values(form.activeComponents).filter(Boolean).length} / {COMPONENTS_LIST.length}</span>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '0.75rem' }}>
+              <div className="grid-responsive" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '0.75rem' }}>
                 {COMPONENTS_LIST.map(({ key, label, emoji, desc }) => {
                   const isActive = form.activeComponents[key];
                   return (
@@ -219,6 +307,38 @@ const EventForm = () => {
           )}
         </div>
       </form>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .glass-card {
+            padding: 1.25rem !important;
+            margin-left: -0.5rem;
+            margin-right: -0.5rem;
+          }
+          
+          .step-label {
+            display: none;
+          }
+          
+          button[style*="minWidth: max-content"] {
+            min-width: auto !important;
+            padding: 0.85rem !important;
+          }
+
+          .grid-responsive {
+            grid-template-columns: 1fr !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          h1 {
+            font-size: 1.3rem !important;
+          }
+          .input-field {
+            font-size: 0.9rem !important;
+          }
+        }
+      `}</style>
     </AdminLayout>
   );
 };

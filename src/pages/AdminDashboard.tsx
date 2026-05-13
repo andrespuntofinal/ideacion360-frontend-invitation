@@ -93,7 +93,7 @@ const AdminDashboard = () => {
       <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
         className="glass-card" style={{
           padding: '2rem',
-          background: 'linear-gradient(135deg, rgba(180, 153, 243, 0.18) 0%, #141228  100%)',
+          background: 'linear-gradient(135deg, rgba(41, 51, 75, 0.42) 100%, #3531478e  0%)',
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
           border: '1px solid rgba(255, 255, 255, 0.1)',
@@ -167,8 +167,8 @@ const AdminDashboard = () => {
       </motion.div>
 
 
-      <div className="glass-card" style={{ borderRadius: '20px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(20, 18, 40, 0.4)' }}>
-        <div style={{ padding: '1.25rem 1.5rem', background: 'rgba(231, 12, 12, 0.02)', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+      <div className="glass-card events-table-container" style={{ borderRadius: '20px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)', background: 'linear-gradient(135deg, rgba(41, 51, 75, 0.42) 100%, #2b273f8e  100%)' }}>
+        <div style={{ padding: '1.25rem 1.5rem', background: 'linear-gradient(135deg, rgba(41, 51, 75, 0.42) 100%, #3531478e  0%)', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <div style={{ background: 'rgba(59, 130, 246, 0.15)', padding: '0.6rem', borderRadius: '10px' }}><List size={20} color="#3b82f6" /></div>
             <h2 style={{ fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '1.1rem', color: '#ffffff', margin: 0 }}>Eventos registrados</h2>
@@ -216,7 +216,7 @@ const AdminDashboard = () => {
             <div className="table-responsive-wrapper">
               <table className="data-table dashboard-table" style={{ width: '100%', borderCollapse: 'collapse', color: 'white' }}>
                 <thead>
-                  <tr style={{ background: 'rgba(255,255,255,0.01)', textAlign: 'left' }}>
+                  <tr style={{ textAlign: 'left', background: 'linear-gradient(135deg, rgba(41, 51, 75, 0.42) 100%, #3531478e  0%)' }}>
                     <th style={{ padding: '1.25rem 1.5rem', color: '#94a3b8', fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Evento</th>
                     <th style={{ padding: '1.25rem 1.5rem', color: '#94a3b8', fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Contacto</th>
                     <th style={{ padding: '1.25rem 1.5rem', color: '#94a3b8', fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', width: '140px' }}>Estado</th>
@@ -251,17 +251,25 @@ const AdminDashboard = () => {
                           </div>
                         </td>
                         <td style={{ padding: '1.5rem 1.5rem' }}>
-                          <span className={`badge badge-${event.status || 'draft'}`} style={{
-                            fontSize: '0.7rem',
-                            fontWeight: 800,
-                            padding: '0.45rem 1rem',
+                          <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            padding: '0.4rem 0.8rem',
                             borderRadius: '8px',
                             background: event.status === 'active' ? 'rgba(74, 222, 128, 0.1)' : event.status === 'draft' ? 'rgba(251, 191, 36, 0.1)' : 'rgba(248, 113, 113, 0.1)',
                             color: event.status === 'active' ? '#4ade80' : event.status === 'draft' ? '#fbbf24' : '#f87171',
-                            border: `1px solid ${event.status === 'active' ? 'rgba(74, 222, 128, 0.2)' : event.status === 'draft' ? 'rgba(251, 191, 36, 0.2)' : 'rgba(248, 113, 113, 0.2)'}`
+                            border: `1px solid ${event.status === 'active' ? 'rgba(74, 222, 128, 0.2)' : event.status === 'draft' ? 'rgba(251, 191, 36, 0.2)' : 'rgba(248, 113, 113, 0.2)'}`,
+                            width: 'fit-content'
                           }}>
-                            {(statusLabels[event.status] || 'Borrador').toUpperCase()}
-                          </span>
+                            {event.status === 'active' ? <CheckCircle size={14} /> :
+                              event.status === 'draft' ? <FilePen size={14} /> :
+                                event.status === 'inactive' ? <Ban size={14} /> :
+                                  <BookCheck size={14} />}
+                            <span style={{ fontSize: '0.6rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                              {statusLabels[event.status] || 'Borrador'}
+                            </span>
+                          </div>
                         </td>
                         <td style={{ padding: '1.5rem 1.5rem', textAlign: 'center' }}>
                           <div style={{ position: 'relative', display: 'inline-block' }}>
@@ -395,12 +403,17 @@ const AdminDashboard = () => {
           .glass-card:first-of-type {
             margin-top: 0 !important;
             margin-bottom: 1rem !important;
-            padding: 1.25rem !important;
+            padding: 1rem !important;
           }
           
-          .glass-card {
-            margin-left: -1.2rem !important;
-            margin-right: -1.2rem !important;
+          .events-table-container {
+            margin-left: -0.5rem !important;
+            margin-right: -0.5rem !important;
+            border-radius: 12px !important;
+          }
+
+          .events-table-container > div:first-child {
+            padding: 1rem !important;
           }
           
           /* Transform table to cards */
@@ -412,14 +425,14 @@ const AdminDashboard = () => {
             width: 100%;
           }
           .dashboard-row {
-            margin-bottom: 1.25rem;
+            margin-bottom: 1rem;
             background: rgba(255,255,255,0.03) !important;
             border: 1px solid rgba(255, 255, 255, 0.08) !important;
             border-radius: 16px;
-            padding: 1.25rem !important;
+            padding: 1rem !important;
             display: flex !important;
             flex-direction: column;
-            gap: 1rem;
+            gap: 0.75rem;
             position: relative;
           }
           .dashboard-table td {
@@ -430,8 +443,8 @@ const AdminDashboard = () => {
           /* Align Action button next to Status */
           .dashboard-row td:last-child {
             position: absolute;
-            top: 1.25rem;
-            right: 1.25rem;
+            top: 1rem;
+            right: 1rem;
             width: auto !important;
           }
           

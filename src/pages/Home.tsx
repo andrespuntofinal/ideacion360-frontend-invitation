@@ -128,14 +128,14 @@ const Home = () => {
                 }}
               >
                 <h2 style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', fontWeight: 600, lineHeight: 1.2 }}>
-                  Transformamos ideas en <br />
+                  Transformamos ideas en soluciones digitales <br />
                   <span style={{
                     fontWeight: 800,
                     background: 'linear-gradient(to right, #3b82f6, #8b5cf6, #D7B272)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text'
-                  }}>soluciones digitales memorables</span>
+                  }}>memorables</span>
                 </h2>
               </motion.div>
 

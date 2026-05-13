@@ -62,8 +62,9 @@ export default function DressCode() {
                 <img
                   src={item.iconUrl}
                   alt={item.title}
-                  className="w-8 h-8 md:w-12 md:h-12 object-contain"
+                  className="w-14 h-14 md:w-20 md:h-18 object-contain"
                   referrerPolicy="no-referrer"
+                  style={{ color: dressCode.borderColorIconMoments, opacity: 0.7 }}
                 />
               ) : (
                 <span className="text-2xl">👗</span>

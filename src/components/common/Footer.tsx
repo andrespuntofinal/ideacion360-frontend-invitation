@@ -39,7 +39,7 @@ const Footer = () => {
           <div>
             <h4 style={{ color: 'var(--text-primary)', fontSize: '0.875rem', fontWeight: 600, marginBottom: '1rem', fontFamily: 'var(--font-body)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Contacto</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              {[{ icon: Mail, text: 'hola@ideacion360.com' }, { icon: Globe, text: 'ideacion360.com' }, { icon: MessageCircle, text: '@ideacion360' }].map(({ icon: Icon, text }) => (
+              {[{ icon: Mail, text: 'notificaciones@ideacion360.com' }, { icon: Globe, text: 'ideacion360.com' }, { icon: MessageCircle, text: '@ideacion360' }].map(({ icon: Icon, text }) => (
                 <div key={text} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
                   <Icon size={14} />{text}
                 </div>

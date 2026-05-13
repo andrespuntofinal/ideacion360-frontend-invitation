@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Save, CheckCircle, AlertCircle, ChevronDown, ChevronUp, Copy, Link2, MessageSquare } from 'lucide-react';
+import { ArrowLeft, Save, CheckCircle, AlertCircle, ChevronDown, ChevronUp, Copy, Link2, MessageSquare, Check, X, Clock, Minus, Plus, Trash2 } from 'lucide-react';
 import AdminLayout from '../components/admin/AdminLayout';
 import useEventsStore from '../stores/eventsStore';
 import toast from 'react-hot-toast';
@@ -87,7 +87,7 @@ const componentSchemas: Record<string, any> = {
     ],
   },
   carousel: {
-    label: 'Carrusel', emoji: '🎠',
+    label: 'Carrusel', emoji: '🖼️',
     fields: [
       { key: 'carouselMsg', label: 'Mensaje del Carrusel' },
       { key: 'autoPlayInterval', label: 'Intervalo Auto-Play (ms)', type: 'number', placeholder: '3000' },
@@ -294,9 +294,9 @@ const componentSchemas: Record<string, any> = {
   },
 };
 
-export const GuestManagementForm = ({ data, onChange }: { data: any, onChange: (val: any) => void }) => {
-  const { id: eventId } = useParams<{ id: string }>();
-  const [showMessage, setShowMessage] = useState<string | null>(null);
+export const GuestManagementForm = ({ data, onChange, onSave, onSaveWithData, saving }: { data: any, onChange: (val: any) => void, onSave?: () => void, onSaveWithData?: (d: any) => void, saving?: boolean }) => {
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [guestToDeleteIndex, setGuestToDeleteIndex] = useState<number | null>(null);
 
   const totalGuests = data?.totalGuests || 0;
   const guests = data?.guests || [];
@@ -305,150 +305,236 @@ export const GuestManagementForm = ({ data, onChange }: { data: any, onChange: (
   const notAttendingGuests = guests.filter((g: any) => g.confirmation === 'no').length;
   const pendingGuests = guests.filter((g: any) => g.confirmation !== 'si' && g.confirmation !== 'no').length;
 
-  const setTotal = (n: string) => {
+  const setTotal = (n: any) => {
     const num = Math.max(0, parseInt(n) || 0);
     const newGuests = Array.from({ length: num }, (_, i) => {
       const existing = guests[i] || { name: '', companions: 0 };
       return { ...existing };
     });
-    onChange({ totalGuests: num, guests: newGuests });
+    onChange({ ...data, totalGuests: num, guests: newGuests });
+  };
+
+  const incrementGuests = () => setTotal(totalGuests + 1);
+  const decrementGuests = () => {
+    if (totalGuests > 0) setTotal(totalGuests - 1);
+  };
+
+  const handleRequestDelete = (index: number) => {
+    setGuestToDeleteIndex(index);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = () => {
+    if (guestToDeleteIndex === null) return;
+    const newGuests = [...guests];
+    newGuests.splice(guestToDeleteIndex, 1);
+    const updatedData = { ...data, totalGuests: newGuests.length, guests: newGuests };
+    onChange(updatedData);
+
+    // Immediate save if onSaveWithData is provided
+    if (onSaveWithData) {
+      onSaveWithData(updatedData);
+    }
+
+    setShowDeleteModal(false);
+    setGuestToDeleteIndex(null);
   };
 
   const setGuest = (i: number, field: string, value: any) => {
     const newGuests = [...guests];
     const val = field === 'companions' ? (parseInt(value) || 0) : value;
-    const updatedGuest = { ...newGuests[i], [field]: val };
-    
-    newGuests[i] = updatedGuest;
+    newGuests[i] = { ...newGuests[i], [field]: val };
     onChange({ ...data, guests: newGuests });
   };
 
   const copyToClipboard = (text: string) => {
     if (!text || text === 'Generando...') return;
     navigator.clipboard.writeText(text);
-    toast.success('Copiado al portapapeles');
+    toast.success('Copiado');
   };
 
   return (
-    <div>
-      <div style={{ display: 'flex', gap: '2rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
-        <div style={{ maxWidth: 240 }}>
-          <label className="input-label">Cantidad de Invitados</label>
-          <input type="number" className="input-field" value={totalGuests} min={0} max={500}
-            onChange={e => setTotal(e.target.value)} />
+    <div className="guest-mgmt-admin">
+      {/* Dashboard Card */}
+      <div className="glass-card main-dashboard-card" style={{
+        padding: '1.25rem 1.75rem',
+        background: 'linear-gradient(135deg, rgba(20, 44, 75, 0.7) 0%, rgba(9, 7, 33, 0.8) 100%)',
+        border: '1px solid var(--border-glass)',
+        boxShadow: '0 12px 40px rgba(0, 0, 0, 0.5)',
+        marginBottom: '2rem',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        {/* Decorative background glow */}
+        <div style={{ position: 'absolute', top: '-50%', right: '-10%', width: '150px', height: '150px', background: 'rgba(138, 196, 224, 0.1)', filter: 'blur(40px)', borderRadius: '50%', pointerEvents: 'none' }} />
+        <div className="dashboard-inner-layout">
+          <div className="total-section">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
+              <div style={{ width: 24, height: 24, borderRadius: 6, background: 'rgba(240, 156, 11, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontSize: '0.8rem', fontWeight: 'bold', color: '#f09c0b' }}>#</span>
+              </div>
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Total invitados</div>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <button type="button" onClick={decrementGuests} className="guest-control-btn"><Minus size={16} /></button>
+              <input type="number" value={totalGuests} onChange={e => setTotal(e.target.value)} className="input-field guest-total-input" style={{ width: '70px', fontSize: '1.5rem', fontWeight: 800, textAlign: 'center', background: 'rgba(0,0,0,0.3)', border: '1px solid var(--border-glass)', padding: '0.25rem' }} />
+              <button type="button" onClick={incrementGuests} className="guest-control-btn"><Plus size={16} /></button>
+            </div>
+          </div>
+          <div className="dashboard-divider" />
+          <div className="stats-group">
+            <div className="stat-item">
+              <div className="stat-icon-wrapper" style={{ background: 'rgba(74, 222, 128, 0.15)', border: '1px solid rgba(74, 222, 128, 0.2)' }}>
+                <Check size={22} color="#4ade80" />
+              </div>
+              <div className="stat-text">
+                <div className="stat-value">{attendingGuests}</div>
+                <div className="stat-label">Asistirán</div>
+              </div>
+            </div>
+            <div className="stat-item">
+              <div className="stat-icon-wrapper" style={{ background: 'rgba(248, 113, 113, 0.15)', border: '1px solid rgba(248, 113, 113, 0.2)' }}>
+                <X size={22} color="#f87171" />
+              </div>
+              <div className="stat-text">
+                <div className="stat-value">{notAttendingGuests}</div>
+                <div className="stat-label">No asistirán</div>
+              </div>
+            </div>
+            <div className="stat-item">
+              <div className="stat-icon-wrapper" style={{ background: 'rgba(167, 139, 250, 0.15)', border: '1px solid rgba(167, 139, 250, 0.2)' }}>
+                <Clock size={22} color="#a78bfa" />
+              </div>
+              <div className="stat-text">
+                <div className="stat-value">{pendingGuests}</div>
+                <div className="stat-label">Pendientes</div>
+              </div>
+            </div>
+          </div>
         </div>
-        
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', background: 'var(--bg-card2)', padding: '1rem', borderRadius: 12, border: '1px solid var(--border-glass)' }}>
-          <div style={{ fontSize: '0.85rem', color: 'var(--text-primary)' }}>
-            <span style={{ display: 'inline-block', width: 10, height: 10, borderRadius: '50%', background: '#4ade80', marginRight: 8, boxShadow: '0 0 5px #4ade80' }}></span>
-            Total Invitados que asistirán: <strong>{attendingGuests}</strong>
+
+        {onSave && (
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1.25rem', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '1.25rem' }}>
+            <motion.button type="button" onClick={onSave} disabled={saving} className="btn-primary" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} style={{ minWidth: '200px', padding: '0.6rem 2rem', fontSize: '0.9rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', background: 'linear-gradient(to right, #3b82f6, #8b5cf6)', borderRadius: '2rem' }}>
+              <Save size={18} /> {saving ? 'Guardando...' : 'Guardar Cambios'}
+            </motion.button>
           </div>
-          <div style={{ fontSize: '0.85rem', color: 'var(--text-primary)' }}>
-            <span style={{ display: 'inline-block', width: 10, height: 10, borderRadius: '50%', background: '#fb923c', marginRight: 8, boxShadow: '0 0 5px #fb923c' }}></span>
-            Total Invitados que no asistirán: <strong>{notAttendingGuests}</strong>
-          </div>
-          <div style={{ fontSize: '0.85rem', color: 'var(--text-primary)' }}>
-            <span style={{ display: 'inline-block', width: 10, height: 10, borderRadius: '50%', background: '#9ca3af', marginRight: 8, boxShadow: '0 0 5px #9ca3af' }}></span>
-            Total invitados que faltan por confirmar: <strong>{pendingGuests}</strong>
-          </div>
-        </div>
+        )}
       </div>
 
-      {guests.length > 0 && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-          {guests.map((g: any, i: number) => {
-            let bgColor = 'var(--bg-card2)';
-            let borderColor = 'var(--border-glass)';
-            if (g.confirmation === 'si') {
-              bgColor = 'rgba(74, 222, 128, 0.08)';
-              borderColor = 'rgba(74, 222, 128, 0.3)';
-            } else if (g.confirmation === 'no') {
-              bgColor = 'rgba(251, 146, 60, 0.08)';
-              borderColor = 'rgba(251, 146, 60, 0.3)';
-            } else {
-              bgColor = 'rgba(156, 163, 175, 0.08)';
-              borderColor = 'rgba(156, 163, 175, 0.3)';
-            }
+      {/* Guest Cards */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.25rem' }}>
+        {guests.map((g: any, i: number) => {
+          const cDate = g.confirmationDate ? new Date(g.confirmationDate) : null;
+          const dateStr = cDate ? cDate.toLocaleDateString('es-CO', { day: '2-digit', month: 'long', year: 'numeric' }) : 'No confirmada';
+          const timeStr = cDate ? cDate.toLocaleTimeString('es-CO', { hour: 'numeric', minute: '2-digit', hour12: true }) : '—';
 
-            const cDate = g.confirmationDate ? new Date(g.confirmationDate) : null;
-            const dateStr = cDate ? cDate.toLocaleDateString('es-CO', { day: '2-digit', month: 'long', year: 'numeric' }) : 'No confirmada';
-            const timeStr = cDate ? cDate.toLocaleTimeString('es-CO', { hour: 'numeric', minute: '2-digit', hour12: true }) : '—';
+          return (
+            <div key={i} className="glass-card" style={{ position: 'relative', padding: '1.5rem', background: 'var(--bg-card2)', border: '1px solid var(--border-glass)', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              <button type="button" onClick={() => handleRequestDelete(i)} className="guest-delete-btn" title="Eliminar invitado">
+                <Trash2 size={18} />
+              </button>
 
-            return (
-              <div key={i} style={{ background: bgColor, borderRadius: 16, border: `1px solid ${borderColor}`, padding: '1.25rem', boxShadow: `0 4px 12px ${bgColor}`, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                {/* Fila 1: Nombre y Acompañantes */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'end' }}>
-                  <div style={{ flex: '2 1 300px' }}>
-                    <label className="input-label">Invitado {i + 1}</label>
-                    <input type="text" className="input-field" placeholder="Nombre completo" value={g.name || ''}
-                      onChange={e => setGuest(i, 'name', e.target.value)} />
-                  </div>
-                  <div style={{ flex: '1 1 120px' }}>
-                    <label className="input-label">Acompañantes</label>
-                    <input type="number" className="input-field" min={0} max={20} value={g.companions || 0}
-                      onChange={e => setGuest(i, 'companions', e.target.value)} />
-                  </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem' }}>
+                <div style={{ flex: '2 1 300px' }}>
+                  <label className="input-label">Invitado {i + 1}</label>
+                  <input type="text" className="input-field" placeholder="Nombre completo" value={g.name || ''} onChange={e => setGuest(i, 'name', e.target.value)} />
                 </div>
-
-                {/* Fila 2: Confirmación, Fecha, Hora */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'end' }}>
-                  <div style={{ flex: '1 1 180px' }}>
-                    <label className="input-label">Confirmación</label>
-                    <div style={{ padding: '0.5rem 0.75rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, fontSize: '0.85rem', color: 'var(--text-primary)', height: '42px', display: 'flex', alignItems: 'center', fontWeight: 500 }}>
-                      {g.confirmation === 'si' ? '✅ Sí asistirá' : g.confirmation === 'no' ? '❌ No asistirá' : '⏳ Pendiente'}
-                    </div>
-                  </div>
-                  <div style={{ flex: '1 1 180px' }}>
-                    <label className="input-label">Fecha</label>
-                    <div style={{ padding: '0.5rem 0.75rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, fontSize: '0.85rem', color: 'var(--text-primary)', height: '42px', display: 'flex', alignItems: 'center' }}>
-                      {dateStr}
-                    </div>
-                  </div>
-                  <div style={{ flex: '1 1 100px' }}>
-                    <label className="input-label">Hora</label>
-                    <div style={{ padding: '0.5rem 0.75rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, fontSize: '0.85rem', color: 'var(--text-primary)', height: '42px', display: 'flex', alignItems: 'center' }}>
-                      {timeStr}
-                    </div>
-                  </div>
+                <div style={{ flex: '1 1 120px' }}>
+                  <label className="input-label">Acompañantes</label>
+                  <input type="number" className="input-field" min={0} value={g.companions || 0} onChange={e => setGuest(i, 'companions', e.target.value)} />
                 </div>
-
-                {/* Fila 3: Mensaje (si existe) */}
-                {g.message && (
-                  <div style={{ width: '100%' }}>
-                    <label className="input-label">Mensaje del invitado</label>
-                    <div style={{ padding: '0.75rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.5, minHeight: '60px', whiteSpace: 'pre-wrap' }}>
-                      {g.message}
-                    </div>
-                  </div>
-                )}
-
-                {/* Fila 4: Url Tarjeta */}
-                {g.urlCard && (() => {
-                  const frontUrl = import.meta.env.VITE_FRONT_URL || window.location.origin;
-                  const baseUrl = frontUrl.replace(/\/$/, '');
-                  const cardPath = g.urlCard.startsWith('/') ? g.urlCard : `/${g.urlCard}`;
-                  const fullUrl = g.urlCard.startsWith('http') ? g.urlCard : `${baseUrl}${cardPath}`;
-                  return (
-                  <div>
-                    <label className="input-label">URL de la Tarjeta</label>
-                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                      <div style={{ flex: '1 1 250px', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, padding: '0.5rem 0.75rem', fontSize: '0.75rem', color: 'var(--color-purple-light)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '0.4rem', height: '42px' }}>
-                        <Link2 size={14} style={{ flexShrink: 0 }} />
-                        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{fullUrl}</span>
-                      </div>
-                      <button type="button" onClick={() => copyToClipboard(fullUrl)} className="btn-secondary" style={{ flex: '0 0 42px', padding: '0', borderRadius: 8, width: '42px', height: '42px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Copy size={16} />
-                      </button>
-                    </div>
-                  </div>
-                  );
-                })()}
               </div>
-            );
-          })}
-        </div>
-      )}
 
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem' }}>
+                <div style={{ flex: '1 1 180px' }}>
+                  <label className="input-label">Confirmación</label>
+                  <div style={{ padding: '0.6rem 0.8rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, fontSize: '0.85rem', color: 'var(--text-primary)', height: '42px', display: 'flex', alignItems: 'center' }}>
+                    {g.confirmation === 'si' ? '✅ Sí asistirá' : g.confirmation === 'no' ? '❌ No asistirá' : '⏳ Pendiente'}
+                  </div>
+                </div>
+                <div style={{ flex: '1 1 180px' }}>
+                  <label className="input-label">Fecha</label>
+                  <div style={{ padding: '0.6rem 0.8rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, fontSize: '0.85rem', color: 'var(--text-primary)', height: '42px', display: 'flex', alignItems: 'center' }}>
+                    {dateStr}
+                  </div>
+                </div>
+                <div style={{ flex: '1 1 120px' }}>
+                  <label className="input-label">Hora</label>
+                  <div style={{ padding: '0.6rem 0.8rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, fontSize: '0.85rem', color: 'var(--text-primary)', height: '42px', display: 'flex', alignItems: 'center' }}>
+                    {timeStr}
+                  </div>
+                </div>
+              </div>
+
+              {g.message && (
+                <div>
+                  <label className="input-label">Mensaje del invitado</label>
+                  <div style={{ padding: '0.8rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: 1.5, minHeight: '60px' }}>{g.message}</div>
+                </div>
+              )}
+
+              {g.urlCard && (
+                <div>
+                  <label className="input-label">URL de la Tarjeta</label>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <div style={{ flex: 1, background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, padding: '0.6rem 0.8rem', fontSize: '0.75rem', color: '#a78bfa', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '0.5rem', height: '42px' }}>
+                      <Link2 size={14} /> <span>{g.urlCard.startsWith('http') ? g.urlCard : `${import.meta.env.VITE_FRONT_URL || window.location.origin}/${g.urlCard.replace(/^\//, '')}`}</span>
+                    </div>
+                    <button type="button" onClick={() => copyToClipboard(g.urlCard)} className="btn-secondary" style={{ width: '42px', height: '42px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }}><Copy size={16} /></button>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Confirmation Modal */}
+      <AnimatePresence>
+        {showDeleteModal && (
+          <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: 'rgba(0, 0, 0, 0.7)', backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 3000, padding: '1.5rem' }}>
+            <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} className="glass-card" style={{ maxWidth: '400px', width: '100%', padding: '2rem', textAlign: 'center', background: 'rgba(15, 23, 42, 0.95)', border: '1px solid rgba(248, 113, 113, 0.3)' }}>
+              <div style={{ width: 60, height: 60, borderRadius: '50%', background: 'rgba(248, 113, 113, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}><Trash2 size={30} color="#f87171" /></div>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.75rem', color: '#fff' }}>¿Eliminar invitado?</h3>
+              <p style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '0.9rem', marginBottom: '2rem', lineHeight: 1.5 }}>Esta acción eliminará a <strong>{guests[guestToDeleteIndex!]?.name || 'este invitado'}</strong> de forma permanente.</p>
+              <div style={{ display: 'flex', gap: '1rem' }}>
+                <button type="button" onClick={() => setShowDeleteModal(false)} className="btn-secondary" style={{ flex: 1 }}>Cancelar</button>
+                <button type="button" onClick={confirmDelete} className="btn-primary" style={{ flex: 1, background: 'linear-gradient(to right, #f87171, #ef4444)', border: 'none' }}>Eliminar</button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      <style>{`
+        .guest-mgmt-admin .dashboard-inner-layout { display: flex; align-items: center; gap: 2rem; justify-content: space-between; }
+        .guest-mgmt-admin .total-section { display: flex; flex-direction: column; align-items: center; padding-right: 1rem; }
+        .guest-mgmt-admin .dashboard-divider { width: 1px; height: 60px; background: var(--border-glass); }
+        .guest-mgmt-admin .stats-group { display: flex; flex: 1; justify-content: space-around; gap: 1.5rem; }
+        .guest-mgmt-admin .stat-item { display: flex; align-items: center; gap: 1rem; }
+        .guest-mgmt-admin .stat-icon-wrapper { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); flex-shrink: 0; box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.05), 0 0 15px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease; }
+        .guest-mgmt-admin .stat-icon-wrapper:hover { transform: scale(1.1); }
+        .guest-mgmt-admin .stat-text { display: flex; flex-direction: column; justify-content: center; }
+        .guest-mgmt-admin .stat-value { font-size: 1.5rem; font-weight: 900; color: var(--text-primary); line-height: 1.1; letter-spacing: -0.02em; }
+        .guest-mgmt-admin .stat-label { color: var(--text-muted); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; margin-top: 0.1rem; letter-spacing: 0.05em; }
+        .guest-mgmt-admin .guest-control-btn { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); color: var(--text-primary); cursor: pointer; transition: all 0.2s ease; }
+        .guest-mgmt-admin .guest-control-btn:hover { background: rgba(255, 255, 255, 0.12); transform: scale(1.05); }
+        .guest-mgmt-admin .guest-delete-btn { position: absolute; top: 1rem; right: 1rem; background: rgba(248, 113, 113, 0.1); border: 1px solid rgba(248, 113, 113, 0.2); color: #f87171; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; z-index: 5; }
+        .guest-mgmt-admin .guest-delete-btn:hover { background: rgba(248, 113, 113, 0.2); transform: scale(1.1); }
+        .guest-mgmt-admin .guest-total-input::-webkit-outer-spin-button, .guest-mgmt-admin .guest-total-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        
+        @media (max-width: 768px) {
+          .guest-mgmt-admin .dashboard-inner-layout { flex-direction: column; gap: 1.25rem; }
+          .guest-mgmt-admin .total-section { padding-right: 0; width: 100%; }
+          .guest-mgmt-admin .dashboard-divider { width: 100%; height: 1px; }
+          .guest-mgmt-admin .stats-group { width: 100%; justify-content: space-between; gap: 0.5rem; }
+          .guest-mgmt-admin .stat-item { flex-direction: column; text-align: center; gap: 0.4rem; }
+          .guest-mgmt-admin .stat-icon-wrapper { width: 32px; height: 32px; }
+          .guest-mgmt-admin .stat-value { font-size: 1.1rem; }
+          .guest-mgmt-admin .stat-label { font-size: 0.6rem; }
+        }
+      `}</style>
     </div>
   );
 };
@@ -463,8 +549,8 @@ const ComponentPanel = ({ compKey, schema, data, onSave, onUpload, saving }: any
 
   const handleChange = (field: string, value: any) => setFormData((f: any) => ({ ...f, [field]: value }));
 
-  const handleSave = async () => {
-    let payload = { ...formData };
+  const handleSave = async (overrideData?: any) => {
+    let payload = overrideData || { ...formData };
     let hasFiles = false;
     const formDataObj = new FormData();
 
@@ -521,23 +607,24 @@ const ComponentPanel = ({ compKey, schema, data, onSave, onUpload, saving }: any
 
   return (
     <div style={{
-      border: `1px solid ${open ? 'rgba(139, 92, 246, 0.4)' : 'var(--border-glass)'}`,
-      borderRadius: 'var(--radius-md)', overflow: 'hidden',
-      transition: 'border-color 0.2s',
+      border: `1px solid ${open ? 'rgba(138, 196, 224, 0.3)' : 'var(--border-glass)'}`,
+      borderRadius: 'var(--radius-lg)', overflow: 'hidden',
+      transition: 'all 0.3s ease',
+      boxShadow: open ? '0 8px 30px rgba(0,0,0,0.3)' : 'none'
     }}>
       {/* Header */}
       <button
         type="button"
         onClick={() => setOpen(!open)}
         style={{
-          width: '100%', padding: '1rem 1.25rem',
-          background: open ? 'rgba(139, 92, 246, 0.1)' : 'var(--bg-card2)',
+          width: '100%', padding: '1.1rem 1.5rem',
+          background: open ? 'rgba(138, 196, 224, 0.08)' : 'var(--bg-card2)',
           border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.75rem',
-          transition: 'background 0.2s',
+          transition: 'all 0.3s ease',
         }}
       >
-        <span style={{ fontSize: '1.4rem', flexShrink: 0 }}>{schema.emoji}</span>
-        <span style={{ fontWeight: 600, fontSize: '0.9rem', color: open ? '#a78bfa' : 'var(--text-primary)', flex: 1, textAlign: 'left' }}>
+        <span style={{ fontSize: '1.4rem', flexShrink: 0, filter: open ? 'drop-shadow(0 0 8px rgba(138, 196, 224, 0.4))' : 'none' }}>{schema.emoji}</span>
+        <span style={{ fontWeight: 700, fontSize: '0.95rem', color: open ? 'var(--text-secondary)' : 'var(--text-primary)', flex: 1, textAlign: 'left', letterSpacing: '0.02em' }}>
           {schema.label}
         </span>
         {saved && <CheckCircle size={16} color="#4ade80" />}
@@ -556,7 +643,13 @@ const ComponentPanel = ({ compKey, schema, data, onSave, onUpload, saving }: any
           >
             <div style={{ padding: '1.5rem', borderTop: '1px solid var(--border-glass)' }}>
               {schema.isSpecial ? (
-                <GuestManagementForm data={formData} onChange={setFormData} />
+                <GuestManagementForm
+                  data={formData}
+                  onChange={setFormData}
+                  onSave={() => handleSave()}
+                  onSaveWithData={(d: any) => handleSave(d)}
+                  saving={saving}
+                />
               ) : (
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.1rem' }}>
                   {schema.fields.map((f: any) => (
@@ -676,7 +769,7 @@ const ComponentPanel = ({ compKey, schema, data, onSave, onUpload, saving }: any
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.97 }}
                   className="btn-primary"
-                  onClick={handleSave}
+                  onClick={() => handleSave()}
                   disabled={saving}
                   style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
                 >
@@ -722,21 +815,38 @@ const ComponentsManager = () => {
     if (!id) return { success: false, message: 'ID de evento faltante' };
     setSaving(true);
 
-    if (compKey === 'guestManagement' && data.guests && Array.isArray(data.guests)) {
-      const rawInitials = event?.components?.envelope?.initialsCoupleText || 'EVT';
-      const initials = rawInitials.replace(/[^A-Za-z]/g, '').toUpperCase().substring(0, 3).padEnd(3, 'X');
-      
-      data.guests = data.guests.map((g: any) => {
-        if (!g.token) {
-          const randomStr = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
-          g.token = `${initials}${randomStr}`;
-          g.urlCard = `wedding/card/${g.token}`;
-        }
-        return g;
-      });
+    // Deep clone to avoid mutations and ensure a clean object
+    let sanitizedData = JSON.parse(JSON.stringify(data));
+
+    if (compKey === 'guestManagement') {
+      // Ensure totalGuests is a number
+      if (sanitizedData.totalGuests !== undefined) {
+        sanitizedData.totalGuests = Number(sanitizedData.totalGuests) || 0;
+      }
+
+      if (sanitizedData.guests && Array.isArray(sanitizedData.guests)) {
+        const guestsArray = sanitizedData.guests;
+        const rawInitials = event?.components?.envelope?.initialsCoupleText || 'EVT';
+        const initials = String(rawInitials).replace(/[^A-Za-z]/g, '').toUpperCase().substring(0, 3).padEnd(3, 'X');
+
+        sanitizedData.guests = guestsArray.map((g: any) => {
+          if (!g.token) {
+            const randomStr = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+            g.token = `${initials}${randomStr}`;
+            g.urlCard = `wedding/card/${g.token}`;
+          }
+          // Clean up any internal fields if they exist
+          delete g.__v;
+          return g;
+        });
+      }
     }
 
-    const result = await updateComponent(id, compKey, data);
+    // Remove internal Mongoose fields if present at top level
+    delete sanitizedData._id;
+    delete sanitizedData.__v;
+
+    const result = await updateComponent(id, compKey, sanitizedData);
     setSaving(false);
     return result;
   };
