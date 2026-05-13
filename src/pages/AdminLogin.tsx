@@ -54,15 +54,15 @@ const AdminLogin = () => {
         position: 'relative'
       }}>
         {/* Animated Background Elements */}
-        <motion.div 
+        <motion.div
           animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.15, 0.1] }}
           transition={{ duration: 10, repeat: Infinity }}
-          style={{ position: 'absolute', width: 600, height: 600, background: 'radial-gradient(circle, rgba(138, 196, 224, 0.2) 0%, transparent 70%)', top: '-10%', left: '-10%', filter: 'blur(80px)', pointerEvents: 'none' }} 
+          style={{ position: 'absolute', width: 600, height: 600, background: 'radial-gradient(circle, rgba(138, 196, 224, 0.2) 0%, transparent 70%)', top: '-10%', left: '-10%', filter: 'blur(80px)', pointerEvents: 'none' }}
         />
-        <motion.div 
+        <motion.div
           animate={{ scale: [1, 1.3, 1], opacity: [0.05, 0.1, 0.05] }}
           transition={{ duration: 15, repeat: Infinity, delay: 2 }}
-          style={{ position: 'absolute', width: 500, height: 500, background: 'radial-gradient(circle, rgba(138, 196, 224, 0.15) 0%, transparent 70%)', bottom: '-10%', right: '-5%', filter: 'blur(60px)', pointerEvents: 'none' }} 
+          style={{ position: 'absolute', width: 500, height: 500, background: 'radial-gradient(circle, rgba(138, 196, 224, 0.15) 0%, transparent 70%)', bottom: '-10%', right: '-5%', filter: 'blur(60px)', pointerEvents: 'none' }}
         />
 
 
@@ -119,7 +119,7 @@ const AdminLogin = () => {
             </p>
 
             {/* Features */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: 'rgba(255,255,255,0.9)', fontSize: '0.85rem', marginBottom: '1.5rem', fontWeight: 500 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: serviceColor, fontSize: '0.85rem', marginBottom: '1.5rem', fontWeight: 500 }}>
               <CheckCircle size={16} color={serviceColor} />
               Autenticación segura
             </div>
