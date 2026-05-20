@@ -155,6 +155,7 @@ export function CardProvider({ eventId, children }: CardProviderProps) {
   const [activeComponents, setActiveComponents] = useState(DEFAULT_CONFIG.activeComponents);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<'draft' | 'active' | 'inactive' | 'canceled' | 'completed' | null>(null);
 
   useEffect(() => {
     if (!eventId) { setLoading(false); return; }
@@ -176,17 +177,17 @@ export function CardProvider({ eventId, children }: CardProviderProps) {
       return result;
     };
 
-    const fetchPromise = eventId.length < 36 
+    const fetchPromise = eventId.length < 36
       ? eventsService.getByToken(eventId).then(res => ({
-          event: res.data.data.event,
-          guestName: res.data.data.guest?.name,
-          numberGuests: res.data.data.guest?.companions
-        }))
+        event: res.data.data.event,
+        guestName: res.data.data.guest?.name,
+        numberGuests: res.data.data.guest?.companions
+      }))
       : eventsService.getById(eventId).then(res => ({
-          event: res.data.data,
-          guestName: urlGuestName,
-          numberGuests: urlNumberGuests
-        }));
+        event: res.data.data,
+        guestName: urlGuestName,
+        numberGuests: urlNumberGuests
+      }));
 
     fetchPromise
       .then(({ event, guestName, numberGuests }) => {
@@ -235,6 +236,7 @@ export function CardProvider({ eventId, children }: CardProviderProps) {
           } as any,
         }));
         setActiveComponents({ ...DEFAULT_CONFIG.activeComponents, ...active });
+        setStatus(event.status);
         setLoading(false);
       })
       .catch((err: Error) => {
@@ -245,7 +247,7 @@ export function CardProvider({ eventId, children }: CardProviderProps) {
   }, [eventId, location.search]);
 
   return (
-    <CardContext.Provider value={{ config, activeComponents, loading, error }}>
+    <CardContext.Provider value={{ config, activeComponents, loading, error, status }}>
       {children}
     </CardContext.Provider>
   );

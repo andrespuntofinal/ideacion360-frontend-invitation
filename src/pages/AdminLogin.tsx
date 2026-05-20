@@ -188,7 +188,7 @@ const AdminLogin = () => {
         </motion.div>
       </main>
 
-      <Footer />
+
     </div>
   );
 };

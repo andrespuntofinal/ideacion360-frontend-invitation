@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Save, ArrowLeft, User, Heart, ToggleLeft, AlertCircle, CheckCircle, Mail, Phone, CreditCard, Calendar, Clock, LayoutGrid, Settings, Ban, CheckCircle2, FilePen } from 'lucide-react';
+import { Save, ArrowLeft, User, Heart, ToggleLeft, AlertCircle, CheckCircle, Mail, Phone, CreditCard, Calendar, Clock, LayoutGrid, Settings, Ban, CheckCircle2, FilePen, Globe, Play } from 'lucide-react';
 import AdminLayout from '../components/admin/AdminLayout';
 import useEventsStore from '../stores/eventsStore';
 import toast from 'react-hot-toast';
@@ -104,7 +104,7 @@ const EventForm = () => {
         </button>
         <div>
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.6rem', color: 'var(--text-primary)' }}>{isEdit ? 'Editar Evento' : 'Crear Nuevo Evento'}</h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>{isEdit ? `ID: ${id?.slice(0, 8)}...` : 'Complete los pasos'}</p>
+
         </div>
       </div>
 
@@ -152,15 +152,76 @@ const EventForm = () => {
           {activeStep === 0 && (
             <div className="glass-card" style={{ padding: '2rem' }}>
               <h2 style={{ fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '1.1rem', color: 'var(--text-primary)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Heart size={18} color="var(--color-purple-light)" />Tipo de Invitación</h2>
-              <div className="grid-responsive" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-                {[{ value: 'web', label: 'Card Web', emoji: '🌐', desc: 'Página web interactiva' }, { value: 'video', label: 'Card Video', emoji: '🎬', desc: 'Video animado' }, { value: 'card', label: 'Card Digital', emoji: '💌', desc: 'Tarjeta digital' }].map((opt) => (
-                  <div key={opt.value} onClick={() => setForm((f) => ({ ...f, type: opt.value as "web" | "video" | "card" }))}
-                    style={{ padding: '1.5rem', borderRadius: 'var(--radius-md)', cursor: 'pointer', border: `2px solid ${form.type === opt.value ? 'var(--color-purple)' : 'var(--border-glass)'}`, background: form.type === opt.value ? 'rgba(139, 92, 246, 0.12)' : 'var(--bg-card2)', transition: 'all 0.2s', textAlign: 'center' }}>
-                    <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>{opt.emoji}</div>
-                    <div style={{ fontWeight: 600, color: form.type === opt.value ? '#a78bfa' : 'var(--text-primary)', marginBottom: '0.4rem', fontSize: '0.9rem' }}>{opt.label}</div>
-                    <div style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>{opt.desc}</div>
-                  </div>
-                ))}
+              <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap', marginTop: '1rem' }}>
+                {[
+                  { value: 'web', label: 'Web Card', icon: Globe, color: '#8ac4e0', gradient: 'linear-gradient(135deg, rgba(73, 139, 237, 0.44) 0%, #141228 100%)' },
+                  { value: 'video', label: 'Video Card', icon: Heart, color: '#8b5cf6', gradient: 'linear-gradient(135deg, rgba(180, 153, 243, 0.46) 0%, #141228 100%)' },
+                  { value: 'card', label: 'Digital Card', icon: Play, color: '#D7B272', gradient: 'linear-gradient(135deg, rgba(235, 219, 141, 0.6) 0%, #141228 100%)' }
+                ].map((opt) => {
+                  const Icon = opt.icon;
+                  const isActive = form.type === opt.value;
+                  return (
+                    <motion.div
+                      key={opt.value}
+                      whileHover={{ y: -5, scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setForm((f) => ({ ...f, type: opt.value as any }))}
+                      style={{
+                        width: '120px',
+                        height: '120px',
+                        borderRadius: '50%',
+                        background: isActive ? opt.gradient : 'rgba(255,255,255,0.02)',
+                        border: `1.5px solid ${isActive ? opt.color : 'rgba(255,255,255,0.08)'}`,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                        boxShadow: isActive ? `0 10px 25px -5px ${opt.color}40` : 'none',
+                        position: 'relative',
+                        overflow: 'hidden'
+                      }}
+                    >
+                      {/* Inner Glow */}
+                      {isActive && (
+                        <div style={{
+                          position: 'absolute',
+                          inset: 0,
+                          background: `radial-gradient(circle at top right, ${opt.color}15, transparent)`,
+                          pointerEvents: 'none'
+                        }} />
+                      )}
+
+                      <div style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '10px',
+                        background: isActive ? `${opt.color}25` : 'rgba(255,255,255,0.05)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginBottom: '0.6rem',
+                        border: `1px solid ${isActive ? opt.color : 'rgba(255,255,255,0.1)'}`,
+                        position: 'relative',
+                        zIndex: 1
+                      }}>
+                        <Icon size={18} color={isActive ? opt.color : 'rgba(255,255,255,0.4)'} />
+                      </div>
+
+                      <span style={{
+                        fontSize: '0.75rem',
+                        fontWeight: isActive ? 700 : 500,
+                        color: isActive ? '#fff' : 'rgba(255,255,255,0.5)',
+                        textAlign: 'center',
+                        maxWidth: '85%',
+                        lineHeight: 1.2,
+                        position: 'relative',
+                        zIndex: 1
+                      }}>{opt.label}</span>
+                    </motion.div>
+                  );
+                })}
               </div>
               <div style={{ marginTop: '2rem' }}>
                 <div style={{ maxWidth: '320px' }}>

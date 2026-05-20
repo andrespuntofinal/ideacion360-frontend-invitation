@@ -529,14 +529,14 @@ const Home = () => {
                   <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.6rem', color: 'var(--text-primary)', marginBottom: '1rem' }}>
                     {service.title}
                   </h3>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.7, marginBottom: '1.5rem' }}>
+                  <p style={{ fontSize: '0.9rem', lineHeight: 1.7, marginBottom: '1.5rem' }}>
                     {service.description}
                   </p>
 
                   {/* Features */}
                   <ul style={{ listStyle: 'none', marginBottom: '2rem', padding: 0 }}>
                     {service.features.map(f => (
-                      <li key={f} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '0.4rem' }}>
+                      <li key={f} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: service.color, fontSize: '0.85rem', marginBottom: '0.4rem' }}>
                         <CheckCircle size={14} color={service.color} />
                         {f}
                       </li>
@@ -562,6 +562,7 @@ const Home = () => {
                 </motion.div>
               );
             })}
+
           </motion.div>
         </div>
       </section>

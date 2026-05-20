@@ -41,8 +41,8 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
       <motion.div
         className="relative z-10 flex flex-col items-center text-center mb-8 px-6"
         initial={{ opacity: 0, y: -30 }}
-        animate={{ 
-          opacity: step === 'opening' ? 0 : 1, 
+        animate={{
+          opacity: step === 'opening' ? 0 : 1,
           y: step === 'opening' ? -20 : 0,
           pointerEvents: step === 'opening' ? 'none' : 'auto'
         }}
@@ -84,9 +84,9 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
             }}
           >
             {/* Inner Liner to fill the gaps and provide contrast */}
-            <div 
+            <div
               className="absolute inset-1 rounded-xl opacity-80"
-              style={{ 
+              style={{
                 backgroundColor: envelope.cardBackgroundColor,
                 backgroundImage: envelope.textureUrl ? `url(${envelope.textureUrl})` : 'none',
                 backgroundBlendMode: 'multiply',

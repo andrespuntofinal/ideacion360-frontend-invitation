@@ -11,12 +11,21 @@ import type { WeddingEvent } from '../types';
 const typeLabels: Record<string, string> = { web: 'Inv. Boda Web', video: 'Inv. Boda Video', card: 'Inv. Boda Card' };
 
 const statusLabels: Record<string, string> = {
-  all: 'Todos',
   draft: 'Borrador',
   active: 'Activo',
   inactive: 'Cancelado',
+  canceled: 'Cancelado',
+  completed: 'Concluido',
   concluded: 'Concluido'
 };
+
+const filterStatusOptions = [
+  { value: 'all', label: 'Todos' },
+  { value: 'draft', label: 'Borrador' },
+  { value: 'active', label: 'Activo' },
+  { value: 'canceled', label: 'Cancelado' },
+  { value: 'completed', label: 'Concluido' }
+];
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -29,7 +38,12 @@ const AdminDashboard = () => {
 
   useEffect(() => { fetchEvents(); }, []);
 
-  const filteredEvents = events.filter(e => filterStatus === 'all' ? true : e.status === filterStatus);
+  const filteredEvents = events.filter(e => {
+    if (filterStatus === 'all') return true;
+    if (filterStatus === 'canceled') return e.status === 'canceled' || e.status === 'inactive';
+    if (filterStatus === 'completed') return e.status === 'completed' || e.status === 'concluded';
+    return e.status === filterStatus;
+  });
   const totalPages = Math.ceil(filteredEvents.length / itemsPerPage);
   const paginatedEvents = filteredEvents.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
@@ -37,8 +51,8 @@ const AdminDashboard = () => {
     total: events.length,
     draft: events.filter(e => e.status === 'draft').length,
     active: events.filter(e => e.status === 'active').length,
-    cancelled: events.filter(e => e.status === 'inactive').length,
-    concluded: 0 // Mocked for now as per schema
+    cancelled: events.filter(e => e.status === 'inactive' || e.status === 'canceled').length,
+    concluded: events.filter(e => e.status === 'completed' || e.status === 'concluded').length
   };
 
   const handleDelete = async (id: string) => {
@@ -112,8 +126,8 @@ const AdminDashboard = () => {
         {/* Primary Stat: Total Events */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flex: '1 1 200px' }}>
           <div style={{
-            width: '64px',
-            height: '64px',
+            width: '50px',
+            height: '50px',
             borderRadius: '20px',
             background: 'rgba(139, 92, 246, 0.15)',
             display: 'flex',
@@ -124,8 +138,8 @@ const AdminDashboard = () => {
             <Calendar size={32} color="#a78bfa" />
           </div>
           <div>
-            <div style={{ fontSize: '2.5rem', fontWeight: 800, color: '#fff', lineHeight: 1 }}>{stats.total}</div>
-            <div style={{ fontSize: '0.85rem', color: '#a78bfa', fontWeight: 600, marginTop: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Eventos</div>
+            <div style={{ fontSize: '1.8rem', fontWeight: 600, color: '#fff', lineHeight: 1 }}>{stats.total}</div>
+            <div style={{ fontSize: '0.85rem', color: '#a78bfa', fontWeight: 300, marginTop: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Eventos</div>
           </div>
         </div>
 
@@ -191,8 +205,8 @@ const AdminDashboard = () => {
                   minWidth: '140px'
                 }}
               >
-                {Object.entries(statusLabels).map(([key, label]) => (
-                  <option key={key} value={key} style={{ background: '#141228' }}>{label}</option>
+                {filterStatusOptions.map((opt) => (
+                  <option key={opt.value} value={opt.value} style={{ background: '#141228' }}>{opt.label}</option>
                 ))}
               </select>
               <Filter size={14} color="#94a3b8" style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
@@ -257,14 +271,14 @@ const AdminDashboard = () => {
                             gap: '0.5rem',
                             padding: '0.4rem 0.8rem',
                             borderRadius: '8px',
-                            background: event.status === 'active' ? 'rgba(74, 222, 128, 0.1)' : event.status === 'draft' ? 'rgba(251, 191, 36, 0.1)' : 'rgba(248, 113, 113, 0.1)',
-                            color: event.status === 'active' ? '#4ade80' : event.status === 'draft' ? '#fbbf24' : '#f87171',
-                            border: `1px solid ${event.status === 'active' ? 'rgba(74, 222, 128, 0.2)' : event.status === 'draft' ? 'rgba(251, 191, 36, 0.2)' : 'rgba(248, 113, 113, 0.2)'}`,
+                            background: event.status === 'active' ? 'rgba(74, 222, 128, 0.1)' : event.status === 'draft' ? 'rgba(251, 191, 36, 0.1)' : (event.status === 'completed' || event.status === 'concluded') ? 'rgba(215, 178, 114, 0.1)' : 'rgba(248, 113, 113, 0.1)',
+                            color: event.status === 'active' ? '#4ade80' : event.status === 'draft' ? '#fbbf24' : (event.status === 'completed' || event.status === 'concluded') ? '#D7B272' : '#f87171',
+                            border: `1px solid ${event.status === 'active' ? 'rgba(74, 222, 128, 0.2)' : event.status === 'draft' ? 'rgba(251, 191, 36, 0.2)' : (event.status === 'completed' || event.status === 'concluded') ? 'rgba(215, 178, 114, 0.2)' : 'rgba(248, 113, 113, 0.2)'}`,
                             width: 'fit-content'
                           }}>
                             {event.status === 'active' ? <CheckCircle size={14} /> :
                               event.status === 'draft' ? <FilePen size={14} /> :
-                                event.status === 'inactive' ? <Ban size={14} /> :
+                                (event.status === 'inactive' || event.status === 'canceled') ? <Ban size={14} /> :
                                   <BookCheck size={14} />}
                             <span style={{ fontSize: '0.6rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                               {statusLabels[event.status] || 'Borrador'}

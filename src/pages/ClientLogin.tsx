@@ -94,15 +94,15 @@ const ClientLogin = () => {
         position: 'relative'
       }}>
         {/* Animated Background Elements */}
-        <motion.div 
+        <motion.div
           animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.15, 0.1] }}
           transition={{ duration: 10, repeat: Infinity }}
-          style={{ position: 'absolute', width: 600, height: 600, background: 'radial-gradient(circle, rgba(138, 196, 224, 0.2) 0%, transparent 70%)', top: '-10%', left: '-10%', filter: 'blur(80px)', pointerEvents: 'none' }} 
+          style={{ position: 'absolute', width: 600, height: 600, background: 'radial-gradient(circle, rgba(138, 196, 224, 0.2) 0%, transparent 70%)', top: '-10%', left: '-10%', filter: 'blur(80px)', pointerEvents: 'none' }}
         />
-        <motion.div 
+        <motion.div
           animate={{ scale: [1, 1.3, 1], opacity: [0.05, 0.1, 0.05] }}
           transition={{ duration: 15, repeat: Infinity, delay: 2 }}
-          style={{ position: 'absolute', width: 500, height: 500, background: 'radial-gradient(circle, rgba(138, 196, 224, 0.15) 0%, transparent 70%)', bottom: '-10%', right: '-5%', filter: 'blur(60px)', pointerEvents: 'none' }} 
+          style={{ position: 'absolute', width: 500, height: 500, background: 'radial-gradient(circle, rgba(138, 196, 224, 0.15) 0%, transparent 70%)', bottom: '-10%', right: '-5%', filter: 'blur(60px)', pointerEvents: 'none' }}
         />
 
         <motion.div
@@ -189,9 +189,9 @@ const ClientLogin = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    style={{ 
-                      background: 'rgba(255,255,255,0.03)', 
-                      border: '1px solid rgba(255,255,255,0.1)', 
+                    style={{
+                      background: 'rgba(255,255,255,0.03)',
+                      border: '1px solid rgba(255,255,255,0.1)',
                       color: 'white',
                       padding: '1.1rem 1.5rem',
                       borderRadius: '16px',
@@ -252,15 +252,15 @@ const ClientLogin = () => {
                         ref={(el) => { otpRefs.current[index] = el; }}
                         type="text"
                         inputMode="numeric"
-                        style={{ 
-                          width: '50px', 
-                          height: '60px', 
-                          textAlign: 'center', 
-                          fontSize: '1.5rem', 
-                          padding: '0', 
-                          borderRadius: '14px', 
-                          background: 'rgba(255,255,255,0.03)', 
-                          border: '1px solid rgba(255,255,255,0.1)', 
+                        style={{
+                          width: '50px',
+                          height: '60px',
+                          textAlign: 'center',
+                          fontSize: '1.5rem',
+                          padding: '0',
+                          borderRadius: '14px',
+                          background: 'rgba(255,255,255,0.03)',
+                          border: '1px solid rgba(255,255,255,0.1)',
                           color: 'white',
                           outline: 'none',
                           transition: 'all 0.3s ease'
@@ -319,7 +319,7 @@ const ClientLogin = () => {
         </motion.div>
       </main>
 
-      <Footer />
+
     </div>
   );
 };

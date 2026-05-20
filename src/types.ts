@@ -92,7 +92,7 @@ export interface WeddingEvent {
   _id: string;
   eventId: string;
   type: 'web' | 'video' | 'card';
-  status: 'draft' | 'active' | 'inactive';
+  status: 'draft' | 'active' | 'inactive' | 'canceled' | 'completed' | 'concluded';
   contact?: EventContact;
   wedding?: EventWedding;
   activeComponents: ActiveComponents;
@@ -369,4 +369,5 @@ export interface CardContextValue {
   activeComponents: Omit<ActiveComponents, 'guestManagement'>;
   loading: boolean;
   error: string | null;
+  status: 'draft' | 'active' | 'inactive' | 'canceled' | 'completed' | null;
 }
