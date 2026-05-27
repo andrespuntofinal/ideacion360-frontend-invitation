@@ -231,7 +231,10 @@ const ClientLogin = () => {
                   {isLoading ? (
                     <div style={{ width: 22, height: 22, border: '3px solid rgba(255,255,255,0.1)', borderTopColor: 'white', borderRadius: '50%', animation: 'spin-slow 0.8s linear infinite' }} />
                   ) : (
-                    <>Solicitar Código <ArrowRight size={20} /></>
+                    <><p style={{ color: serviceColor, fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.5rem', opacity: 0.8 }}>
+                      Solicitar Código
+                    </p>
+                      <ArrowRight size={20} /></>
                   )}
                 </motion.button>
               </motion.form>
@@ -302,7 +305,9 @@ const ClientLogin = () => {
                   {isLoading ? (
                     <div style={{ width: 22, height: 22, border: '3px solid rgba(255,255,255,0.1)', borderTopColor: 'white', borderRadius: '50%', animation: 'spin-slow 0.8s linear infinite' }} />
                   ) : (
-                    <>Verificar e Ingresar <ShieldCheck size={20} /></>
+                    <><p style={{ color: serviceColor, fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '0.5rem', opacity: 0.8 }}>
+                      Verificar e Ingresar
+                    </p> <ShieldCheck size={20} /></>
                   )}
                 </motion.button>
 

@@ -35,7 +35,7 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
         }}
       />
       {/* Soft Light overlay to ensure text readability */}
-      <div className="absolute inset-0 z-0 backdrop-blur-[1px]" style={{ backgroundColor: envelope.overlayColor || 'rgba(255,255,255,0.4)' }} />
+      <div className="absolute inset-0 z-0 backdrop-blur-[1px]" style={{ backgroundColor: envelope.overlayColor || 'rgba(230, 237, 217, 0.91)' }} />
 
       {/* Message ABOVE Envelope */}
       <motion.div
@@ -104,8 +104,6 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
               style={{
                 backgroundColor: envelope.cardBackgroundColor,
                 borderColor: `${envelope.accentColor}4D`,
-                backgroundImage: envelope.textureUrl ? `url(${envelope.textureUrl})` : 'none',
-                backgroundBlendMode: 'multiply'
               }}
             >
               <div className="w-full h-full border rounded-md p-4 flex flex-col items-center justify-center relative overflow-hidden"

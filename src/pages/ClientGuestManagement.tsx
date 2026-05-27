@@ -229,10 +229,7 @@ const ClientGuestManagement = () => {
 
           <button
             onClick={() => {
-              useAuthStore.setState({ token: null, user: null, isAuthenticated: false });
-              localStorage.removeItem('auth_token');
-              localStorage.removeItem('auth_user');
-              navigate('/');
+              navigate(`/wedding/mi-boda/${eventId}`);
             }}
             className="btn-secondary"
             style={{
@@ -244,7 +241,7 @@ const ClientGuestManagement = () => {
               flexShrink: 0
             }}
           >
-            <ArrowLeft size={14} /> <span className="btn-text">Salir</span>
+            <ArrowLeft size={14} /> <span className="btn-text">Volver</span>
           </button>
         </header>
         <div className="sticky-stats-bar">

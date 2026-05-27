@@ -15,6 +15,8 @@ import AdminSettings from './pages/AdminSettings';
 import NotFound from './pages/NotFound';
 import ClientLogin from './pages/ClientLogin';
 import ClientGuestManagement from './pages/ClientGuestManagement';
+import ClientDashboard from './pages/ClientDashboard';
+import ClientWeddingDetails from './pages/ClientWeddingDetails';
 
 // Guards
 import ProtectedRoute from './components/common/ProtectedRoute';
@@ -52,9 +54,9 @@ const App = () => {
 
         {/* Client Auth & Dashboard */}
         <Route path="/wedding/login" element={<ClientLogin />} />
-        <Route path="/wedding/mi-boda/:eventId" element={
-          <ClientGuestManagement />
-        } />
+        <Route path="/wedding/mi-boda/:eventId" element={<ClientDashboard />} />
+        <Route path="/wedding/mi-boda/:eventId/invitados" element={<ClientGuestManagement />} />
+        <Route path="/wedding/mi-boda/:eventId/detalles" element={<ClientWeddingDetails />} />
 
         {/* Protected Admin Routes */}
         <Route path="/wedding/Admin/dashboard" element={

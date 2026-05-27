@@ -7,7 +7,7 @@ type IconName = keyof typeof Icons;
 
 export default function Timeline() {
   const { config } = useCardConfig();
-  const { timeline } = config;
+  const { timeline, eventDetails } = config;
 
   const steps = [
     { time: timeline.timeStep1, title: timeline.textStep1, iconName: timeline.iconStep1 as IconName },
@@ -35,12 +35,9 @@ export default function Timeline() {
         <p className="text-xs tracking-[0.3em] uppercase mb-3" style={{ color: timeline.font ? undefined : '#735309', opacity: 0.6 }}>
           ✦ &nbsp; Agenda &nbsp; ✦
         </p>
-        <h2
-          className="text-2xl md:text-3xl tracking-widest uppercase"
-          style={{ fontFamily: timeline.font }}
-        >
-          Itinerario
-        </h2>
+        <p className="text-base sm:text-2xl italic leading-relaxed uppercase mb-2" style={{ color: eventDetails.detailsColor, fontFamily: eventDetails.detailsFont }}>
+          ♥ &nbsp; Itinerario &nbsp; ♥
+        </p>
       </motion.div>
 
       {/* Desktop: horizontal timeline */}

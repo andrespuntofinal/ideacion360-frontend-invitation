@@ -183,8 +183,8 @@ export default function RSVP() {
                             onClick={() => setFormData({ ...formData, attendance: 'si' })}
                             className="py-3 px-8 rounded-xl border-2 font-bold transition-all duration-300 text-base tracking-[0.05em] uppercase flex items-center justify-center shadow-sm min-w-[120px]"
                             style={formData.attendance === 'si'
-                              ? { background: 'linear-gradient(135deg, #19284c 0%, #2a407c 100%)', color: '#ffffff', borderColor: '#19284c', transform: 'scale(1.05)' }
-                              : { backgroundColor: 'white', color: '#19284c', borderColor: '#19284c20' }
+                              ? { background: 'linear-gradient(135deg, #444 0%, #666 100%)', color: '#ffffff', borderColor: '#19284c', transform: 'scale(1.05)' }
+                              : { backgroundColor: 'white', color: '#444', borderColor: '#44420' }
                             }
                           >
                             {rsvp.buttonYesMsg}

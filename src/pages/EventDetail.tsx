@@ -21,6 +21,25 @@ const COMPONENT_LABELS: Record<string, { label: string; emoji: string }> = {
   guestManagement: { label: 'Gestión Invitados', emoji: '👥' },
 };
 
+const formatTime12h = (time24?: string): string => {
+  if (!time24) return '—';
+  const match = time24.match(/^(\d{1,2}):(\d{2})$/);
+  if (!match) return time24;
+  
+  let hr = parseInt(match[1], 10);
+  const min = match[2];
+  let meridiem = 'a. m.';
+  
+  if (hr >= 12) {
+    meridiem = 'p. m.';
+    if (hr > 12) hr -= 12;
+  }
+  if (hr === 0) hr = 12;
+  
+  const hrStr = String(hr).padStart(2, '0');
+  return `${hrStr}:${min} ${meridiem}`;
+};
+
 const EventDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -83,7 +102,7 @@ const EventDetail = () => {
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass-card" style={{ padding: '1.5rem' }}>
           <h3 style={{ fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '0.9rem', color: '#f472b6', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Heart size={16} /> Detalles de la Boda</h3>
-          {[{ label: 'Novios', value: event.wedding?.coupleNames }, { label: 'Fecha', value: formatDate(event.wedding?.weddingDate) }, { label: 'Hora', value: event.wedding?.weddingTime || '—' }, { label: 'Tipo', value: event.type === 'web' ? 'Boda Web' : event.type === 'video' ? 'Boda Video' : 'Boda Card' }].map(({ label, value }) => (
+          {[{ label: 'Novios', value: event.wedding?.coupleNames }, { label: 'Fecha', value: formatDate(event.wedding?.weddingDate) }, { label: 'Hora', value: formatTime12h(event.wedding?.weddingTime) }, { label: 'Tipo', value: event.type === 'web' ? 'Boda Web' : event.type === 'video' ? 'Boda Video' : 'Boda Card' }].map(({ label, value }) => (
             <div key={label} style={{ marginBottom: '0.75rem' }}>
               <div style={{ color: 'var(--text-muted)', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.2rem' }}>{label}</div>
               <div style={{ color: 'var(--text-primary)', fontSize: '0.9rem' }}>{value || '—'}</div>
