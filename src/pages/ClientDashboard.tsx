@@ -11,17 +11,17 @@ const formatTime12h = (time24: string): string => {
   if (!time24) return 'Por definir';
   const match = time24.match(/^(\d{1,2}):(\d{2})$/);
   if (!match) return time24;
-  
+
   let hr = parseInt(match[1], 10);
   const min = match[2];
   let meridiem = 'a. m.';
-  
+
   if (hr >= 12) {
     meridiem = 'p. m.';
     if (hr > 12) hr -= 12;
   }
   if (hr === 0) hr = 12;
-  
+
   const hrStr = String(hr).padStart(2, '0');
   return `${hrStr}:${min} ${meridiem}`;
 };
@@ -86,14 +86,14 @@ const ClientDashboard = () => {
   }
 
   const coupleNames = event?.wedding?.coupleNames || 'Boda';
-  
+
   // Calculate quick guest stats
   const guests = event?.components?.guestManagement?.guests || [];
   const attendingGuests = guests.filter((g: any) => g.confirmation === 'si').length;
   const notAttendingGuests = guests.filter((g: any) => g.confirmation === 'no').length;
   const pendingGuests = guests.filter((g: any) => g.confirmation !== 'si' && g.confirmation !== 'no').length;
 
-  const formattedDate = event?.wedding?.weddingDate 
+  const formattedDate = event?.wedding?.weddingDate
     ? new Date(event.wedding.weddingDate).toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' })
     : 'Fecha por definir';
 
@@ -152,12 +152,18 @@ const ClientDashboard = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
-              Boda de
+
+            <h2 style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', fontWeight: 600, lineHeight: 1.2 }}>
+              Boda <br />
+              <span style={{
+                fontWeight: 800,
+                background: 'linear-gradient(to right, #3b82f6, #8b5cf6, #D7B272)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}>{coupleNames}</span>
             </h2>
-            <h1 style={{ fontSize: '3rem', fontFamily: 'var(--font-display)', fontWeight: 800, marginBottom: '1rem', background: 'var(--gradient-brand)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-              {coupleNames}
-            </h1>
+
             <p style={{ color: 'var(--text-muted)', fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
               <CalendarDays size={18} color="var(--color-gold)" /> {formattedDate}
             </p>
@@ -186,14 +192,14 @@ const ClientDashboard = () => {
               justifyContent: 'space-between',
               cursor: 'pointer',
               border: '1px solid var(--border-glass)',
-              background: 'linear-gradient(135deg, rgba(20, 44, 75, 0.4) 0%, rgba(9, 7, 33, 0.6) 100%)',
+              background: 'linear-gradient(135deg, rgba(73, 139, 237, 0.44) 0%, #141228  100%)',
               position: 'relative',
               overflow: 'hidden'
             }}
             onClick={() => navigate(`/wedding/mi-boda/${eventId}/invitados`)}
           >
             {/* Top highlight gradient */}
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, #3b82f6, #8b5cf6)' }} />
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, #3b82f6, #D7B272)' }} />
 
             <div>
               <div style={{
@@ -266,7 +272,7 @@ const ClientDashboard = () => {
               justifyContent: 'space-between',
               cursor: 'pointer',
               border: '1px solid var(--border-glass)',
-              background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(9, 7, 33, 0.6) 100%)',
+              background: 'linear-gradient(135deg, rgba(180, 153, 243, 0.46) 0%, #141228  100%)',
               position: 'relative',
               overflow: 'hidden'
             }}

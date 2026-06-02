@@ -1,129 +1,97 @@
 import { motion } from 'framer-motion';
-import * as Icons from 'lucide-react';
-import { LucideProps } from 'lucide-react';
 import { useCardConfig } from '../CardContext';
-
-type IconName = keyof typeof Icons;
 
 export default function Timeline() {
   const { config } = useCardConfig();
-  const { timeline, eventDetails } = config;
+  const { countdown, timeline } = config;
 
   const steps = [
-    { time: timeline.timeStep1, title: timeline.textStep1, iconName: timeline.iconStep1 as IconName },
-    { time: timeline.timeStep2, title: timeline.textStep2, iconName: timeline.iconStep2 as IconName },
-    { time: timeline.timeStep3, title: timeline.textStep3, iconName: timeline.iconStep3 as IconName },
-    { time: timeline.timeStep4, title: timeline.textStep4, iconName: timeline.iconStep4 as IconName },
-    { time: timeline.timeStep5, title: timeline.textStep5, iconName: timeline.iconStep5 as IconName },
-  ];
-
-  const renderIcon = (iconName: IconName) => {
-    const IconComponent = (Icons[iconName] || Icons.Circle) as React.ComponentType<LucideProps>;
-    return <IconComponent className="w-5 h-5 md:w-6 md:h-6" strokeWidth={1.5} />;
-  };
+    { time: timeline.timeStep1, title: timeline.textStep1 },
+    { time: timeline.timeStep2, title: timeline.textStep2 },
+    { time: timeline.timeStep3, title: timeline.textStep3 },
+    { time: timeline.timeStep4, title: timeline.textStep4 },
+  ].filter(step => step.time && step.title);
 
   return (
-    <section className="w-full py-16 md:py-24 px-4 overflow-hidden">
+    <section
+      className="w-full py-16 md:py-24 px-4 overflow-hidden relative"
+      style={{
+        background: `linear-gradient(135deg, ${countdown.backgroundColorFrom} 0%, ${countdown.backgroundColorVia} 50%, ${countdown.backgroundColorTo} 100%)`,
+      }}
+    >
+      {/* Decorative ring overlay */}
+      <div
+        className="absolute inset-0 opacity-5 pointer-events-none"
+        style={{
+          backgroundImage: 'radial-gradient(circle at 50% 50%, white 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
+        }}
+      />
+
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="text-center mb-12 md:mb-16"
+        className="text-center mb-16 md:mb-20 relative z-10"
       >
-        <p className="text-xs tracking-[0.3em] uppercase mb-3" style={{ color: timeline.font ? undefined : '#735309', opacity: 0.6 }}>
-          ✦ &nbsp; Agenda &nbsp; ✦
+        <p
+          className="text-base sm:text-2xl italic leading-relaxed uppercase mb-2"
+          style={{ color: countdown.titleTextColor, opacity: 0.8, fontFamily: countdown.titleTextFont }}
+        >
+          ✦ &nbsp; Itinerario &nbsp; ✦
         </p>
-        <p className="text-base sm:text-2xl italic leading-relaxed uppercase mb-2" style={{ color: eventDetails.detailsColor, fontFamily: eventDetails.detailsFont }}>
-          ♥ &nbsp; Itinerario &nbsp; ♥
-        </p>
+        <br />
+        <br />
       </motion.div>
 
-      {/* Desktop: horizontal timeline */}
-      <div className="max-w-5xl mx-auto hidden md:block">
-        <div className="relative flex justify-between items-start">
-          {/* Connector line */}
-          <div className="absolute top-[30px] left-[8%] right-[8%] h-px opacity-30" style={{ backgroundColor: '#A5ADB8' }} />
-
+      {/* Linear timeline matching Countdown */}
+      <div className="w-full flex justify-center relative z-10">
+        <div className="flex flex-wrap justify-center items-start gap-6 md:gap-10 lg:gap-14 w-full max-w-5xl px-4">
           {steps.map((step, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.7 }}
-              className="flex flex-col items-center text-center w-[18%] group"
+              transition={{ delay: index * 0.12, duration: 0.7, ease: 'easeOut' }}
+              className="flex flex-col items-center text-center group"
             >
-              {/* Icon bubble */}
+              {/* Circle */}
               <div
-                className="w-14 h-14 rounded-full flex items-center justify-center mb-4 z-10 transition-transform duration-300 group-hover:scale-110 shadow-lg"
-                style={{ fontFamily: timeline.font }}
+                className="relative flex items-center justify-center rounded-full shadow-2xl mb-3 md:mb-4 transition-all duration-300 group-hover:scale-105"
+                style={{
+                  width: 'clamp(85px, 20vw, 130px)',
+                  height: 'clamp(85px, 20vw, 130px)',
+                  background: countdown.backgroundColorCircle,
+                  border: `3px solid ${countdown.borderColorCircle}`,
+                  boxShadow: `0 0 30px ${countdown.boxShadowColor}44`,
+                }}
               >
-                <div className="w-14 h-14 rounded-full flex flex-col items-center justify-center shadow-md"
-                  style={{ background: 'linear-gradient(135deg, #19284c, #5c678d)' }}>
-                  <span style={{ color: '#D7B272' }}>{renderIcon(step.iconName)}</span>
-                </div>
+                {/* Inner ring */}
+                <div
+                  className="absolute inset-[6px] rounded-full border opacity-30"
+                  style={{ borderColor: countdown.borderColorCircle }}
+                />
+                <span
+                  className="relative z-10 leading-normal font-light text-center px-3 break-words overflow-hidden"
+                  style={{
+                    color: countdown.numberColorText1,
+                    fontFamily: countdown.numberFontText,
+                    fontSize: 'clamp(0.65rem, 1.8vw, 0.95rem)',
+                  }}
+                >
+                  {step.title}
+                </span>
               </div>
-
-              {/* Time */}
               <span
-                className="text-xs font-medium tracking-widest uppercase mb-1"
-                style={{ fontFamily: timeline.font, color: '#D7B272' }}
+                className="text-[10px] sm:text-xs md:text-sm tracking-[0.2em] uppercase"
+                style={{ color: countdown.numberColorText2, fontFamily: countdown.numberFontText }}
               >
                 {step.time}
               </span>
-
-              {/* Label */}
-              <h3
-                className="text-sm leading-tight"
-                style={{ fontFamily: timeline.font, color: '#F7F9FA' }}
-              >
-                {step.title}
-              </h3>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-
-      {/* Mobile: vertical timeline */}
-      <div className="md:hidden max-w-sm mx-auto relative">
-        {/* Vertical line */}
-        <div className="absolute left-[28px] top-4 bottom-4 w-px opacity-20" style={{ backgroundColor: '#A5ADB8' }} />
-
-        <div className="space-y-6">
-          {steps.map((step, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.6 }}
-              className="flex items-center gap-5 relative"
-            >
-              {/* Icon bubble */}
-              <div
-                className="w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0 z-10 shadow-md"
-                style={{ background: 'linear-gradient(135deg, #19284c, #5c678d)' }}
-              >
-                <span style={{ color: '#D7B272' }}>{renderIcon(step.iconName)}</span>
-              </div>
-
-              {/* Text */}
-              <div>
-                <span
-                  className="text-xs tracking-widest uppercase block mb-0.5"
-                  style={{ fontFamily: timeline.font, color: '#D7B272' }}
-                >
-                  {step.time}
-                </span>
-                <h3
-                  className="text-base font-medium"
-                  style={{ fontFamily: timeline.font, color: '#F7F9FA' }}
-                >
-                  {step.title}
-                </h3>
-              </div>
+              <br />
             </motion.div>
           ))}
         </div>

@@ -17,6 +17,18 @@ interface FieldProps {
   step?: string;
 }
 
+const getPreviewUrl = (val: string | File) => {
+  if (!val) return '';
+  if (val instanceof File) {
+    try {
+      return URL.createObjectURL(val);
+    } catch (e) {
+      return '';
+    }
+  }
+  return val;
+};
+
 const Field = ({ label, fieldKey, value, onChange, type = 'text', placeholder = '', accept = '', step }: FieldProps) => {
   const isColor = /color/i.test(fieldKey) && type !== 'file';
   return (
@@ -44,9 +56,41 @@ const Field = ({ label, fieldKey, value, onChange, type = 'text', placeholder = 
             }
           }} style={{ padding: '0.35rem 0.5rem' }} />
           {value && (
-            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-              Actual: {value instanceof File ? value.name : (typeof value === 'string' ? value.split('/').pop() : value)}
-            </span>
+            <>
+              <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                Actual: {value instanceof File ? value.name : (typeof value === 'string' ? value.split('/').pop() : value)}
+              </span>
+              {(() => {
+                const previewUrl = getPreviewUrl(value);
+                if (!previewUrl) return null;
+                const isImg = accept.includes('image') || accept.includes('.jpg') || accept.includes('.jpeg') || accept.includes('.png') || /photo|img|image|texture|seal/i.test(fieldKey);
+                const isAud = accept.includes('audio') || accept.includes('.mp3') || /music|audio/i.test(fieldKey);
+                const isVid = accept.includes('video') || accept.includes('.mp4') || accept.includes('.webm') || /video/i.test(fieldKey);
+                
+                if (isImg) {
+                  return (
+                    <div style={{ marginTop: '0.25rem' }}>
+                      <img src={previewUrl} alt="Preview" style={{ width: '120px', height: '120px', objectFit: 'cover', borderRadius: '10px', border: '1px solid var(--border-glass)' }} />
+                    </div>
+                  );
+                }
+                if (isAud) {
+                  return (
+                    <div style={{ marginTop: '0.25rem' }}>
+                      <audio src={previewUrl} controls style={{ width: '100%', height: '40px', borderRadius: '8px' }} />
+                    </div>
+                  );
+                }
+                if (isVid) {
+                  return (
+                    <div style={{ marginTop: '0.25rem' }}>
+                      <video src={previewUrl} controls style={{ width: '100%', maxHeight: '160px', borderRadius: '8px', background: '#000' }} />
+                    </div>
+                  );
+                }
+                return null;
+              })()}
+            </>
           )}
         </div>
       ) : (
@@ -308,7 +352,7 @@ export const GuestManagementForm = ({ data, onChange, onSave, onSaveWithData, sa
   const setTotal = (n: any) => {
     const num = Math.max(0, parseInt(n) || 0);
     const newGuests = Array.from({ length: num }, (_, i) => {
-      const existing = guests[i] || { name: '', companions: 0 };
+      const existing = guests[i] || { name: '', companions: 0, confirmation: 'pendiente' };
       return { ...existing };
     });
     onChange({ ...data, totalGuests: num, guests: newGuests });
@@ -423,69 +467,156 @@ export const GuestManagementForm = ({ data, onChange, onSave, onSaveWithData, sa
       </div>
 
       {/* Guest Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.25rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.5rem' }}>
         {guests.map((g: any, i: number) => {
+          const cardUrl = g.urlCard ? (() => {
+            const frontUrl = import.meta.env.VITE_FRONT_URL || window.location.origin;
+            const baseUrl = frontUrl.replace(/\/$/, '');
+            const cardPath = g.urlCard.startsWith('/') ? g.urlCard : `/${g.urlCard}`;
+            return g.urlCard.startsWith('http') ? g.urlCard : `${baseUrl}${cardPath}`;
+          })() : '';
+
           const cDate = g.confirmationDate ? new Date(g.confirmationDate) : null;
-          const dateStr = cDate ? cDate.toLocaleDateString('es-CO', { day: '2-digit', month: 'long', year: 'numeric' }) : 'No confirmada';
-          const timeStr = cDate ? cDate.toLocaleTimeString('es-CO', { hour: 'numeric', minute: '2-digit', hour12: true }) : '—';
+          const dateStr = cDate ? cDate.toLocaleDateString('es-CO', { day: '2-digit', month: 'long' }) : '';
+          const timeStr = cDate ? cDate.toLocaleTimeString('es-CO', { hour: 'numeric', minute: '2-digit', hour12: true }) : '';
+
+          const StatusIcon = g.confirmation === 'si' ? Check : g.confirmation === 'no' ? X : Clock;
+          const iconColor = g.confirmation === 'si' ? '#4ade80' : g.confirmation === 'no' ? '#f87171' : '#9ca3af';
 
           return (
-            <div key={i} className="glass-card" style={{ position: 'relative', padding: '1.5rem', background: 'var(--bg-card2)', border: '1px solid var(--border-glass)', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-              <button type="button" onClick={() => handleRequestDelete(i)} className="guest-delete-btn" title="Eliminar invitado">
-                <Trash2 size={18} />
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: i * 0.05 }}
+              className="glass-card"
+              style={{
+                background: 'linear-gradient(135deg, rgba(41, 51, 75, 0.42) 100%, #2b273f8e  100%)',
+                padding: '1.25rem',
+                position: 'relative',
+                border: '1px solid #4f477fff',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem'
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => handleRequestDelete(i)}
+                className="guest-delete-btn"
+                title="Eliminar invitado"
+              >
+                <Trash2 size={16} />
               </button>
 
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem' }}>
-                <div style={{ flex: '2 1 300px' }}>
-                  <label className="input-label">Invitado {i + 1}</label>
-                  <input type="text" className="input-field" placeholder="Nombre completo" value={g.name || ''} onChange={e => setGuest(i, 'name', e.target.value)} />
-                </div>
-                <div style={{ flex: '1 1 120px' }}>
-                  <label className="input-label">Acompañantes</label>
-                  <input type="number" className="input-field" min={0} value={g.companions || 0} onChange={e => setGuest(i, 'companions', e.target.value)} />
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem' }}>
-                <div style={{ flex: '1 1 180px' }}>
-                  <label className="input-label">Confirmación</label>
-                  <div style={{ padding: '0.6rem 0.8rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, fontSize: '0.85rem', color: 'var(--text-primary)', height: '42px', display: 'flex', alignItems: 'center' }}>
-                    {g.confirmation === 'si' ? '✅ Sí asistirá' : g.confirmation === 'no' ? '❌ No asistirá' : '⏳ Pendiente'}
-                  </div>
-                </div>
-                <div style={{ flex: '1 1 180px' }}>
-                  <label className="input-label">Fecha</label>
-                  <div style={{ padding: '0.6rem 0.8rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, fontSize: '0.85rem', color: 'var(--text-primary)', height: '42px', display: 'flex', alignItems: 'center' }}>
-                    {dateStr}
-                  </div>
-                </div>
-                <div style={{ flex: '1 1 120px' }}>
-                  <label className="input-label">Hora</label>
-                  <div style={{ padding: '0.6rem 0.8rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, fontSize: '0.85rem', color: 'var(--text-primary)', height: '42px', display: 'flex', alignItems: 'center' }}>
-                    {timeStr}
-                  </div>
-                </div>
-              </div>
-
-              {g.message && (
-                <div>
-                  <label className="input-label">Mensaje del invitado</label>
-                  <div style={{ padding: '0.8rem', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, fontSize: '0.875rem', color: 'var(--text-muted)', lineHeight: 1.5, minHeight: '60px' }}>{g.message}</div>
-                </div>
-              )}
-
-              {g.urlCard && (
-                <div>
-                  <label className="input-label">URL de la Tarjeta</label>
-                  <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <div style={{ flex: 1, background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border-glass)', borderRadius: 8, padding: '0.6rem 0.8rem', fontSize: '0.75rem', color: '#a78bfa', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: '0.5rem', height: '42px' }}>
-                      <Link2 size={14} /> <span>{g.urlCard.startsWith('http') ? g.urlCard : `${import.meta.env.VITE_FRONT_URL || window.location.origin}/${g.urlCard.replace(/^\//, '')}`}</span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {/* Row 1: Name and Companions */}
+                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', paddingRight: '2rem' }}>
+                  <div style={{ flex: '1 1 200px' }}>
+                    <label className="input-label" style={{ fontSize: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Invitado {i + 1}</label>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <div style={{ width: 28, height: 28, borderRadius: '50%', background: `${iconColor}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <StatusIcon size={14} color={iconColor} />
+                      </div>
+                      <input
+                        type="text"
+                        value={g.name || ''}
+                        onChange={e => setGuest(i, 'name', e.target.value)}
+                        className="input-field"
+                        placeholder="Nombre del invitado"
+                        style={{ opacity: 0.8, fontSize: '0.85rem', padding: '0.4rem 0.75rem' }}
+                      />
                     </div>
-                    <button type="button" onClick={() => copyToClipboard(g.urlCard)} className="btn-secondary" style={{ width: '42px', height: '42px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }}><Copy size={16} /></button>
+                  </div>
+                  <div style={{ width: '100px', flexShrink: 0 }}>
+                    <label className="input-label" style={{ fontSize: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Acompañantes</label>
+                    <input
+                      type="number"
+                      min={0}
+                      value={g.companions || 0}
+                      onChange={e => setGuest(i, 'companions', e.target.value)}
+                      className="input-field"
+                      style={{ textAlign: 'center', opacity: 0.8, fontSize: '0.85rem', padding: '0.4rem' }}
+                    />
                   </div>
                 </div>
-              )}
-            </div>
+
+                {/* Row 2: Status and Combined Date & Time */}
+                <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-end' }}>
+                  <div style={{ flex: '1 1 40%', minWidth: '0' }}>
+                    <label className="input-label" style={{ fontSize: '0.6rem', textTransform: 'uppercase', marginBottom: '0.4rem', display: 'block' }}>Confirmación</label>
+                    <select
+                      value={g.confirmation || 'pendiente'}
+                      onChange={e => setGuest(i, 'confirmation', e.target.value)}
+                      className="input-field"
+                      style={{
+                        opacity: 0.8,
+                        fontSize: '0.8rem',
+                        padding: '0 0.75rem',
+                        width: '100%',
+                        maxWidth: '100%',
+                        height: '40px',
+                        cursor: 'pointer',
+                        appearance: 'auto',
+                        boxSizing: 'border-box'
+                      }}
+                    >
+                      <option value="pendiente" style={{ background: '#141228', color: 'white' }}>⏳ Pendiente</option>
+                      <option value="si" style={{ background: '#141228', color: 'white' }}>✅ Sí asistirá</option>
+                      <option value="no" style={{ background: '#141228', color: 'white' }}>❌ No asistirá</option>
+                    </select>
+                  </div>
+                  <div style={{ flex: '1 1 60%', minWidth: '0' }}>
+                    <label className="input-label" style={{ fontSize: '0.6rem', textTransform: 'uppercase', marginBottom: '0.4rem', display: 'block' }}>Fecha y Hora de Confirmación</label>
+                    <div className="input-field" style={{
+                      opacity: 0.7,
+                      fontSize: '0.8rem',
+                      padding: '0 0.75rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      background: 'rgba(0,0,0,0.2)',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      height: '40px',
+                      boxSizing: 'border-box'
+                    }}>
+                      <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {dateStr ? `${dateStr} — ${timeStr}` : 'Pendiente'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Row 3: Message and URL Card */}
+                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                  <div style={{ flex: '2 1 250px' }}>
+                    <label className="input-label" style={{ fontSize: '0.6rem', textTransform: 'uppercase' }}>Mensaje del Invitado</label>
+                    <div className="input-field" style={{ opacity: 0.7, minHeight: '38px', height: 'auto', padding: '0.4rem 0.75rem', fontSize: '0.85rem', color: g.message ? 'var(--text-primary)' : 'var(--text-muted)' }}>
+                      {g.message || 'Sin mensaje aún'}
+                    </div>
+                  </div>
+                  <div style={{ flex: '1 1 200px' }}>
+                    <label className="input-label" style={{ fontSize: '0.6rem', textTransform: 'uppercase' }}>URL de la Tarjeta</label>
+                    <div style={{ display: 'flex', gap: '0.25rem' }}>
+                      <div className="input-field" style={{ opacity: 0.7, padding: '0.4rem 0.6rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.4rem', overflow: 'hidden', flex: 1 }}>
+                        <Link2 size={12} style={{ flexShrink: 0 }} />
+                        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{cardUrl || 'Pendiente'}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => copyToClipboard(cardUrl)}
+                        disabled={!cardUrl}
+                        className="btn-secondary"
+                        style={{ padding: '0.4rem', width: '38px', height: '38px', flexShrink: 0 }}
+                      >
+                        <Copy size={14} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           );
         })}
       </div>
@@ -520,10 +651,32 @@ export const GuestManagementForm = ({ data, onChange, onSave, onSaveWithData, sa
         .guest-mgmt-admin .stat-label { color: var(--text-muted); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; margin-top: 0.1rem; letter-spacing: 0.05em; }
         .guest-mgmt-admin .guest-control-btn { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); color: var(--text-primary); cursor: pointer; transition: all 0.2s ease; }
         .guest-mgmt-admin .guest-control-btn:hover { background: rgba(255, 255, 255, 0.12); transform: scale(1.05); }
-        .guest-mgmt-admin .guest-delete-btn { position: absolute; top: 1rem; right: 1rem; background: rgba(248, 113, 113, 0.1); border: 1px solid rgba(248, 113, 113, 0.2); color: #f87171; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; z-index: 5; }
-        .guest-mgmt-admin .guest-delete-btn:hover { background: rgba(248, 113, 113, 0.2); transform: scale(1.1); }
-        .guest-mgmt-admin .guest-total-input::-webkit-outer-spin-button, .guest-mgmt-admin .guest-total-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         
+        .guest-mgmt-admin .guest-delete-btn {
+          position: absolute;
+          top: 1.25rem;
+          right: 1.25rem;
+          background: rgba(248, 113, 113, 0.1);
+          border: 1px solid rgba(248, 113, 113, 0.3);
+          color: #f87171;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          z-index: 10;
+        }
+        .guest-mgmt-admin .guest-delete-btn:hover {
+          background: rgba(248, 113, 113, 0.2);
+          transform: scale(1.1);
+        }
+
+        .guest-mgmt-admin .guest-total-input::-webkit-outer-spin-button, .guest-mgmt-admin .guest-total-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .guest-mgmt-admin .guest-total-input[type=number] { -moz-appearance: textfield; }
+
         @media (max-width: 768px) {
           .guest-mgmt-admin .dashboard-inner-layout { flex-direction: column; gap: 1.25rem; }
           .guest-mgmt-admin .total-section { padding-right: 0; width: 100%; }
@@ -727,9 +880,18 @@ const ComponentPanel = ({ compKey, schema, data, onSave, onUpload, saving }: any
                             }
                           }} style={{ padding: '0.35rem 0.5rem' }} />
                           {img && (
-                            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                              Actual: {img instanceof File ? img.name : (typeof img === 'string' ? img.split('/').pop() : img)}
-                            </span>
+                            <>
+                              <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                Actual: {img instanceof File ? img.name : (typeof img === 'string' ? img.split('/').pop() : img)}
+                              </span>
+                              <div style={{ marginTop: '0.25rem' }}>
+                                <img 
+                                  src={getPreviewUrl(img)} 
+                                  alt={`Carrusel ${i + 1}`} 
+                                  style={{ width: '100%', height: '110px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--border-glass)' }} 
+                                />
+                              </div>
+                            </>
                           )}
                         </div>
                       ))}
