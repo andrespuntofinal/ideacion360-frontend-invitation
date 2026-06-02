@@ -137,12 +137,12 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             {/* Card 1: Guest Info */}
             <motion.div
-              className="absolute w-[35%] max-w-[200px] h-[60%] max-h-[250px] shadow-xl rounded-lg p-1 z-10 flex flex-col items-center justify-center text-center border-2 pointer-events-auto"
+              className="absolute w-[45%] max-w-[230px] h-[70%] max-h-[280px] shadow-xl rounded-lg p-1 z-10 flex flex-col items-center justify-center text-center border-2 pointer-events-auto"
               initial={{ y: '10%', x: 0, rotate: 0, opacity: 0, scale: 0.8 }}
               animate={isOpening ? {
-                y: ['10%', '-120%', '-45%'],
-                x: [0, '-25%', '-45%'],
-                rotate: [0, -5, -12],
+                y: ['1  0%', '-115%', '-40%'],
+                x: [0, '-25%', '-50%'],
+                rotate: [0, -6, -12],
                 opacity: [0, 1, 1],
                 scale: [0.8, 1, 1],
                 zIndex: [10, 10, 35]
@@ -159,38 +159,52 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
                 className="w-full h-full border rounded-md p-2 md:p-4 flex flex-col items-center justify-center relative overflow-hidden"
                 style={{ borderColor: `${envelope.accentColor}80` }}
               >
-                <h3
-                  className="text-[10px] md:text-xs mb-1 md:mb-2 tracking-widest uppercase"
-                  style={{ color: envelope.textColor, fontFamily: envelope.envelopeFont }}
-                >
-                  {envelope.cardMessageforguestsText}
-                </h3>
-                <br />
-                <p
-                  className="text-sm md:text-lg font-bold mb-2 leading-tight"
-                  style={{ color: envelope.accentColor, fontFamily: envelope.titleFont }}
-                >
-                  {paramsGeneral.guestName}
-                </p>
-                <div className="mt-1 pt-2 border-t w-full" style={{ borderColor: `${envelope.accentColor}4D` }}>
-                  <p
-                    className="text-[10px] md:text-xs font-bold"
-                    style={{ color: envelope.textDarkColor, fontFamily: envelope.envelopeFont }}
+                {envelope.textureUrl && (
+                  <div
+                    className="absolute inset-0 z-0 pointer-events-none opacity-80"
+                    style={{
+                      backgroundImage: `url(${envelope.textureUrl})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      mixBlendMode: 'multiply',
+                    }}
+                  />
+                )}
+                <div className="relative z-10 flex flex-col items-center justify-center">
+                  <h3
+                    className="text-xs md:text-sm mb-1 md:mb-2 tracking-widest uppercase"
+                    style={{ color: envelope.textColor, fontFamily: envelope.envelopeFont }}
                   >
-                    {paramsGeneral.numberGuests} PERSONAS
+                    {envelope.cardMessageforguestsText}
+                  </h3>
+                  <br />
+                  <p
+                    className="text-base md:text-xl font-bold mb-2 leading-tight"
+                    style={{ color: envelope.accentColor, fontFamily: envelope.titleFont }}
+                  >
+                    {paramsGeneral.guestName}
                   </p>
+                  <div className="mt-1 pt-2 border-t w-full" style={{ borderColor: `${envelope.accentColor}4D` }}>
+                    <p
+                      className="text-xs md:text-sm font-bold"
+                      style={{ color: envelope.textDarkColor, fontFamily: envelope.envelopeFont }}
+                    >
+                      <br />
+                      {paramsGeneral.numberGuests} PERSONAS
+                    </p>
+                  </div>
                 </div>
               </div>
             </motion.div>
 
             {/* Card 2: Photo */}
             <motion.div
-              className="absolute w-[34%] max-w-[180px] h-[65%] max-h-[210px] shadow-2xl p-2 md:p-3 z-10 border-[4px] md:border-[6px] pointer-events-auto"
+              className="absolute w-[45%] max-w-[230px] h-[70%] max-h-[280px] shadow-2xl p-2 md:p-3 z-10 border-[4px] md:border-[6px] pointer-events-auto"
               initial={{ y: '10%', x: 0, rotate: 0, opacity: 0, scale: 0.8 }}
               animate={isOpening ? {
-                y: ['10%', '-130%', '-55%'],
-                x: [0, '25%', '45%'],
-                rotate: [0, 5, 15],
+                y: ['10%', '-120%', '-42%'],
+                x: [0, '25%', '50%'],
+                rotate: [0, 6, 12],
                 opacity: [0, 1, 1],
                 scale: [0.8, 1, 1],
                 zIndex: [10, 10, 34]
