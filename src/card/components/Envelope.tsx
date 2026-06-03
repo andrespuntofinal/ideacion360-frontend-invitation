@@ -366,21 +366,29 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
               >
                 {step === 'closed' ? (
                   <>
-                    <span className="text-xs opacity-90 mb-0.5">💍</span>
+
                     <span
                       className="text-2xl font-bold leading-none"
                       style={{ fontFamily: banner.titleFont, color: banner.textColor }}
                     >
+                      <br />
+                      <br />
+                      <br />
+
                       {banner.subtextMsg}
                     </span>
                   </>
                 ) : (
                   <>
-                    <span className="text-[10px] opacity-90 mb-0.5">💍</span>
+
                     <span
                       className="text-[10px] font-bold leading-tight text-center px-1"
                       style={{ fontFamily: envelope.titleFont }}
                     >
+                      <br />
+                      <br />
+                      <br />
+
                       VER<br />DETALLES
                     </span>
                   </>
