@@ -30,6 +30,7 @@ export const DEFAULT_CONFIG: CardConfig = {
     titleFont: "'Playfair Display', serif", initialsCoupleTextColor: '#F7F9FA',
     initialsCoupleText: 'J&L', cardMessageforguestsText: 'Nos honra invitar a:',
     backgroundImage: '',
+    messageOnEnvelope: false,
   },
   banner: {
     videoDesktop: '', videoResponsive: '', titleFont: "'Playfair Display', serif",
@@ -77,8 +78,8 @@ export const DEFAULT_CONFIG: CardConfig = {
     detailIcon2Color: '#d79f72', detailsMapsTitle: 'Cómo llegar',
     backgroundColorFrom: '#19284c', backgroundColorVia: '#5c678d', backgroundColorTo: '#19284c',
     boderColor: '#A5ADB8', backgroundColorIconMoments: '#e8dcd9', borderColorIconMoments: '#D7B272',
-    ceremony: { title: 'Ceremonia', place: '', time: '' },
-    celebration: { title: 'Celebración', place: '', time: '' },
+    ceremony: { title: '', place: '', time: '' },
+    celebration: { title: '', place: '', time: '' },
     ceremonyMaps: '', celebrationMaps: '',
   },
   timeline: {
@@ -219,8 +220,14 @@ export function CardProvider({ eventId, children }: CardProviderProps) {
           dressCode: merge(DEFAULT_CONFIG.dressCode, comps.dressCode),
           eventDetails: {
             ...merge(DEFAULT_CONFIG.eventDetails, comps.eventDetails),
-            ceremony: merge(DEFAULT_CONFIG.eventDetails.ceremony, (comps.eventDetails as any)?.ceremony),
-            celebration: merge(DEFAULT_CONFIG.eventDetails.celebration, (comps.eventDetails as any)?.celebration),
+            ceremony: {
+              ...DEFAULT_CONFIG.eventDetails.ceremony,
+              ...((comps.eventDetails as any)?.ceremony || {})
+            },
+            celebration: {
+              ...DEFAULT_CONFIG.eventDetails.celebration,
+              ...((comps.eventDetails as any)?.celebration || {})
+            },
           } as any,
           timeline: merge(DEFAULT_CONFIG.timeline, comps.timeline),
           presents: merge(DEFAULT_CONFIG.presents, comps.presents),

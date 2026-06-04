@@ -10,9 +10,9 @@ export default function EventDetails() {
   const celebration = eventDetails.celebration as Record<string, string>;
 
   const details = [
-    { title: ceremony.title, icon: Church, place: ceremony.place, time: ceremony.time, mapUrl: eventDetails.ceremonyMaps as string },
-    { title: celebration.title, icon: PartyPopper, place: celebration.place, time: celebration.time, mapUrl: eventDetails.celebrationMaps as string },
-  ];
+    { title: ceremony?.title, icon: Church, place: ceremony?.place, time: ceremony?.time, mapUrl: eventDetails.ceremonyMaps as string },
+    { title: celebration?.title, icon: PartyPopper, place: celebration?.place, time: celebration?.time, mapUrl: eventDetails.celebrationMaps as string },
+  ].filter(item => item.title && item.title.trim() !== '');
 
   return (
     <section className="w-full py-6 md:py-10 px-0 md:px-4">

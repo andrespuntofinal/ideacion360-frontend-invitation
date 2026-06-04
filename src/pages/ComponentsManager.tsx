@@ -48,6 +48,15 @@ const Field = ({ label, fieldKey, value, onChange, type = 'text', placeholder = 
         <textarea className="input-field" value={value || ''} onChange={e => onChange(fieldKey, e.target.value)} placeholder={placeholder} rows={3} style={{ resize: 'vertical' }} />
       ) : type === 'number' ? (
         <input type="number" className="input-field" step={step} value={value || ''} onChange={e => onChange(fieldKey, Number(e.target.value))} placeholder={placeholder} />
+      ) : type === 'boolean' ? (
+        <div style={{ marginTop: '0.25rem' }}>
+          <label className="toggle-switch">
+            <input type="checkbox" checked={!!value} onChange={e => onChange(fieldKey, e.target.checked)} />
+            <div className="toggle-track">
+              <div className="toggle-thumb" />
+            </div>
+          </label>
+        </div>
       ) : type === 'file' ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           <input type="file" accept={accept} className="input-field" onChange={e => {
@@ -213,6 +222,7 @@ const componentSchemas: Record<string, any> = {
       { key: 'cardCouplePhoto', label: 'URL Foto de la Pareja', type: 'file', accept: '.jpg,.jpeg,.png' },
       { key: 'textureUrl', label: 'URL Textura', type: 'file', accept: '.jpg,.jpeg,.png' },
       { key: 'envelopeMsg', label: 'Mensaje del Sobre', type: 'textarea' },
+      { key: 'messageOnEnvelope', label: 'MENSAJE EN EL SOBRE', type: 'boolean' },
       { key: 'envelopeMsgColor', label: 'Color Mensaje Sobre' },
       { key: 'envelopeFont', label: 'Fuente del Sobre' },
       { key: 'sealImage', label: 'URL Imagen del Sello', type: 'file', accept: '.jpg,.jpeg,.png' },

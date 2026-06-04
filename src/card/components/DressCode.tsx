@@ -65,6 +65,7 @@ export default function DressCode() {
                   className="w-14 h-14 md:w-20 md:h-18 object-contain"
                   referrerPolicy="no-referrer"
                   style={{ color: dressCode.borderColorIconMoments, opacity: 0.7 }}
+
                 />
               ) : (
                 <span className="text-2xl">👗</span>

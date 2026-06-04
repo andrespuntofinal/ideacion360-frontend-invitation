@@ -77,32 +77,34 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
       />
 
       {/* Message ABOVE Envelope */}
-      <motion.div
-        className="relative z-10 flex flex-col items-center text-center mb-8 px-6"
-        initial={{ opacity: 0, y: -30 }}
-        animate={{
-          opacity: isOpening ? 0 : 1,
-          y: isOpening ? -20 : 0,
-          pointerEvents: isOpening ? 'none' : 'auto'
-        }}
-        transition={{ duration: 0.8, delay: isOpening ? 0 : 0.3 }}
-      >
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5, duration: 0.9 }}
-          className="text-xl md:text-2xl italic leading-relaxed"
-          style={{ color: envelope.textDarkColor, fontFamily: envelope.envelopeFont, opacity: 0.9 }}
+      {!envelope.messageOnEnvelope && (
+        <motion.div
+          className="relative z-10 flex flex-col items-center text-center mb-8 px-6"
+          initial={{ opacity: 0, y: -30 }}
+          animate={{
+            opacity: isOpening ? 0 : 1,
+            y: isOpening ? -20 : 0,
+            pointerEvents: isOpening ? 'none' : 'auto'
+          }}
+          transition={{ duration: 0.8, delay: isOpening ? 0 : 0.3 }}
         >
-          {envelope.envelopeMsg}
-        </motion.p>
-        <div className="flex items-center gap-4 mt-6 opacity-60">
-          <div className="h-[1px] w-20" style={{ backgroundColor: envelope.accentColor }} />
-          <Heart className="w-5 h-5 fill-current" style={{ color: envelope.accentColor }} />
-          <div className="h-[1px] w-20" style={{ backgroundColor: envelope.accentColor }} />
-        </div>
-      </motion.div>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5, duration: 0.9 }}
+            className="text-xl md:text-2xl italic leading-relaxed"
+            style={{ color: envelope.textDarkColor, fontFamily: envelope.envelopeFont, opacity: 0.9 }}
+          >
+            {envelope.envelopeMsg}
+          </motion.p>
+          <div className="flex items-center gap-4 mt-6 opacity-60">
+            <div className="h-[1px] w-20" style={{ backgroundColor: envelope.accentColor }} />
+            <Heart className="w-5 h-5 fill-current" style={{ color: envelope.accentColor }} />
+            <div className="h-[1px] w-20" style={{ backgroundColor: envelope.accentColor }} />
+          </div>
+        </motion.div>
+      )}
       <br />
 
       {/* Envelope Container */}
@@ -140,7 +142,7 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
               className="absolute w-[45%] max-w-[230px] h-[70%] max-h-[280px] shadow-xl rounded-lg p-1 z-10 flex flex-col items-center justify-center text-center border-2 pointer-events-auto"
               initial={{ y: '10%', x: 0, rotate: 0, opacity: 0, scale: 0.8 }}
               animate={isOpening ? {
-                y: ['1  0%', '-115%', '-40%'],
+                y: ['10%', '-115%', '-40%'],
                 x: [0, '-25%', '-50%'],
                 rotate: [0, -6, -12],
                 opacity: [0, 1, 1],
@@ -172,7 +174,7 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
                 )}
                 <div className="relative z-10 flex flex-col items-center justify-center">
                   <h3
-                    className="text-xs md:text-sm mb-1 md:mb-2 tracking-widest uppercase"
+                    className="text-xs md:text-sm mb-1 md:mb-2 tracking-widest"
                     style={{ color: envelope.textColor, fontFamily: envelope.envelopeFont }}
                   >
                     {envelope.cardMessageforguestsText}
@@ -308,6 +310,19 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
                 )}
                 <polygon points="0,0 800,0 400,360" fill="none" stroke={envelope.accentColor} strokeWidth="2" opacity="0.6" />
               </svg>
+              {envelope.messageOnEnvelope && envelope.envelopeMsg && (
+                <div
+                  className="absolute inset-0 -translate-y-18 px-16 pb-12 flex flex-col items-center justify-center text-center pointer-events-none"
+                  style={{
+                    color: envelope.envelopeMsgColor || envelope.textDarkColor,
+                    fontFamily: envelope.envelopeFont,
+                  }}
+                >
+                  <p className="text-[15px] sm:text-[20px] md:text-[24px] italic leading-relaxed text-justify max-w-[85%]" style={{ textJustify: 'inter-word', textAlign: 'justify', textAlignLast: 'center' }}>
+                    {envelope.envelopeMsg}
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* INSIDE liner face — pre-rotada 180° en X

@@ -28,9 +28,9 @@ export default function Message() {
           viewport={{ once: true }}
           transition={{ duration: 0.9, ease: 'easeOut' }}
           className="text-xl md:text-2xl italic leading-relaxed"
-          style={{ color: message.colorText1, fontFamily: message.font }}
+          style={{ color: message.colorText1, fontFamily: message.font, whiteSpace: 'pre-wrap' }}
         >
-          "{message.text1}"
+          {message.text1}
         </motion.p>
         <br />
 

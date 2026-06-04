@@ -160,6 +160,7 @@ export interface EnvelopeConfig {
   initialsCoupleText: string;
   cardMessageforguestsText: string;
   backgroundImage: string;
+  messageOnEnvelope?: boolean;
 }
 
 export interface BannerConfig {
