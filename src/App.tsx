@@ -17,6 +17,7 @@ import ClientLogin from './pages/ClientLogin';
 import ClientGuestManagement from './pages/ClientGuestManagement';
 import ClientDashboard from './pages/ClientDashboard';
 import ClientWeddingDetails from './pages/ClientWeddingDetails';
+import EventReviews from './pages/EventReviews';
 
 // Guards
 import ProtectedRoute from './components/common/ProtectedRoute';
@@ -77,6 +78,7 @@ const App = () => {
 
         {/* Public Card (Invitation View) */}
         <Route path="/wedding/card/:eventId" element={<CardPage />} />
+        <Route path="/wedding/reviews/:eventId" element={<EventReviews />} />
         <Route path="/wedding/control-user/*" element={<ControlUser />} />
 
         <Route path="/wedding/Admin/settings" element={

@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Edit, Settings2, Calendar, User, Heart, CheckCircle, XCircle } from 'lucide-react';
+import { ArrowLeft, Edit, Settings2, Calendar, User, Heart, CheckCircle, XCircle, Copy, Check } from 'lucide-react';
 import AdminLayout from '../components/admin/AdminLayout';
 import useEventsStore from '../stores/eventsStore';
+import toast from 'react-hot-toast';
 
 const COMPONENT_LABELS: Record<string, { label: string; emoji: string }> = {
   banner: { label: 'Banner', emoji: '🖼️' },
@@ -49,6 +50,17 @@ const EventDetail = () => {
 
   const event = currentEvent;
   const formatDate = (d?: string) => d ? new Date(d).toLocaleDateString('es-CO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : '—';
+  const [copied, setCopied] = useState(false);
+  const handleCopy = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      toast.success('Enlace de reseña copiado');
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      toast.error('No se pudo copiar el enlace');
+    }
+  };
 
   if (isLoading || !event) {
     return (
@@ -108,6 +120,44 @@ const EventDetail = () => {
               <div style={{ color: 'var(--text-primary)', fontSize: '0.9rem' }}>{value || '—'}</div>
             </div>
           ))}
+          
+          <div style={{ marginBottom: '0.75rem' }}>
+            <div style={{ color: 'var(--text-muted)', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.2rem' }}>Url Review</div>
+            {event.reviews?.url ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.05)', padding: '0.4rem 0.6rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <span style={{ fontSize: '0.8rem', color: 'var(--color-blue-light)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
+                  {event.reviews.url}
+                </span>
+                <button
+                  onClick={() => handleCopy(event.reviews?.url || '')}
+                  style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: '4px', borderRadius: '4px' }}
+                  title="Copiar URL"
+                >
+                  {copied ? <Check size={14} color="#4ade80" /> : <Copy size={14} color="#94a3b8" />}
+                </button>
+              </div>
+            ) : (
+              <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', fontStyle: 'italic' }}>Generada al concluir el evento</div>
+            )}
+          </div>
+
+          <div style={{ marginBottom: '0.75rem' }}>
+            <div style={{ color: 'var(--text-muted)', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.2rem' }}>Comentarios</div>
+            <div style={{ 
+              color: event.reviews?.comments ? 'var(--text-primary)' : 'var(--text-muted)', 
+              fontSize: '0.85rem', 
+              fontStyle: event.reviews?.comments ? 'normal' : 'italic',
+              background: 'rgba(0,0,0,0.15)', 
+              padding: '0.75rem', 
+              borderRadius: '8px', 
+              border: '1px solid rgba(255,255,255,0.05)',
+              maxHeight: '120px',
+              overflowY: 'auto',
+              whiteSpace: 'pre-wrap'
+            }}>
+              {event.reviews?.comments || 'No se han registrado comentarios aún'}
+            </div>
+          </div>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="glass-card" style={{ padding: '1.5rem' }}>

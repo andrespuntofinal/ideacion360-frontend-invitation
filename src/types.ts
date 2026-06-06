@@ -97,6 +97,10 @@ export interface WeddingEvent {
   wedding?: EventWedding;
   activeComponents: ActiveComponents;
   components: EventComponents;
+  reviews?: {
+    url?: string;
+    comments?: string;
+  };
   createdAt: string;
   updatedAt: string;
 }
