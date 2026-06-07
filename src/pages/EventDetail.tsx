@@ -50,6 +50,16 @@ const EventDetail = () => {
 
   const event = currentEvent;
   const formatDate = (d?: string) => d ? new Date(d).toLocaleDateString('es-CO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : '—';
+  
+  const getFullReviewUrl = (path: string | undefined): string => {
+    if (!path) return '';
+    if (path.startsWith('http')) return path;
+    const frontUrl = import.meta.env.VITE_FRONT_URL || window.location.origin;
+    const baseUrl = frontUrl.replace(/\/$/, '');
+    const cleanPath = path.startsWith('/') ? path : `/${path}`;
+    return `${baseUrl}${cleanPath}`;
+  };
+
   const [copied, setCopied] = useState(false);
   const handleCopy = async (text: string) => {
     try {
@@ -94,7 +104,7 @@ const EventDetail = () => {
           </button>
           {event.type === 'web' && (
             <button className="btn-primary" onClick={() => navigate(`/wedding/Admin/events/${id}/components`)}
-              style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', fontSize: '0.85rem' }}>
+               style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', fontSize: '0.85rem' }}>
               <Settings2 size={15} /> Gestionar Componentes
             </button>
           )}
@@ -126,10 +136,10 @@ const EventDetail = () => {
             {event.reviews?.url ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.05)', padding: '0.4rem 0.6rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.08)' }}>
                 <span style={{ fontSize: '0.8rem', color: 'var(--color-blue-light)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
-                  {event.reviews.url}
+                  {getFullReviewUrl(event.reviews.url)}
                 </span>
                 <button
-                  onClick={() => handleCopy(event.reviews?.url || '')}
+                  onClick={() => handleCopy(getFullReviewUrl(event.reviews?.url))}
                   style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: '4px', borderRadius: '4px' }}
                   title="Copiar URL"
                 >

@@ -70,33 +70,29 @@ export default function EventDetails() {
 
               {/* Title */}
               <h3
-                className="text-sm sm:text-xl font-bold tracking-widest mb-1"
+                className="text-lg sm:text-xl font-bold tracking-widest mb-1"
                 style={{ fontFamily: eventDetails.detailItemTitleFont, color: eventDetails.detailItemTitleColor }}
               >
                 {item.title}
               </h3>
               <br />
 
-              <div className="h-px w-16 mb-5" style={{ backgroundColor: eventDetails.borderColorIconMoments }} />
+
 
               <div className="space-y-3 w-full mb-6">
                 <div
                   className="flex items-center justify-center gap-2 text-sm"
                   style={{ color: eventDetails.detailItemText1Color, fontFamily: eventDetails.detailItemText1Font }}
                 >
-                  <MapPin className="w-3.5 h-3.5 md:w-4 md:h-4"
-                    style={{ color: eventDetails.detailIcon2Color }}
-                  />
-                  <span className="text-[10px] sm:text-sm leading-snug">{item.place}</span>
+
+                  <span className="text-[14px] sm:text-sm leading-snug">{item.place}</span>
                 </div>
                 <div
                   className="flex items-center justify-center gap-2 sm:gap-2 text-sm"
                   style={{ color: eventDetails.detailItemText1Color, fontFamily: eventDetails.detailItemText1Font }}
                 >
-                  <Clock className="w-3.5 h-3.5 md:w-4 md:h-4"
-                    style={{ color: eventDetails.detailIcon2Color }}
-                  />
-                  <span className="text-[10px] sm:text-sm leading-snug">{item.time}</span>
+
+                  <span className="text-[14px] sm:text-sm leading-snug">{item.time}</span>
                 </div>
               </div>
               <br />
@@ -107,7 +103,7 @@ export default function EventDetails() {
                   href={item.mapUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-auto inline-flex items-center gap-2 px-5 py-2 rounded-full text-[10px] sm:text-xs font-medium tracking-wide transition-all duration-300 hover:scale-105"
+                  className="mt-auto inline-flex items-center gap-2 px-5 py-2 rounded-full text-[12px] sm:text-xs font-medium tracking-wide transition-all duration-300 hover:scale-105"
                   style={{
                     border: `1px solid ${eventDetails.borderColorIconMoments}`,
                     color: eventDetails.detailItemTitleColor,
@@ -120,6 +116,7 @@ export default function EventDetails() {
                 </a>
 
               )}
+              <br />
               <br />
             </div>
 

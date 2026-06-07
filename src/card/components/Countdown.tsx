@@ -115,7 +115,7 @@ export default function Countdown() {
                 </span>
               </div>
               <span
-                className="text-[10px] sm:text-xs md:text-sm tracking-[0.2em] uppercase"
+                className="text-[12px] sm:text-xs md:text-sm tracking-[0.2em] uppercase"
                 style={{ color: countdown.numberColorText2, fontFamily: countdown.numberFontText }}
               >
                 {item.label}

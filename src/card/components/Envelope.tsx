@@ -318,7 +318,7 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
                     fontFamily: envelope.envelopeFont,
                   }}
                 >
-                  <p className="text-[15px] sm:text-[20px] md:text-[24px] italic leading-relaxed text-justify max-w-[85%]" style={{ textJustify: 'inter-word', textAlign: 'justify', textAlignLast: 'center' }}>
+                  <p className="text-[25px] sm:text-[20px] md:text-[24px] italic leading-relaxed text-justify max-w-[85%]" style={{ textJustify: 'inter-word', textAlign: 'justify', textAlignLast: 'center' }}>
                     {envelope.envelopeMsg}
                   </p>
                 </div>

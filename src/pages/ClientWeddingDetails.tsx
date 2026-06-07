@@ -57,6 +57,18 @@ const convertTo24Hour = (timeStr: string): string => {
   return `${String(hr).padStart(2, '0')}:${minute}`;
 };
 
+const ensureFourColors = (arr: any): string[] => {
+  const defaultColors = ['#ffffff', '#ffffff', '#ffffff', '#ffffff'];
+  if (!arr || !Array.isArray(arr) || arr.length === 0) {
+    return defaultColors;
+  }
+  const result = [...arr];
+  while (result.length < 4) {
+    result.push('#ffffff');
+  }
+  return result.map(c => c || '#ffffff');
+};
+
 const ClientWeddingDetails = () => {
   const { eventId } = useParams<{ eventId: string }>();
   const navigate = useNavigate();
@@ -119,6 +131,9 @@ const ClientWeddingDetails = () => {
   // 10. Dress Code
   const [dressCodeTextWomen, setDressCodeTextWomen] = useState('');
   const [dressCodeTextMen, setDressCodeTextMen] = useState('');
+  const [activateColorPalette, setActivateColorPalette] = useState(false);
+  const [colorPaletteWomen, setColorPaletteWomen] = useState<string[]>(['#ffffff', '#ffffff', '#ffffff', '#ffffff']);
+  const [colorPaletteMen, setColorPaletteMen] = useState<string[]>(['#ffffff', '#ffffff', '#ffffff', '#ffffff']);
 
   // 11. Child restriction
   const [childrestrictionMessage, setChildrestrictionMessage] = useState('');
@@ -206,6 +221,9 @@ const ClientWeddingDetails = () => {
       const dressCode = eventData.components?.dressCode || {};
       setDressCodeTextWomen(dressCode.dressCodeTextWomen || '');
       setDressCodeTextMen(dressCode.dressCodeTextMen || '');
+      setActivateColorPalette(!!dressCode.activateColorPalette);
+      setColorPaletteWomen(ensureFourColors(dressCode.colorPaletteWomen));
+      setColorPaletteMen(ensureFourColors(dressCode.colorPaletteMen));
 
       const childRestriction = eventData.components?.childRestriction || {};
       setChildrestrictionMessage(childRestriction.childrestrictionMessage || '');
@@ -379,7 +397,10 @@ const ClientWeddingDetails = () => {
       updatePromises.push(eventsService.updateComponent(eventId!, 'dressCode', {
         ...(event.components?.dressCode || {}),
         dressCodeTextWomen,
-        dressCodeTextMen
+        dressCodeTextMen,
+        activateColorPalette,
+        colorPaletteWomen,
+        colorPaletteMen
       }));
 
       // K. Child Restriction Component
@@ -986,15 +1007,113 @@ const ClientWeddingDetails = () => {
             <AnimatePresence>
               {openSection === 'dresscode' && (
                 <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }}>
-                  <div style={{ padding: '1.5rem', borderTop: '1px solid var(--border-glass)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
-                    <div>
-                      <label className="input-label">Código para Mujeres</label>
-                      <textarea className="input-field" rows={3} placeholder="Ej. Vestido largo formal. Evitar el color blanco." value={dressCodeTextWomen} onChange={e => setDressCodeTextWomen(e.target.value)} style={{ resize: 'vertical' }} />
+                  <div style={{ padding: '1.5rem', borderTop: '1px solid var(--border-glass)', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                    
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
+                      <div>
+                        <label className="input-label">Código para Mujeres</label>
+                        <textarea className="input-field" rows={3} placeholder="Ej. Vestido largo formal. Evitar el color blanco." value={dressCodeTextWomen} onChange={e => setDressCodeTextWomen(e.target.value)} style={{ resize: 'vertical' }} />
+                      </div>
+                      <div>
+                        <label className="input-label">Código para Hombres</label>
+                        <textarea className="input-field" rows={3} placeholder="Ej. Traje formal oscuro con corbata." value={dressCodeTextMen} onChange={e => setDressCodeTextMen(e.target.value)} style={{ resize: 'vertical' }} />
+                      </div>
                     </div>
+
                     <div>
-                      <label className="input-label">Código para Hombres</label>
-                      <textarea className="input-field" rows={3} placeholder="Ej. Traje formal oscuro con corbata." value={dressCodeTextMen} onChange={e => setDressCodeTextMen(e.target.value)} style={{ resize: 'vertical' }} />
+                      <label className="input-label" style={{ marginBottom: '0.5rem' }}>Activar paleta de colores</label>
+                      <div style={{ marginTop: '0.25rem' }}>
+                        <label className="toggle-switch">
+                          <input type="checkbox" checked={activateColorPalette} onChange={e => setActivateColorPalette(e.target.checked)} />
+                          <div className="toggle-track">
+                            <div className="toggle-thumb" />
+                          </div>
+                        </label>
+                      </div>
                     </div>
+
+                    {activateColorPalette && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                        {/* Women's Palette */}
+                        <div style={{ background: 'var(--bg-card2)', padding: '1.25rem', borderRadius: 10, border: '1px solid var(--border-glass)' }}>
+                          <h4 style={{ color: 'var(--color-purple-light)', marginBottom: '1rem', fontSize: '0.9rem', fontWeight: 600 }}>Paleta de colores mujeres</h4>
+                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+                            {[0, 1, 2, 3].map(i => {
+                              const colorVal = colorPaletteWomen[i] || '#ffffff';
+                              return (
+                                <div key={i}>
+                                  <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                                    <span style={{ width: 10, height: 10, borderRadius: '50%', background: colorVal, display: 'inline-block', border: '1px solid rgba(255,255,255,0.2)' }} />
+                                    Color {i + 1}
+                                  </label>
+                                  <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                    <input type="color" className="input-color"
+                                      value={colorVal}
+                                      onChange={e => {
+                                        const newColors = [...colorPaletteWomen];
+                                        newColors[i] = e.target.value;
+                                        setColorPaletteWomen(newColors);
+                                      }}
+                                      style={{ width: 56, flexShrink: 0 }}
+                                    />
+                                    <input type="text" className="input-field"
+                                      value={colorVal}
+                                      onChange={e => {
+                                        const newColors = [...colorPaletteWomen];
+                                        newColors[i] = e.target.value;
+                                        setColorPaletteWomen(newColors);
+                                      }}
+                                      placeholder="#ffffff"
+                                      style={{ fontFamily: 'monospace', fontSize: '0.85rem' }}
+                                    />
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Men's Palette */}
+                        <div style={{ background: 'var(--bg-card2)', padding: '1.25rem', borderRadius: 10, border: '1px solid var(--border-glass)' }}>
+                          <h4 style={{ color: 'var(--color-purple-light)', marginBottom: '1rem', fontSize: '0.9rem', fontWeight: 600 }}>Paleta de colores hombres</h4>
+                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+                            {[0, 1, 2, 3].map(i => {
+                              const colorVal = colorPaletteMen[i] || '#ffffff';
+                              return (
+                                <div key={i}>
+                                  <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                                    <span style={{ width: 10, height: 10, borderRadius: '50%', background: colorVal, display: 'inline-block', border: '1px solid rgba(255,255,255,0.2)' }} />
+                                    Color {i + 1}
+                                  </label>
+                                  <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                                    <input type="color" className="input-color"
+                                      value={colorVal}
+                                      onChange={e => {
+                                        const newColors = [...colorPaletteMen];
+                                        newColors[i] = e.target.value;
+                                        setColorPaletteMen(newColors);
+                                      }}
+                                      style={{ width: 56, flexShrink: 0 }}
+                                    />
+                                    <input type="text" className="input-field"
+                                      value={colorVal}
+                                      onChange={e => {
+                                        const newColors = [...colorPaletteMen];
+                                        newColors[i] = e.target.value;
+                                        setColorPaletteMen(newColors);
+                                      }}
+                                      placeholder="#ffffff"
+                                      style={{ fontFamily: 'monospace', fontSize: '0.85rem' }}
+                                    />
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                   </div>
                 </motion.div>
               )}

@@ -251,6 +251,9 @@ export interface DressCodeConfig {
   boderColor: string;
   backgroundColorIconMoments: string;
   borderColorIconMoments: string;
+  activateColorPalette?: boolean;
+  colorPaletteWomen?: string[];
+  colorPaletteMen?: string[];
 }
 
 export interface EventDetailsConfig {

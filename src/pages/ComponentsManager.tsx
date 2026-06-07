@@ -30,7 +30,7 @@ const getPreviewUrl = (val: string | File) => {
 };
 
 const Field = ({ label, fieldKey, value, onChange, type = 'text', placeholder = '', accept = '', step }: FieldProps) => {
-  const isColor = /color/i.test(fieldKey) && type !== 'file';
+  const isColor = /color/i.test(fieldKey) && type !== 'file' && type !== 'boolean';
   return (
     <div>
       <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
@@ -199,6 +199,7 @@ const componentSchemas: Record<string, any> = {
       { key: 'dressCodeTextMen', label: 'Descripción Hombres', type: 'textarea' },
       { key: 'dressCodeIconWomen', label: 'URL Ícono Mujeres', type: 'file', accept: '.jpg,.jpeg,.png' },
       { key: 'dressCodeIconMen', label: 'URL Ícono Hombres', type: 'file', accept: '.jpg,.jpeg,.png' },
+      { key: 'activateColorPalette', label: 'Activar paleta de colores', type: 'boolean' },
       { key: 'iconbackgroundColor', label: 'Color Fondo Ícono' },
       { key: 'title2Color', label: 'Color Título 2' },
       { key: 'title2Font', label: 'Fuente Título 2' },
@@ -931,6 +932,89 @@ const ComponentPanel = ({ compKey, schema, data, onSave, onUpload, saving }: any
                         </div>
                       </div>
                     ))}
+                  </div>
+                </div>
+              )}
+
+              {/* DressCode color palettes */}
+              {compKey === 'dressCode' && formData.activateColorPalette && (
+                <div style={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                  {/* Women's Palette */}
+                  <div style={{ background: 'var(--bg-card2)', padding: '1.25rem', borderRadius: 10, border: '1px solid var(--border-glass)' }}>
+                    <h4 style={{ color: 'var(--color-purple-light)', marginBottom: '1rem', fontSize: '0.9rem' }}>Paleta de colores mujeres</h4>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+                      {[0, 1, 2, 3].map(i => {
+                        const colorVal = formData.colorPaletteWomen?.[i] || '#ffffff';
+                        return (
+                          <div key={i}>
+                            <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                              <span style={{ width: 10, height: 10, borderRadius: '50%', background: colorVal, display: 'inline-block', border: '1px solid rgba(255,255,255,0.2)' }} />
+                              Color {i + 1}
+                            </label>
+                            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                              <input type="color" className="input-color"
+                                value={colorVal}
+                                onChange={e => {
+                                  const newColors = [...(formData.colorPaletteWomen || ['#ffffff', '#ffffff', '#ffffff', '#ffffff'])];
+                                  newColors[i] = e.target.value;
+                                  handleChange('colorPaletteWomen', newColors);
+                                }}
+                                style={{ width: 56, flexShrink: 0 }}
+                              />
+                              <input type="text" className="input-field"
+                                value={colorVal}
+                                onChange={e => {
+                                  const newColors = [...(formData.colorPaletteWomen || ['#ffffff', '#ffffff', '#ffffff', '#ffffff'])];
+                                  newColors[i] = e.target.value;
+                                  handleChange('colorPaletteWomen', newColors);
+                                }}
+                                placeholder="#ffffff"
+                                style={{ fontFamily: 'monospace', fontSize: '0.85rem' }}
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Men's Palette */}
+                  <div style={{ background: 'var(--bg-card2)', padding: '1.25rem', borderRadius: 10, border: '1px solid var(--border-glass)' }}>
+                    <h4 style={{ color: 'var(--color-purple-light)', marginBottom: '1rem', fontSize: '0.9rem' }}>Paleta de colores hombres</h4>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+                      {[0, 1, 2, 3].map(i => {
+                        const colorVal = formData.colorPaletteMen?.[i] || '#ffffff';
+                        return (
+                          <div key={i}>
+                            <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                              <span style={{ width: 10, height: 10, borderRadius: '50%', background: colorVal, display: 'inline-block', border: '1px solid rgba(255,255,255,0.2)' }} />
+                              Color {i + 1}
+                            </label>
+                            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                              <input type="color" className="input-color"
+                                value={colorVal}
+                                onChange={e => {
+                                  const newColors = [...(formData.colorPaletteMen || ['#ffffff', '#ffffff', '#ffffff', '#ffffff'])];
+                                  newColors[i] = e.target.value;
+                                  handleChange('colorPaletteMen', newColors);
+                                }}
+                                style={{ width: 56, flexShrink: 0 }}
+                              />
+                              <input type="text" className="input-field"
+                                value={colorVal}
+                                onChange={e => {
+                                  const newColors = [...(formData.colorPaletteMen || ['#ffffff', '#ffffff', '#ffffff', '#ffffff'])];
+                                  newColors[i] = e.target.value;
+                                  handleChange('colorPaletteMen', newColors);
+                                }}
+                                placeholder="#ffffff"
+                                style={{ fontFamily: 'monospace', fontSize: '0.85rem' }}
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               )}

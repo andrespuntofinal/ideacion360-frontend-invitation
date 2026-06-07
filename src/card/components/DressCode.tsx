@@ -7,8 +7,8 @@ export default function DressCode() {
   const { dressCode } = config;
 
   const details = [
-    { title: dressCode.titleWomen, iconUrl: dressCode.dressCodeIconWomen, text: dressCode.dressCodeTextWomen },
-    { title: dressCode.titleMen, iconUrl: dressCode.dressCodeIconMen, text: dressCode.dressCodeTextMen },
+    { title: dressCode.titleWomen, iconUrl: dressCode.dressCodeIconWomen, text: dressCode.dressCodeTextWomen, isWomen: true },
+    { title: dressCode.titleMen, iconUrl: dressCode.dressCodeIconMen, text: dressCode.dressCodeTextMen, isWomen: false },
   ];
 
   return (
@@ -76,23 +76,42 @@ export default function DressCode() {
 
             {/* Title */}
             <h3
-              className="text-sm sm:text-xl font-bold tracking-widest mb-1"
+              className="text-lg sm:text-xl font-bold tracking-widest mt-1"
               style={{ fontFamily: dressCode.title2Font, color: dressCode.title2Color }}
             >
               {item.title}
             </h3>
             <br />
 
-            <div className="h-px w-16 mb-4 opacity-40" style={{ backgroundColor: dressCode.borderColorIconMoments }} />
+
+
 
             <p
-              className="text-[10px] sm:text-sm leading-relaxed"
+              className="text-[14px] sm:text-sm leading-relaxed"
               style={{ fontFamily: dressCode.text2Font, color: dressCode.text2Color }}
             >
               {item.text}
+
             </p>
             <br />
+
+            {dressCode.activateColorPalette && (
+              <div className="flex flex-row gap-2 justify-center items-center  mt-8 ">
+                <br />
+
+                {(item.isWomen ? dressCode.colorPaletteWomen : dressCode.colorPaletteMen)?.map((color, idx) => (
+                  <div
+                    key={idx}
+                    className="w-6 h-6 rounded-full border border-black/10"
+                    style={{ backgroundColor: color || '#ffffff' }}
+                  />
+                ))}
+              </div>
+            )}
             <br />
+            <br />
+
+
 
 
 

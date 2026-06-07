@@ -73,14 +73,25 @@ export default function Message() {
           </motion.div>
         )}
         {/* Divider */}
-        <motion.div
-          initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 3 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4, duration: 0.8 }}
-          className="h-px w-94 mx-auto mb-10"
-          style={{ backgroundColor: message.colorParents, opacity: 0.4 }}
-        />
+        <div className="flex items-center justify-center mb-10">
+          <div
+            className="h-px w-32"
+            style={{ backgroundColor: message.colorParents, opacity: 0.4 }}
+          />
+
+          <span
+            className="mx-4 text-xl"
+            style={{ color: message.colorParents }}
+          >
+
+            ♥
+          </span>
+
+          <div
+            className="h-px w-32"
+            style={{ backgroundColor: message.colorParents, opacity: 0.4 }}
+          />
+        </div>
         <br />
         <br />
 

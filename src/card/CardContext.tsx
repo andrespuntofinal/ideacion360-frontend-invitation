@@ -70,6 +70,9 @@ export const DEFAULT_CONFIG: CardConfig = {
     title2Font: "'Montserrat', sans-serif", text2Color: '#F7F9FA', text2Font: "'Montserrat', sans-serif",
     backgroundColorFrom: '#19284c', backgroundColorVia: '#5c678d', backgroundColorTo: '#19284c',
     boderColor: '#A5ADB8', backgroundColorIconMoments: '#e8dcd9', borderColorIconMoments: '#D7B272',
+    activateColorPalette: false,
+    colorPaletteWomen: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+    colorPaletteMen: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
   },
   eventDetails: {
     detailsTitle: 'Detalles del Evento', detailsColor: '#735309', detailsFont: "'Montserrat', sans-serif",
