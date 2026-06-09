@@ -5,6 +5,7 @@ import { ArrowLeft, Save, CheckCircle, AlertCircle, ChevronDown, ChevronUp, Copy
 import AdminLayout from '../components/admin/AdminLayout';
 import useEventsStore from '../stores/eventsStore';
 import toast from 'react-hot-toast';
+import { optimizeCloudinaryUrl } from '../utils/cloudinary';
 
 interface FieldProps {
   label: string;
@@ -26,7 +27,7 @@ const getPreviewUrl = (val: string | File) => {
       return '';
     }
   }
-  return val;
+  return optimizeCloudinaryUrl(val);
 };
 
 const Field = ({ label, fieldKey, value, onChange, type = 'text', placeholder = '', accept = '', step }: FieldProps) => {
@@ -75,7 +76,7 @@ const Field = ({ label, fieldKey, value, onChange, type = 'text', placeholder = 
                 const isImg = accept.includes('image') || accept.includes('.jpg') || accept.includes('.jpeg') || accept.includes('.png') || /photo|img|image|texture|seal/i.test(fieldKey);
                 const isAud = accept.includes('audio') || accept.includes('.mp3') || /music|audio/i.test(fieldKey);
                 const isVid = accept.includes('video') || accept.includes('.mp4') || accept.includes('.webm') || /video/i.test(fieldKey);
-                
+
                 if (isImg) {
                   return (
                     <div style={{ marginTop: '0.25rem' }}>
@@ -896,10 +897,10 @@ const ComponentPanel = ({ compKey, schema, data, onSave, onUpload, saving }: any
                                 Actual: {img instanceof File ? img.name : (typeof img === 'string' ? img.split('/').pop() : img)}
                               </span>
                               <div style={{ marginTop: '0.25rem' }}>
-                                <img 
-                                  src={getPreviewUrl(img)} 
-                                  alt={`Carrusel ${i + 1}`} 
-                                  style={{ width: '100%', height: '110px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--border-glass)' }} 
+                                <img
+                                  src={getPreviewUrl(img)}
+                                  alt={`Carrusel ${i + 1}`}
+                                  style={{ width: '100%', height: '110px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--border-glass)' }}
                                 />
                               </div>
                             </>

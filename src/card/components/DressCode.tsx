@@ -1,14 +1,14 @@
 import { motion } from 'framer-motion';
 import { useCardConfig } from '../CardContext';
-
+import { optimizeCloudinaryUrl } from '../../utils/cloudinary';
 
 export default function DressCode() {
   const { config } = useCardConfig();
   const { dressCode } = config;
 
   const details = [
-    { title: dressCode.titleWomen, iconUrl: dressCode.dressCodeIconWomen, text: dressCode.dressCodeTextWomen, isWomen: true },
-    { title: dressCode.titleMen, iconUrl: dressCode.dressCodeIconMen, text: dressCode.dressCodeTextMen, isWomen: false },
+    { title: dressCode.titleWomen, iconUrl: optimizeCloudinaryUrl(dressCode.dressCodeIconWomen), text: dressCode.dressCodeTextWomen, isWomen: true },
+    { title: dressCode.titleMen, iconUrl: optimizeCloudinaryUrl(dressCode.dressCodeIconMen), text: dressCode.dressCodeTextMen, isWomen: false },
   ];
 
   return (

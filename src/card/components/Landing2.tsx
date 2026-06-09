@@ -12,6 +12,7 @@ import Carousel from './Carousel';
 import RSVP from './RSVP';
 import FooterControls from './FooterControls';
 import { useCardConfig } from '../CardContext';
+import { optimizeCloudinaryUrl } from '../../utils/cloudinary';
 
 interface Landing2Props {
   onClose: () => void;
@@ -20,6 +21,7 @@ interface Landing2Props {
 export default function Landing2({ onClose }: Landing2Props) {
   const { config, activeComponents } = useCardConfig();
   const { message } = config;
+  const backgroundImage = optimizeCloudinaryUrl(message.backgroundImage);
 
   return (
     <motion.div
@@ -31,11 +33,11 @@ export default function Landing2({ onClose }: Landing2Props) {
       style={{ backgroundColor: message.backgroundColor }}
     >
       {/* Fixed background image */}
-      {message.backgroundImage && (
+      {backgroundImage && (
         <div
           className="fixed inset-0 z-0 pointer-events-none"
           style={{
-            backgroundImage: `url(${message.backgroundImage})`,
+            backgroundImage: `url(${backgroundImage})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundAttachment: 'fixed',

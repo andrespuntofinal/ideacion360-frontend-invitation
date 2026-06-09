@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useCardConfig } from '../CardContext';
+import { optimizeCloudinaryUrl } from '../../utils/cloudinary';
 
 export default function Carousel() {
   const { config } = useCardConfig();
   const { carousel } = config;
-  const images = (carousel.images as string[]) || [];
+  const images = ((carousel.images as string[]) || []).map(optimizeCloudinaryUrl);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [direction, setDirection] = useState(1);

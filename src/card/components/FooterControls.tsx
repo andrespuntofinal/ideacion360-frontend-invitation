@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Music, VolumeX, RotateCcw } from 'lucide-react';
 import { useCardConfig } from '../CardContext';
+import { optimizeCloudinaryUrl } from '../../utils/cloudinary';
 
 interface FooterControlsProps {
   onClose: () => void;
@@ -9,6 +10,7 @@ interface FooterControlsProps {
 export default function FooterControls({ onClose }: FooterControlsProps) {
   const { config } = useCardConfig();
   const { banner } = config;
+  const musicUrl = optimizeCloudinaryUrl(banner.musicUrl);
   const [isPlaying, setIsPlaying] = useState(true);
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -28,7 +30,7 @@ export default function FooterControls({ onClose }: FooterControlsProps) {
 
   return (
     <div className="fixed bottom-6 right-5 flex flex-col gap-3 z-50">
-      <audio ref={audioRef} src={banner.musicUrl} loop />
+      <audio ref={audioRef} src={musicUrl} loop />
 
       {/* Music button */}
       <button

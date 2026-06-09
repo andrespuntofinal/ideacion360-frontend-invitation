@@ -1,10 +1,14 @@
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { useCardConfig } from '../CardContext';
+import { optimizeCloudinaryUrl } from '../../utils/cloudinary';
 
 export default function Banner() {
   const { config } = useCardConfig();
-  const { banner, weddingData } = config;
+  const { banner } = config;
+
+  const videoDesktop = optimizeCloudinaryUrl(banner.videoDesktop);
+  const videoResponsive = optimizeCloudinaryUrl(banner.videoResponsive);
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
@@ -16,12 +20,12 @@ export default function Banner() {
         className="absolute inset-0"
       >
         <video
-          src={banner.videoDesktop}
+          src={videoDesktop}
           className="w-full h-full object-cover hidden md:block"
           autoPlay muted playsInline
         />
         <video
-          src={banner.videoResponsive}
+          src={videoResponsive}
           className="w-full h-full object-cover block md:hidden"
           autoPlay muted playsInline
         />

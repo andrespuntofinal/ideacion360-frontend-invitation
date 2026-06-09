@@ -1,27 +1,28 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  ArrowLeft, Save, Music, Image, FileText, Heart, 
-  MapPin, Calendar, Clock, Check, Gift, Baby, 
+import {
+  ArrowLeft, Save, Music, Image, FileText, Heart,
+  MapPin, Calendar, Clock, Check, Gift, Baby,
   ChevronDown, ChevronUp, AlertCircle, Plus, Minus, Sparkles
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api, { eventsService } from '../services/api';
 import useAuthStore from '../stores/authStore';
 import logoSitio from '../assets/logositio.jpg';
+import { optimizeCloudinaryUrl } from '../utils/cloudinary';
 
 const parseWeddingTime = (timeStr: string) => {
   if (!timeStr) return { hour: '05', minute: '00', meridiem: 'p. m.' };
-  
+
   const clean = timeStr.toLowerCase().trim();
   const match = clean.match(/^(\d{1,2}):(\d{2})\s*(a\.\s*m\.|p\.\s*m\.|am|pm)?$/);
-  
+
   if (match) {
     let hrVal = parseInt(match[1]);
     let min = match[2];
     let mer = 'p. m.';
-    
+
     if (match[3]) {
       const rawMer = match[3].replace(/\s/g, '');
       if (rawMer === 'am' || rawMer === 'a.m.') {
@@ -35,13 +36,13 @@ const parseWeddingTime = (timeStr: string) => {
         mer = 'a. m.';
       }
     }
-    
+
     if (hrVal === 0) hrVal = 12;
     const hr = String(hrVal).padStart(2, '0');
-    
+
     return { hour: hr, minute: min, meridiem: mer };
   }
-  
+
   return { hour: '05', minute: '00', meridiem: 'p. m.' };
 };
 
@@ -266,7 +267,7 @@ const ClientWeddingDetails = () => {
     if (val instanceof File) {
       return URL.createObjectURL(val);
     }
-    return val;
+    return optimizeCloudinaryUrl(val);
   };
 
   const handleSave = async () => {
@@ -306,7 +307,7 @@ const ClientWeddingDetails = () => {
         const uploadRes = await eventsService.uploadComponentFiles(eventId!, formData);
         if (uploadRes.data?.success) {
           const urlsMap = uploadRes.data?.data || {};
-          
+
           if (urlsMap.musicUrl) finalMusicUrl = urlsMap.musicUrl;
           if (urlsMap.cardCouplePhoto) finalCardCouplePhoto = urlsMap.cardCouplePhoto;
           if (urlsMap.dateImg) finalDateImg = urlsMap.dateImg;
@@ -419,7 +420,7 @@ const ClientWeddingDetails = () => {
 
       toast.dismiss(savingToast);
       toast.success('¡Detalles de la boda guardados exitosamente!');
-      
+
       // Clear file states and reload
       setMusicFile(null);
       setCardCouplePhotoFile(null);
@@ -445,7 +446,7 @@ const ClientWeddingDetails = () => {
   const renderSectionHeader = (key: string, title: string, icon: any, componentKey?: string) => {
     const isOpen = openSection === key;
     const isComponentActive = componentKey ? event?.activeComponents?.[componentKey] : true;
-    
+
     return (
       <button
         type="button"
@@ -473,7 +474,7 @@ const ClientWeddingDetails = () => {
         <span style={{ fontWeight: 700, fontSize: '1rem', color: isOpen ? 'var(--text-secondary)' : 'var(--text-primary)', flex: 1 }}>
           {title}
         </span>
-        
+
         {componentKey && (
           <span style={{
             fontSize: '0.65rem',
@@ -568,12 +569,12 @@ const ClientWeddingDetails = () => {
       {/* Main Form Area */}
       <main style={{ flex: 1, width: '100%', maxWidth: '900px', margin: '0 auto', padding: '2rem 1.5rem', zIndex: 1 }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          
+
           {/* Section 1: General & Time */}
-          <div style={{ 
-            border: '1px solid var(--border-glass)', 
-            borderRadius: 'var(--radius-lg)', 
-            overflow: 'visible', 
+          <div style={{
+            border: '1px solid var(--border-glass)',
+            borderRadius: 'var(--radius-lg)',
+            overflow: 'visible',
             background: 'var(--bg-glass)',
             position: 'relative',
             zIndex: openSection === 'general' ? 10 : 1
@@ -581,10 +582,10 @@ const ClientWeddingDetails = () => {
             {renderSectionHeader('general', 'Detalle Generales', <Calendar size={18} />)}
             <AnimatePresence>
               {openSection === 'general' && (
-                <motion.div 
-                  initial={{ height: 0, opacity: 0 }} 
-                  animate={{ height: 'auto', opacity: 1 }} 
-                  exit={{ height: 0, opacity: 0 }} 
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                   style={{ overflow: 'visible' }}
                 >
@@ -600,27 +601,27 @@ const ClientWeddingDetails = () => {
                     <div style={{ position: 'relative' }}>
                       <label className="input-label">Hora de la Boda</label>
                       <div style={{ position: 'relative' }}>
-                        <input 
-                          type="text" 
-                          className="input-field" 
+                        <input
+                          type="text"
+                          className="input-field"
                           style={{ cursor: 'pointer' }}
-                          readOnly 
-                          value={weddingTime} 
-                          onClick={() => setShowTimePicker(!showTimePicker)} 
+                          readOnly
+                          value={weddingTime}
+                          onClick={() => setShowTimePicker(!showTimePicker)}
                           placeholder="Seleccionar hora..."
                         />
-                        <Clock 
-                          size={18} 
-                          color="var(--text-muted)" 
-                          style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} 
+                        <Clock
+                          size={18}
+                          color="var(--text-muted)"
+                          style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}
                         />
                       </div>
 
                       {showTimePicker && (
                         <>
-                          <div 
-                            style={{ position: 'fixed', inset: 0, zIndex: 140 }} 
-                            onClick={() => setShowTimePicker(false)} 
+                          <div
+                            style={{ position: 'fixed', inset: 0, zIndex: 140 }}
+                            onClick={() => setShowTimePicker(false)}
                           />
                           <div style={{
                             position: 'absolute',
@@ -706,7 +707,7 @@ const ClientWeddingDetails = () => {
                     <div>
                       <label className="input-label">Pista de música (MP3)</label>
                       <input type="file" accept="audio/mp3,audio/*" className="input-field" onChange={e => handleFileChange(e, setMusicFile)} style={{ padding: '0.45rem 0.6rem' }} />
-                      
+
                       {musicFile ? (
                         <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>
                           Nueva pista seleccionada: <strong>{musicFile.name}</strong> (se subirá al guardar)
@@ -714,7 +715,7 @@ const ClientWeddingDetails = () => {
                       ) : musicUrl ? (
                         <div style={{ marginTop: '0.75rem' }}>
                           <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Pista configurada actualmente:</p>
-                          <audio src={musicUrl} controls style={{ width: '100%', height: '40px', marginTop: '0.4rem', borderRadius: '8px' }} />
+                          <audio src={optimizeCloudinaryUrl(musicUrl)} controls style={{ width: '100%', height: '40px', marginTop: '0.4rem', borderRadius: '8px' }} />
                         </div>
                       ) : (
                         <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>No hay pista de música cargada.</p>
@@ -744,10 +745,10 @@ const ClientWeddingDetails = () => {
                         <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.4rem' }}>
                           Vista previa de la foto del sobre:
                         </p>
-                        <img 
-                          src={getPreviewUrl(cardCouplePhotoFile || cardCouplePhoto)} 
-                          alt="Pareja" 
-                          style={{ width: '120px', height: '120px', objectFit: 'cover', borderRadius: '10px', border: '1px solid var(--border-glass)' }} 
+                        <img
+                          src={getPreviewUrl(cardCouplePhotoFile || cardCouplePhoto)}
+                          alt="Pareja"
+                          style={{ width: '120px', height: '120px', objectFit: 'cover', borderRadius: '10px', border: '1px solid var(--border-glass)' }}
                         />
                       </div>
                     )}
@@ -828,10 +829,10 @@ const ClientWeddingDetails = () => {
                         <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.4rem' }}>
                           Vista previa de la imagen de calendario:
                         </p>
-                        <img 
-                          src={getPreviewUrl(dateImgFile || dateImg)} 
-                          alt="Calendario" 
-                          style={{ width: '120px', height: '120px', objectFit: 'cover', borderRadius: '10px', border: '1px solid var(--border-glass)' }} 
+                        <img
+                          src={getPreviewUrl(dateImgFile || dateImg)}
+                          alt="Calendario"
+                          style={{ width: '120px', height: '120px', objectFit: 'cover', borderRadius: '10px', border: '1px solid var(--border-glass)' }}
                         />
                       </div>
                     )}
@@ -880,24 +881,24 @@ const ClientWeddingDetails = () => {
                             <span style={{ fontSize: '0.75rem', color: 'var(--color-purple-light)', fontWeight: 600 }}>
                               Imagen {i + 1}
                             </span>
-                            <input 
-                              type="file" 
-                              accept="image/*" 
-                              className="input-field" 
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="input-field"
                               onChange={e => {
                                 if (e.target.files && e.target.files[0]) {
                                   handleCarouselImageChange(i, e.target.files[0]);
                                 }
-                              }} 
-                              style={{ padding: '0.35rem 0.5rem', fontSize: '0.75rem' }} 
+                              }}
+                              style={{ padding: '0.35rem 0.5rem', fontSize: '0.75rem' }}
                             />
-                            
+
                             {img && (
                               <div style={{ textAlign: 'center', marginTop: '0.25rem' }}>
-                                <img 
-                                  src={getPreviewUrl(img)} 
-                                  alt={`Carrusel ${i + 1}`} 
-                                  style={{ width: '100%', height: '110px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--border-glass)' }} 
+                                <img
+                                  src={getPreviewUrl(img)}
+                                  alt={`Carrusel ${i + 1}`}
+                                  style={{ width: '100%', height: '110px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--border-glass)' }}
                                 />
                                 {img instanceof File && (
                                   <span style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', display: 'block', marginTop: '0.2rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -923,7 +924,7 @@ const ClientWeddingDetails = () => {
               {openSection === 'details' && (
                 <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }}>
                   <div style={{ padding: '1.5rem', borderTop: '1px solid var(--border-glass)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
-                    
+
                     {/* Ceremonia */}
                     <div style={{ background: 'var(--bg-card2)', padding: '1.25rem', borderRadius: '12px', border: '1px solid var(--border-glass)' }}>
                       <h4 style={{ fontSize: '0.9rem', color: 'var(--color-purple-light)', fontWeight: 700, textTransform: 'uppercase', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
@@ -1008,7 +1009,7 @@ const ClientWeddingDetails = () => {
               {openSection === 'dresscode' && (
                 <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }}>
                   <div style={{ padding: '1.5rem', borderTop: '1px solid var(--border-glass)', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                    
+
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
                       <div>
                         <label className="input-label">Código para Mujeres</label>
@@ -1155,7 +1156,7 @@ const ClientWeddingDetails = () => {
           </div>
 
         </div>
-        
+
         {/* Floating / Bottom Save Notice */}
         <div style={{
           marginTop: '2rem',

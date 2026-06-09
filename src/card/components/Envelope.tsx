@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { Heart } from 'lucide-react';
 import { useCardConfig } from '../CardContext';
+import { optimizeCloudinaryUrl } from '../../utils/cloudinary';
 
 interface EnvelopeProps {
   onOpenComplete: () => void;
@@ -10,7 +11,14 @@ interface EnvelopeProps {
 
 export default function Envelope({ onOpenComplete }: EnvelopeProps) {
   const { config } = useCardConfig();
-  const { envelope, banner, paramsGeneral } = config;
+  const { envelope: rawEnvelope, banner, paramsGeneral } = config;
+  const envelope = {
+    ...rawEnvelope,
+    textureUrl: optimizeCloudinaryUrl(rawEnvelope.textureUrl),
+    backgroundImage: optimizeCloudinaryUrl(rawEnvelope.backgroundImage),
+    cardCouplePhoto: optimizeCloudinaryUrl(rawEnvelope.cardCouplePhoto),
+    sealImage: optimizeCloudinaryUrl(rawEnvelope.sealImage),
+  };
   const [step, setStep] = useState<'closed' | 'opening' | 'open'>('closed');
 
   const handleVerDetalles = () => {

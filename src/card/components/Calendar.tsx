@@ -1,9 +1,12 @@
 import { motion } from 'framer-motion';
 import { useCardConfig } from '../CardContext';
+import { optimizeCloudinaryUrl } from '../../utils/cloudinary';
 
 export default function Calendar() {
   const { config } = useCardConfig();
   const { calendar, weddingData } = config;
+
+  const dateImg = optimizeCloudinaryUrl(calendar.dateImg);
 
   const weddingDate = new Date(weddingData.weddingDate);
   const month = weddingDate.getUTCMonth();
@@ -47,11 +50,11 @@ export default function Calendar() {
           className="flex flex-col md:flex-row gap-6 md:gap-10 items-center"
         >
           {/* Photo */}
-          {calendar.dateImg && (
+          {dateImg && (
             <div className="w-full md:w-2/5 flex-shrink-0">
               <div className="relative overflow-hidden rounded-2xl shadow-2xl aspect-[4/5]">
                 <img
-                  src={calendar.dateImg}
+                  src={dateImg}
                   alt="Save the date"
                   className="w-full h-full object-cover"
                   referrerPolicy="no-referrer"
