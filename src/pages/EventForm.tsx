@@ -34,7 +34,7 @@ interface FormState {
 const defaultForm: FormState = {
   type: 'web', status: 'draft',
   contact: { name: '', email: '', phone: '', identification: '' },
-  wedding: { coupleNames: '', weddingDate: '', weddingTime: '' },
+  wedding: { coupleNames: '', weddingDate: '', weddingTime: '', cardType: 'elegant-basic-01' },
   activeComponents: Object.fromEntries(COMPONENTS_LIST.map((c) => [c.key, false])),
 };
 
@@ -60,6 +60,7 @@ const EventForm = () => {
               weddingDate: (event.wedding as Record<string, string>)?.weddingDate
                 ? new Date((event.wedding as Record<string, string>).weddingDate).toISOString().split('T')[0] : '',
               weddingTime: (event.wedding as Record<string, string>)?.weddingTime || '',
+              cardType: (event.wedding as Record<string, string>)?.cardType || 'elegant-basic-01',
             },
             activeComponents: { ...defaultForm.activeComponents, ...(event.activeComponents as unknown as Record<string, boolean>) },
           });
@@ -321,6 +322,21 @@ const EventForm = () => {
                       style={{ paddingLeft: '2.75rem' }}
                     />
                     <Clock size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', opacity: 0.4, color: 'var(--text-secondary)' }} />
+                  </div>
+                </div>
+                <div style={{ gridColumn: '1 / -1' }}>
+                  <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><LayoutGrid size={14} color="var(--text-secondary)" />Tipo de tarjeta</label>
+                  <div style={{ position: 'relative' }}>
+                    <select
+                      value={form.wedding.cardType || 'elegant-basic-01'}
+                      onChange={(e) => setField('wedding', 'cardType', e.target.value)}
+                      className="input-field"
+                      style={{ paddingLeft: '2.75rem', appearance: 'auto' }}
+                    >
+                      <option value="elegant-basic-01">Tarjeta elegante básica</option>
+                      <option value="vintage-basic-01">Tarjeta vintage básica</option>
+                    </select>
+                    <LayoutGrid size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', opacity: 0.4, color: 'var(--text-secondary)' }} />
                   </div>
                 </div>
               </div>

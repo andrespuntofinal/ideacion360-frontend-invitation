@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, X, Heart, Smile, Frown } from 'lucide-react';
 import { useParams } from 'react-router-dom';
 import { useCardConfig } from '../CardContext';
-import { eventsService } from '../../services/api';
+import { eventsService } from '../../../services/api';
 
 export default function RSVP() {
   const { config } = useCardConfig();

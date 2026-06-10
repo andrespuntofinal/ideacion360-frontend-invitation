@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { Heart } from 'lucide-react';
 import { useCardConfig } from '../CardContext';
-import { optimizeCloudinaryUrl } from '../../utils/cloudinary';
+import { optimizeCloudinaryUrl } from '../../../utils/cloudinary';
 
 interface EnvelopeProps {
   onOpenComplete: () => void;

@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useCardConfig } from '../CardContext';
-import { optimizeCloudinaryUrl } from '../../utils/cloudinary';
+import { optimizeCloudinaryUrl } from '../../../utils/cloudinary';
 
 export default function DressCode() {
   const { config } = useCardConfig();

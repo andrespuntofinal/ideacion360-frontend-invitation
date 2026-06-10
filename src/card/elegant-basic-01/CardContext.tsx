@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
-import { eventsService } from '../services/api';
-import type { CardConfig, CardContextValue } from '../types';
+import { eventsService } from '../../services/api';
+import type { CardConfig, CardContextValue } from '../../types';
 
 // ─── Default fallback config (mirrors constants.ts values) ────────────────────
 export const DEFAULT_CONFIG: CardConfig = {

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useCardConfig } from '../CardContext';
-import { optimizeCloudinaryUrl } from '../../utils/cloudinary';
+import { optimizeCloudinaryUrl } from '../../../utils/cloudinary';
 
 export default function Carousel() {
   const { config } = useCardConfig();

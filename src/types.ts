@@ -37,6 +37,7 @@ export interface EventWedding {
   coupleNames?: string;
   weddingDate?: string;
   weddingTime?: string;
+  cardType?: string;
 }
 
 export interface ActiveComponents {
@@ -139,6 +140,7 @@ export interface CardWeddingData {
   weddingDate: string;
   weddingTime: string;
   coupleNames: string;
+  cardType?: string;
 }
 
 export interface EnvelopeConfig {

@@ -12,7 +12,7 @@ import Carousel from './Carousel';
 import RSVP from './RSVP';
 import FooterControls from './FooterControls';
 import { useCardConfig } from '../CardContext';
-import { optimizeCloudinaryUrl } from '../../utils/cloudinary';
+import { optimizeCloudinaryUrl } from '../../../utils/cloudinary';
 
 interface Landing2Props {
   onClose: () => void;

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Music, VolumeX, RotateCcw } from 'lucide-react';
 import { useCardConfig } from '../CardContext';
-import { optimizeCloudinaryUrl } from '../../utils/cloudinary';
+import { optimizeCloudinaryUrl } from '../../../utils/cloudinary';
 
 interface FooterControlsProps {
   onClose: () => void;
