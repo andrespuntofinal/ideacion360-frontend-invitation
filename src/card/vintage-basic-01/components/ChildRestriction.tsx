@@ -1,56 +1,66 @@
 import { motion } from 'framer-motion';
 import { Info } from 'lucide-react';
 import { useCardConfig } from '../CardContext';
+import '../vintage.css';
 
 export default function ChildRestriction() {
   const { config } = useCardConfig();
-  const { childRestriction } = config;
+  const { childRestriction, envelope } = config;
+  const accentColor = envelope.accentColor || '#C9A84C';
 
   return (
-    <section className="w-full py-6 md:py-10 px-0 md:px-4">
-
-
+    <section className="w-full py-4 md:py-6 px-0 md:px-2">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.9 }}
-        className="relative flex flex-col items-center text-center rounded-2xl md:rounded-3xl shadow-xl px-8 pt-16 pb-12 w-full mt-10"
+        className="relative v-corner-card"
         style={{
-          background: `linear-gradient(160deg, ${childRestriction.backgroundColorFrom}, ${childRestriction.backgroundColorVia}, ${childRestriction.backgroundColorTo})`,
-          border: `2px solid ${childRestriction.borderColorIconMoments}`,
+          background: `linear-gradient(160deg, ${childRestriction.backgroundColorFrom || '#2C1F14'}, ${childRestriction.backgroundColorVia || '#4A3728'}, ${childRestriction.backgroundColorTo || '#3D2B1F'})`,
+          border: `1px solid ${accentColor}40`,
+          padding: '2rem 1.5rem 1.75rem',
         }}
       >
-        {/* Floating Icon */}
+        {/* Top accent line */}
         <div
-          className="absolute -top-10 left-1/2 -translate-x-1/2 w-20 h-20 rounded-full flex items-center justify-center shadow-xl z-20"
-          style={{
-            background: childRestriction.backgroundColorIconMoments,
-            border: `3px solid ${childRestriction.borderColorIconMoments}`,
-          }}
-        >
-          <Info className="w-10 h-10" style={{ color: childRestriction.iconColor, opacity: 0.3 }} />
+          className="absolute top-0 left-8 right-8"
+          style={{ height: '1px', background: `linear-gradient(to right, transparent, ${accentColor}60, transparent)` }}
+        />
+
+        {/* Icon + title row */}
+        <div className="flex items-center gap-3 mb-4">
+          <div
+            className="flex items-center justify-center flex-shrink-0"
+            style={{
+              width: '40px', height: '40px',
+              backgroundColor: childRestriction.backgroundColorIconMoments || '#4A3728',
+              border: `1px solid ${accentColor}50`,
+            }}
+          >
+            <Info className="w-5 h-5" style={{ color: childRestriction.iconColor || '#C9A84C', opacity: 0.8 }} />
+          </div>
+          <h3
+            className="text-base tracking-[0.1em] uppercase font-medium"
+            style={{ fontFamily: 'var(--v-font-utility)', color: childRestriction.titleColor || '#C9A84C' }}
+          >
+            {childRestriction.childrestrictionTitle}
+          </h3>
         </div>
 
-        {/* Title inside */}
-        <br />
-        <br />
-        <h3
-          className="text-base sm:text-2xl italic leading-relaxed uppercase mb-2"
-          style={{ color: childRestriction.titleColor, fontFamily: childRestriction.titleFont }}
-        >
-          {childRestriction.childrestrictionTitle}
-        </h3>
-        <br />
+        {/* Separator */}
+        <div
+          className="mb-4"
+          style={{ height: '1px', background: `linear-gradient(to right, ${accentColor}40, transparent)` }}
+        />
 
         {/* Message */}
         <p
-          className="text-sm md:text-sm leading-relaxed max-w-2xl mx-auto"
-          style={{ color: childRestriction.textColor, fontFamily: childRestriction.textFont }}
+          className="text-sm leading-relaxed"
+          style={{ color: childRestriction.textColor || '#E8D5A3', fontFamily: 'var(--v-font-body)' }}
         >
           {childRestriction.childrestrictionMessage}
         </p>
-        <br />
       </motion.div>
     </section>
   );

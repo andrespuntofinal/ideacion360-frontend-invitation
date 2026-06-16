@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "deploy": "npm run build && firebase deploy --only hosting",
+    "deploy": "npm run build && npx firebase deploy --only hosting",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
@@ -13,6 +13,7 @@
     "@types/node": "^25.6.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "firebase-tools": "^15.19.1",
     "typescript": "~6.0.2",
     "vite": "^8.0.4"
   },

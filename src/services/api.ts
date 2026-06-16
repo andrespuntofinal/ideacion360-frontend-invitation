@@ -1,9 +1,12 @@
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import type { LoginCredentials, WeddingEvent } from '../types';
 
-const API_URL = import.meta.env.VITE_API_URL 
-  ? (import.meta.env.VITE_API_URL.endsWith('/api') ? import.meta.env.VITE_API_URL : `${import.meta.env.VITE_API_URL}/api`)
-  : '/api';
+const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || import.meta.env.DEV;
+const API_URL = isLocal
+  ? 'http://localhost:5001/api'
+  : (import.meta.env.VITE_API_URL 
+    ? (import.meta.env.VITE_API_URL.endsWith('/api') ? import.meta.env.VITE_API_URL : `${import.meta.env.VITE_API_URL}/api`)
+    : '/api');
 
 console.log('🌐 Conectando a API en:', API_URL);
 

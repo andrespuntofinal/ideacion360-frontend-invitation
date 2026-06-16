@@ -1,0 +1,149 @@
+/* ─── VINTAGE-BASIC-01 Design System ──────────────────────────────────────── */
+/* Fonts: Playfair Display (display), Cormorant Garamond (body), Montserrat (utility) */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+/* ── CSS Variables ─────────────────────────────────────────────────────────── */
+:root {
+  --v-cream:        #F5EFE0;
+  --v-cream-dark:   #EDE4CE;
+  --v-cream-deep:   #E2D5B8;
+  --v-gold:         #8B6914;
+  --v-gold-light:   #C9A84C;
+  --v-gold-pale:    #E8D5A3;
+  --v-brown:        #3D2B1F;
+  --v-brown-mid:    #6B5B4E;
+  --v-brown-light:  #9C8778;
+  --v-sepia:        #7C5E3C;
+  --v-card-bg:      rgba(245, 239, 224, 0.97);
+  --v-border:       rgba(139, 105, 20, 0.30);
+  --v-border-strong: rgba(139, 105, 20, 0.55);
+  --v-shadow:       rgba(61, 43, 31, 0.18);
+  --v-font-display: 'Playfair Display', Georgia, serif;
+  --v-font-body:    'Cormorant Garamond', Georgia, serif;
+  --v-font-utility: 'Montserrat', sans-serif;
+}
+
+/* ── Shared Patterns & Utilities ───────────────────────────────────────────── */
+
+/* Parchment paper texture via SVG noise */
+.v-paper {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E"),
+    linear-gradient(160deg, var(--v-cream) 0%, var(--v-cream-dark) 50%, var(--v-cream) 100%);
+  background-size: 400px 400px, cover;
+}
+
+/* Ornamental divider line */
+.v-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 1.5rem auto;
+  width: 100%;
+  max-width: 280px;
+}
+.v-divider::before,
+.v-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--v-gold-light), transparent);
+}
+
+/* Section labels */
+.v-eyebrow {
+  font-family: var(--v-font-utility);
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--v-brown-light);
+  margin-bottom: 0.25rem;
+}
+
+/* Card wrapper with parchment + corner filigree */
+.v-card {
+  position: relative;
+  background: var(--v-card-bg);
+  border: 1px solid var(--v-border);
+  border-radius: 4px;
+  box-shadow:
+    0 2px 8px var(--v-shadow),
+    inset 0 0 0 1px rgba(201, 168, 76, 0.10);
+  overflow: hidden;
+}
+
+/* Gradient dark band (for countdown/timeline) */
+.v-dark-band {
+  background: linear-gradient(135deg, #2C1F14 0%, #4A3728 40%, #3D2B1F 100%);
+  position: relative;
+  overflow: hidden;
+}
+.v-dark-band::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+  background-size: 300px 300px;
+  pointer-events: none;
+}
+
+/* Section title styling (vintage script-style heading) */
+.v-section-title {
+  font-family: var(--v-font-display);
+  font-style: italic;
+  color: var(--v-gold);
+  letter-spacing: 0.03em;
+}
+.v-section-title-dark {
+  font-family: var(--v-font-display);
+  font-style: italic;
+  color: var(--v-gold-light);
+  letter-spacing: 0.03em;
+}
+
+/* Wax seal ring shimmer */
+@keyframes sealPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(139,105,20,0.35), 0 8px 32px rgba(61,43,31,0.3); }
+  50%       { box-shadow: 0 0 0 8px rgba(139,105,20,0.0), 0 8px 32px rgba(61,43,31,0.4); }
+}
+.v-seal-pulse {
+  animation: sealPulse 2.5s ease-in-out infinite;
+}
+
+/* Corner SVG filigree — injected via ::before/::after on .v-corner-card */
+.v-corner-card {
+  position: relative;
+}
+.v-corner-card::before,
+.v-corner-card::after {
+  content: '';
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M2,2 Q16,2 30,2 Q30,16 30,30' fill='none' stroke='%23C9A84C' stroke-width='1' stroke-opacity='0.5'/%3E%3Ccircle cx='4' cy='4' r='1.5' fill='%23C9A84C' fill-opacity='0.5'/%3E%3Ccircle cx='28' cy='28' r='1.5' fill='%23C9A84C' fill-opacity='0.5'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: 5;
+}
+.v-corner-card::before {
+  top: 6px;
+  left: 6px;
+}
+.v-corner-card::after {
+  bottom: 6px;
+  right: 6px;
+  transform: rotate(180deg);
+}
+
+/* Smooth entrance */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.v-fade-up {
+  animation: fadeUp 0.8s ease-out both;
+}

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Music, VolumeX, RotateCcw } from 'lucide-react';
 import { useCardConfig } from '../CardContext';
 import { optimizeCloudinaryUrl } from '../../../utils/cloudinary';
+import '../vintage.css';
 
 interface FooterControlsProps {
   onClose: () => void;
@@ -9,8 +10,9 @@ interface FooterControlsProps {
 
 export default function FooterControls({ onClose }: FooterControlsProps) {
   const { config } = useCardConfig();
-  const { banner } = config;
+  const { banner, envelope } = config;
   const musicUrl = optimizeCloudinaryUrl(banner.musicUrl);
+  const accentColor = envelope.accentColor || '#C9A84C';
   const [isPlaying, setIsPlaying] = useState(true);
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -32,17 +34,22 @@ export default function FooterControls({ onClose }: FooterControlsProps) {
     <div className="fixed bottom-6 right-5 flex flex-col gap-3 z-50">
       <audio ref={audioRef} src={musicUrl} loop />
 
-      {/* Music button */}
+      {/* Music toggle */}
       <button
         onClick={toggleMusic}
         title={isPlaying ? 'Pausar música' : 'Reproducir música'}
-        className="w-11 h-11 rounded-full shadow-2xl flex items-center justify-center backdrop-blur-md transition-all duration-300 hover:scale-110 border"
-        style={{ backgroundColor: '#27272B', borderColor: '#D7B272', color: '#F7F9FA' }}
+        className="flex items-center justify-center backdrop-blur-sm transition-all duration-300 hover:scale-105"
+        style={{
+          width: '40px', height: '40px',
+          backgroundColor: '#3D2B1F',
+          border: `1px solid ${accentColor}60`,
+          color: accentColor,
+        }}
       >
         {isPlaying ? (
-          <Music className="w-5 h-5 animate-pulse" />
+          <Music className="w-4 h-4" style={{ animation: 'pulse 2s ease-in-out infinite' }} />
         ) : (
-          <VolumeX className="w-5 h-5 opacity-60" />
+          <VolumeX className="w-4 h-4 opacity-55" />
         )}
       </button>
 
@@ -50,10 +57,15 @@ export default function FooterControls({ onClose }: FooterControlsProps) {
       <button
         onClick={onClose}
         title="Volver al sobre"
-        className="w-11 h-11 rounded-full shadow-2xl flex items-center justify-center backdrop-blur-md transition-all duration-300 hover:scale-110 border"
-        style={{ backgroundColor: '#27272B', borderColor: '#D7B272', color: '#F7F9FA' }}
+        className="flex items-center justify-center backdrop-blur-sm transition-all duration-300 hover:scale-105"
+        style={{
+          width: '40px', height: '40px',
+          backgroundColor: '#3D2B1F',
+          border: `1px solid ${accentColor}60`,
+          color: accentColor,
+        }}
       >
-        <RotateCcw className="w-5 h-5" />
+        <RotateCcw className="w-4 h-4" />
       </button>
     </div>
   );

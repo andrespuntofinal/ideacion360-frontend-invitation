@@ -21,6 +21,8 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
   };
   const [step, setStep] = useState<'closed' | 'opening' | 'open'>('closed');
 
+  const [isSealHovered, setIsSealHovered] = useState(false);
+
   const handleVerDetalles = () => {
     if (step === 'closed') {
       setStep('opening');
@@ -359,6 +361,8 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
           {/* ─── LAYER 5: WAX SEAL / ACTION BUTTON z-40 ─── */}
           <motion.button
             onClick={handleVerDetalles}
+            onMouseEnter={() => setIsSealHovered(true)}
+            onMouseLeave={() => setIsSealHovered(false)}
             className="absolute z-40 flex flex-col items-center justify-center cursor-pointer group"
             initial={{ top: '50%', y: '-10%' }}
             animate={{
@@ -376,10 +380,22 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
                 <img
                   src={envelope.sealImage}
                   alt="Sello"
-                  className="absolute -top-4 left-1/2 -translate-x-1/2 w-28 object-contain drop-shadow-lg"
+                  className="absolute -top-4 left-1/2 -translate-x-1/2 w-28 object-contain transition-all duration-500 ease-out"
+                  style={{
+                    filter: isSealHovered
+                      ? `drop-shadow(0 0 22px ${envelope.accentColor || '#d4af37'}cc) drop-shadow(0 10px 8px rgba(222, 220, 105, 0.64))`
+                      : 'drop-shadow(0 10px 8px rgba(99, 90, 83, 0.07)) drop-shadow(0 4px 3px rgba(223, 221, 114, 0.04))',
+                  }}
                 />
               ) : (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-20 h-20 bg-amber-800 rounded-full border-4 border-amber-900 shadow-xl flex items-center justify-center">
+                <div
+                  className="absolute -top-4 left-1/2 -translate-x-1/2 w-20 h-20 bg-amber-800 rounded-full border-4 border-amber-900 shadow-xl flex items-center justify-center transition-all duration-500 ease-out"
+                  style={{
+                    boxShadow: isSealHovered
+                      ? `0 0 25px ${envelope.accentColor || '#d4af37'}dd`
+                      : 'none',
+                  }}
+                >
                   <span className="text-white text-xs font-bold">SELLO</span>
                 </div>
               )}

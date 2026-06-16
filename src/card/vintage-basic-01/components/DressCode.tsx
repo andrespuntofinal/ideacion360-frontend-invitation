@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion';
 import { useCardConfig } from '../CardContext';
 import { optimizeCloudinaryUrl } from '../../../utils/cloudinary';
+import '../vintage.css';
 
 export default function DressCode() {
   const { config } = useCardConfig();
-  const { dressCode } = config;
+  const { dressCode, envelope } = config;
+  const accentColor = envelope.accentColor || '#C9A84C';
 
   const details = [
     { title: dressCode.titleWomen, iconUrl: optimizeCloudinaryUrl(dressCode.dressCodeIconWomen), text: dressCode.dressCodeTextWomen, isWomen: true },
@@ -12,109 +14,124 @@ export default function DressCode() {
   ];
 
   return (
-    <section className="w-full py-6 md:py-10 px-0 md:px-4">
+    <section className="w-full py-4 md:py-6 px-0 md:px-2">
       {/* Section title */}
       <motion.div
-        initial={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
+        initial={{ opacity: 0, y: -16, filter: 'blur(8px)' }}
         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
         viewport={{ once: false, amount: 0.5 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="text-center mb-8 md:mb-12"
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+        className="text-center mb-10"
       >
-        <p className="text-base sm:text-2xl italic leading-relaxed uppercase mb-2" style={{ color: dressCode.titleColor, fontFamily: dressCode.titleFont }}>
-          ♥ &nbsp; {dressCode.titletext} &nbsp; ♥
+        <p
+          className="text-[10px] tracking-[0.3em] uppercase mb-1"
+          style={{ color: accentColor, fontFamily: 'var(--v-font-utility)', opacity: 0.7 }}
+        >
+          Indumentaria
         </p>
-        <br />
-        <br />
-
+        <h2
+          className="text-2xl md:text-3xl italic"
+          style={{ color: dressCode.titleColor || '#8B6914', fontFamily: dressCode.titleFont || 'var(--v-font-display)' }}
+        >
+          {dressCode.titletext}
+        </h2>
+        <div className="flex items-center justify-center gap-3 mt-3">
+          <div style={{ height: '1px', width: '32px', backgroundColor: accentColor, opacity: 0.4 }} />
+          <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+            <circle cx="4" cy="4" r="2" fill={accentColor} fillOpacity="0.6"/>
+          </svg>
+          <div style={{ height: '1px', width: '32px', backgroundColor: accentColor, opacity: 0.4 }} />
+        </div>
       </motion.div>
 
       {/* Cards */}
-      <div className="flex flex-row gap-2 md:gap-6 w-full" style={{ perspective: '1000px' }}>
+      <div className="flex flex-col gap-5 w-full">
         {details.map((item, i) => (
           <motion.div
             key={item.title}
-            initial={{ opacity: 0, y: 50, scale: 0.95, filter: 'blur(10px)' }}
-            whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+            initial={{ opacity: 0, y: 40, filter: 'blur(8px)' }}
+            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             viewport={{ once: false, amount: 0.2 }}
-            transition={{
-              delay: i * 0.15,
-              duration: 0.8,
-              type: "spring",
-              stiffness: 100,
-              damping: 20
-            }}
-            className="relative flex-1 flex flex-col items-center text-center rounded-2xl md:rounded-3xl shadow-xl px-2 sm:px-6 pt-16 pb-6 sm:pb-8 mt-10"
+            transition={{ delay: i * 0.12, duration: 0.8, type: 'spring', stiffness: 100, damping: 20 }}
+            className="relative v-corner-card"
             style={{
-              background: `linear-gradient(160deg, ${dressCode.backgroundColorFrom}, ${dressCode.backgroundColorVia}, ${dressCode.backgroundColorTo})`,
-              border: `2px solid ${dressCode.borderColorIconMoments}`,
+              background: `linear-gradient(160deg, ${dressCode.backgroundColorFrom || '#2C1F14'}, ${dressCode.backgroundColorVia || '#4A3728'}, ${dressCode.backgroundColorTo || '#3D2B1F'})`,
+              border: `1px solid ${accentColor}40`,
+              padding: '2rem 1.5rem 1.75rem',
             }}
           >
-            {/* Floating Icon */}
+            {/* Top accent line */}
             <div
-              className="absolute -top-8 left-1/2 -translate-x-1/2 w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center shadow-xl z-20"
-              style={{
-                background: dressCode.backgroundColorIconMoments,
-                border: `3px solid ${dressCode.borderColorIconMoments}`,
-              }}
-            >
-              {item.iconUrl ? (
-                <img
-                  src={item.iconUrl}
-                  alt={item.title}
-                  className="w-14 h-14 md:w-20 md:h-18 object-contain"
-                  referrerPolicy="no-referrer"
-                  style={{ color: dressCode.borderColorIconMoments, opacity: 0.7 }}
+              className="absolute top-0 left-8 right-8"
+              style={{ height: '1px', background: `linear-gradient(to right, transparent, ${accentColor}60, transparent)` }}
+            />
 
-                />
-              ) : (
-                <span className="text-2xl">👗</span>
-              )}
+            {/* Icon + title row */}
+            <div className="flex items-center gap-3 mb-4">
+              <div
+                className="flex items-center justify-center flex-shrink-0 overflow-hidden"
+                style={{
+                  width: '44px', height: '44px',
+                  backgroundColor: dressCode.backgroundColorIconMoments || '#4A3728',
+                  border: `1px solid ${accentColor}50`,
+                }}
+              >
+                {item.iconUrl ? (
+                  <img
+                    src={item.iconUrl}
+                    alt={item.title}
+                    className="w-10 h-10 object-contain"
+                    referrerPolicy="no-referrer"
+                  />
+                ) : (
+                  <span className="text-xl" style={{ lineHeight: 1 }}>
+                    {item.isWomen ? '♀' : '♂'}
+                  </span>
+                )}
+              </div>
+              <h3
+                className="text-base tracking-[0.1em] uppercase font-medium"
+                style={{ fontFamily: 'var(--v-font-utility)', color: dressCode.title2Color || '#C9A84C' }}
+              >
+                {item.title}
+              </h3>
             </div>
-            <br />
-            <br />
 
-            {/* Title */}
-            <h3
-              className="text-lg sm:text-xl font-bold tracking-widest mt-1"
-              style={{ fontFamily: dressCode.title2Font, color: dressCode.title2Color }}
-            >
-              {item.title}
-            </h3>
-            <br />
+            {/* Separator */}
+            <div
+              className="mb-4"
+              style={{ height: '1px', background: `linear-gradient(to right, ${accentColor}40, transparent)` }}
+            />
 
-
-
-
+            {/* Dress code text */}
             <p
-              className="text-[14px] sm:text-sm leading-relaxed"
-              style={{ fontFamily: dressCode.text2Font, color: dressCode.text2Color }}
+              className="text-sm leading-relaxed"
+              style={{ color: dressCode.text2Color || '#E8D5A3', fontFamily: 'var(--v-font-body)' }}
             >
               {item.text}
-
             </p>
-            <br />
 
+            {/* Color palette */}
             {dressCode.activateColorPalette && (
-              <div className="flex flex-row gap-2 justify-center items-center  mt-8 ">
-                <br />
-
+              <div className="flex flex-row gap-2 mt-5 items-center">
+                <span
+                  className="text-[9px] tracking-[0.2em] uppercase mr-1"
+                  style={{ color: accentColor, fontFamily: 'var(--v-font-utility)', opacity: 0.7 }}
+                >
+                  Paleta
+                </span>
                 {(item.isWomen ? dressCode.colorPaletteWomen : dressCode.colorPaletteMen)?.map((color, idx) => (
                   <div
                     key={idx}
-                    className="w-6 h-6 rounded-full border border-black/10"
-                    style={{ backgroundColor: color || '#ffffff' }}
+                    style={{
+                      width: '18px', height: '18px',
+                      backgroundColor: color || '#ffffff',
+                      border: `1px solid ${accentColor}40`,
+                    }}
                   />
                 ))}
               </div>
             )}
-            <br />
-            <br />
-
-
-
-
-
           </motion.div>
         ))}
       </div>

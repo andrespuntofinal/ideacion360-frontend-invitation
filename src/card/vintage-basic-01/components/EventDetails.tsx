@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion';
-import { Church, PartyPopper, Clock, MapPin, ExternalLink } from 'lucide-react';
+import { Church, PartyPopper, MapPin, Clock, ExternalLink } from 'lucide-react';
 import { useCardConfig } from '../CardContext';
+import '../vintage.css';
 
 export default function EventDetails() {
   const { config } = useCardConfig();
-  const { eventDetails } = config;
+  const { eventDetails, envelope } = config;
+  const accentColor = envelope.accentColor || '#C9A84C';
 
   const ceremony = eventDetails.ceremony as Record<string, string>;
   const celebration = eventDetails.celebration as Record<string, string>;
@@ -15,111 +17,131 @@ export default function EventDetails() {
   ].filter(item => item.title && item.title.trim() !== '');
 
   return (
-    <section className="w-full py-6 md:py-10 px-0 md:px-4">
+    <section className="w-full py-4 md:py-6 px-0 md:px-2">
       {/* Section title */}
       <motion.div
-        initial={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
+        initial={{ opacity: 0, y: -16, filter: 'blur(8px)' }}
         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
         viewport={{ once: false, amount: 0.5 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="text-center mb-8 md:mb-12"
+        transition={{ duration: 0.8, ease: 'easeOut' }}
+        className="text-center mb-10"
       >
-        <p className="text-base sm:text-2xl italic leading-relaxed uppercase mb-2" style={{ color: eventDetails.detailsColor, fontFamily: eventDetails.detailsFont }}>
-          ♥ &nbsp; {eventDetails.detailsTitle} &nbsp; ♥
+        <p
+          className="text-[10px] tracking-[0.3em] uppercase mb-1"
+          style={{ color: accentColor, fontFamily: 'var(--v-font-utility)', opacity: 0.7 }}
+        >
+          Celebración
         </p>
-        <br />
-        <br />
-
-
+        <h2
+          className="text-2xl md:text-3xl italic"
+          style={{ color: eventDetails.detailsColor || '#8B6914', fontFamily: eventDetails.detailsFont || 'var(--v-font-display)' }}
+        >
+          {eventDetails.detailsTitle}
+        </h2>
+        <div className="flex items-center justify-center gap-3 mt-3">
+          <div style={{ height: '1px', width: '32px', backgroundColor: accentColor, opacity: 0.4 }} />
+          <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+            <circle cx="4" cy="4" r="2" fill={accentColor} fillOpacity="0.6"/>
+          </svg>
+          <div style={{ height: '1px', width: '32px', backgroundColor: accentColor, opacity: 0.4 }} />
+        </div>
       </motion.div>
 
       {/* Cards */}
-      <div className="flex flex-row gap-2 md:gap-6 w-full" style={{ perspective: '1000px' }}>
+      <div className="flex flex-col gap-5 w-full">
         {details.map((item, i) => (
           <motion.div
             key={item.title}
-            initial={{ opacity: 0, y: 50, scale: 0.95, filter: 'blur(10px)' }}
-            whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+            initial={{ opacity: 0, y: 40, filter: 'blur(8px)' }}
+            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             viewport={{ once: false, amount: 0.2 }}
-            transition={{
-              delay: i * 0.15,
-              duration: 0.8,
-              type: "spring",
-              stiffness: 100,
-              damping: 20
-            }}
-            className="relative flex-1 flex flex-col items-center text-center rounded-2xl md:rounded-3xl shadow-xl mt-10"
+            transition={{ delay: i * 0.12, duration: 0.8, type: 'spring', stiffness: 100, damping: 20 }}
+            className="relative v-corner-card"
             style={{
-              background: `linear-gradient(160deg, ${eventDetails.backgroundColorFrom}, ${eventDetails.backgroundColorVia}, ${eventDetails.backgroundColorTo})`,
-              border: `2px solid ${eventDetails.borderColorIconMoments}`,
+              background: `linear-gradient(160deg, ${eventDetails.backgroundColorFrom || '#2C1F14'}, ${eventDetails.backgroundColorVia || '#4A3728'}, ${eventDetails.backgroundColorTo || '#3D2B1F'})`,
+              border: `1px solid ${accentColor}40`,
+              padding: '2rem 1.5rem 1.75rem',
             }}
           >
-            <div className="w-full px-2 sm:px-6 pt-16 pb-6 flex flex-col items-center flex-1">
-              {/* Floating Icon */}
+            {/* Top accent line */}
+            <div
+              className="absolute top-0 left-8 right-8"
+              style={{ height: '1px', background: `linear-gradient(to right, transparent, ${accentColor}60, transparent)` }}
+            />
+
+            {/* Icon + title row */}
+            <div className="flex items-center gap-3 mb-4">
               <div
-                className="absolute -top-8 left-1/2 -translate-x-1/2 w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center shadow-xl z-20"
+                className="flex items-center justify-center flex-shrink-0"
                 style={{
-                  background: eventDetails.backgroundColorIconMoments,
-                  border: `3px solid ${eventDetails.borderColorIconMoments}`,
+                  width: '40px', height: '40px',
+                  backgroundColor: eventDetails.backgroundColorIconMoments || '#4A3728',
+                  border: `1px solid ${accentColor}50`,
                 }}
               >
-                <item.icon className="w-8 h-8 md:w-10 md:h-10" style={{ color: eventDetails.detailIconColor, opacity: 0.3 }} />
+                <item.icon
+                  className="w-5 h-5"
+                  style={{ color: eventDetails.detailIconColor || '#C9A84C', opacity: 0.8 }}
+                />
               </div>
-              <br />
-              <br />
-
-              {/* Title */}
               <h3
-                className="text-lg sm:text-xl font-bold tracking-widest mb-1"
-                style={{ fontFamily: eventDetails.detailItemTitleFont, color: eventDetails.detailItemTitleColor }}
+                className="text-base tracking-[0.1em] uppercase font-medium"
+                style={{ fontFamily: 'var(--v-font-utility)', color: eventDetails.detailItemTitleColor || '#C9A84C' }}
               >
                 {item.title}
               </h3>
-              <br />
-
-
-
-              <div className="space-y-3 w-full mb-6">
-                <div
-                  className="flex items-center justify-center gap-2 text-sm"
-                  style={{ color: eventDetails.detailItemText1Color, fontFamily: eventDetails.detailItemText1Font }}
-                >
-
-                  <span className="text-[14px] sm:text-sm leading-snug">{item.place}</span>
-                </div>
-                <div
-                  className="flex items-center justify-center gap-2 sm:gap-2 text-sm"
-                  style={{ color: eventDetails.detailItemText1Color, fontFamily: eventDetails.detailItemText1Font }}
-                >
-
-                  <span className="text-[14px] sm:text-sm leading-snug">{item.time}</span>
-                </div>
-              </div>
-              <br />
-
-              {/* Map link */}
-              {item.mapUrl && (
-                <a
-                  href={item.mapUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-auto inline-flex items-center gap-2 px-5 py-2 rounded-full text-[12px] sm:text-xs font-medium tracking-wide transition-all duration-300 hover:scale-105"
-                  style={{
-                    border: `1px solid ${eventDetails.borderColorIconMoments}`,
-                    color: eventDetails.detailItemTitleColor,
-                    backgroundColor: `${eventDetails.backgroundColorIconMoments}60`,
-                  }}
-                >
-
-                  <ExternalLink className="w-3 h-3" />
-                  {eventDetails.detailsMapsTitle}
-                </a>
-
-              )}
-              <br />
-              <br />
             </div>
 
+            {/* Separator */}
+            <div
+              className="mb-4"
+              style={{ height: '1px', background: `linear-gradient(to right, ${accentColor}40, transparent)` }}
+            />
+
+            {/* Details */}
+            <div className="space-y-3">
+              {item.place && (
+                <div className="flex items-start gap-2">
+                  <MapPin className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" style={{ color: accentColor, opacity: 0.6 }} />
+                  <p
+                    className="text-sm leading-snug"
+                    style={{ color: eventDetails.detailItemText1Color || '#E8D5A3', fontFamily: 'var(--v-font-body)' }}
+                  >
+                    {item.place}
+                  </p>
+                </div>
+              )}
+              {item.time && (
+                <div className="flex items-center gap-2">
+                  <Clock className="w-3.5 h-3.5 flex-shrink-0" style={{ color: accentColor, opacity: 0.6 }} />
+                  <p
+                    className="text-sm"
+                    style={{ color: eventDetails.detailItemText1Color || '#E8D5A3', fontFamily: 'var(--v-font-body)' }}
+                  >
+                    {item.time}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Map link */}
+            {item.mapUrl && (
+              <a
+                href={item.mapUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-flex items-center gap-2 text-[10px] tracking-[0.2em] uppercase transition-all duration-300 hover:opacity-80"
+                style={{
+                  color: accentColor,
+                  fontFamily: 'var(--v-font-utility)',
+                  borderBottom: `1px solid ${accentColor}50`,
+                  paddingBottom: '2px',
+                }}
+              >
+                <ExternalLink className="w-3 h-3" />
+                {eventDetails.detailsMapsTitle || 'Cómo llegar'}
+              </a>
+            )}
           </motion.div>
         ))}
       </div>

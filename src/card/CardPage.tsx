@@ -23,7 +23,9 @@ export default function CardPage() {
 
     fetchPromise
       .then((event) => {
+        console.log('Fetched event:', event);
         const type = event?.wedding?.cardType || 'elegant-basic-01';
+        console.log('Resolved cardType:', type);
         setCardType(type);
         setLoading(false);
       })
