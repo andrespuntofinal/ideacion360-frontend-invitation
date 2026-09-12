@@ -140,11 +140,6 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
         }}
       />
 
-      {/* ── Corner ornaments on page ──────────────────────────────────── */}
-      <div className="fixed top-4 left-4 z-10 opacity-50 pointer-events-none"><CornerOrnament color={accentColor} /></div>
-      <div className="fixed top-4 right-4 z-10 opacity-50 pointer-events-none" style={{ transform: 'scaleX(-1)' }}><CornerOrnament color={accentColor} /></div>
-      <div className="fixed bottom-4 left-4 z-10 opacity-50 pointer-events-none" style={{ transform: 'scaleY(-1)' }}><CornerOrnament color={accentColor} /></div>
-      <div className="fixed bottom-4 right-4 z-10 opacity-50 pointer-events-none" style={{ transform: 'scale(-1, -1)' }}><CornerOrnament color={accentColor} /></div>
 
       {/* ── Header: couple names & date ─────────────────────────────── */}
       <motion.div
