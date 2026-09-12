@@ -1,0 +1,173 @@
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { useCardConfig } from '../CardContext';
+import '../celebration15.css';
+import marcoCountdownImg from '../img/conteo1.png';
+import butterflyImg from '../img/butterfly.svg';
+
+interface TimeLeft { days: number; hours: number; minutes: number; seconds: number; }
+
+const labels = ['Días', 'Horas', 'Min', 'Seg'];
+
+export default function Countdown() {
+  const { config } = useCardConfig();
+  const { countdown, weddingData } = config;
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+
+  useEffect(() => {
+    const datePart = weddingData.weddingDate.substring(0, 10);
+    const timePart = weddingData.weddingTime || '00:00';
+    const targetISO = `${datePart}T${timePart.length === 5 ? timePart + ':00' : timePart}-05:00`;
+    const targetDate = new Date(targetISO).getTime();
+
+    const timer = setInterval(() => {
+      const distance = targetDate - Date.now();
+      if (distance < 0) { clearInterval(timer); setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 }); return; }
+      setTimeLeft({
+        days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((distance % (1000 * 60)) / 1000),
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [weddingData.weddingDate, weddingData.weddingTime]);
+
+  const items = [
+    { label: labels[0], value: timeLeft.days },
+    { label: labels[1], value: timeLeft.hours },
+    { label: labels[2], value: timeLeft.minutes },
+    { label: labels[3], value: timeLeft.seconds },
+  ];
+
+  // Vintage dark background derived from countdown config or fallback
+  const fromColor = countdown.backgroundColorFrom || '#2C1F14';
+  const viaColor = countdown.backgroundColorVia || '#4A3728';
+  const toColor = countdown.backgroundColorTo || '#3D2B1F';
+  const goldLight = countdown.borderColorCircle || '#C9A84C';
+  const circBg = countdown.backgroundColorCircle || '#4A3728';
+  const numColor = countdown.numberColorText1 || '#C9A84C';
+  const lblColor = countdown.numberColorText2 || '#9C8778';
+
+  return (
+    <section
+      className="w-full relative overflow-hidden py-20 md:py-28 px-4 flex flex-col items-center"
+      style={{ background: `linear-gradient(135deg, ${fromColor} 0%, ${viaColor} 50%, ${toColor} 100%)` }}
+    >
+      {/* Left Butterfly */}
+      <motion.img
+        src={butterflyImg}
+        alt="Mariposa Izquierda"
+        initial={{ y: '-50%' }}
+        animate={{ y: ['-55%', '-45%', '-55%'] }}
+        transition={{ repeat: Infinity, duration: 6, ease: 'easeInOut' }}
+        className="absolute left-2 sm:left-4 md:left-12 top-1/2 w-12 h-12 sm:w-16 sm:h-16 md:w-28 md:h-28 opacity-45 pointer-events-none object-contain select-none z-10"
+      />
+
+      {/* Right Butterfly */}
+      <motion.img
+        src={butterflyImg}
+        alt="Mariposa Derecha"
+        initial={{ y: '-50%', scaleX: -1 }}
+        animate={{ y: ['-45%', '-55%', '-45%'] }}
+        transition={{ repeat: Infinity, duration: 6, ease: 'easeInOut' }}
+        className="absolute right-2 sm:right-4 md:right-12 top-1/2 w-12 h-12 sm:w-16 sm:h-16 md:w-28 md:h-28 opacity-45 pointer-events-none object-contain select-none z-10"
+      />
+
+      {/* Subtle cross-hatch grain overlay */}
+      <div
+        className="absolute inset-0 opacity-5 pointer-events-none"
+        style={{
+          backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.8) 1px, transparent 1px)',
+          backgroundSize: '36px 36px',
+        }}
+      />
+
+      {/* Decorative gold top border line */}
+      <div
+        className="absolute top-0 left-0 right-0 h-px"
+        style={{ background: `linear-gradient(to right, transparent, ${goldLight}60, transparent)` }}
+      />
+      <div
+        className="absolute bottom-0 left-0 right-0 h-px"
+        style={{ background: `linear-gradient(to right, transparent, ${goldLight}60, transparent)` }}
+      />
+
+      <div className="relative z-10 w-full max-w-5xl flex flex-col items-center text-center">
+        {/* Section eyebrow */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="mb-12 md:mb-16"
+        >
+          {/* Vintage decorative label */}
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <div style={{ height: '1px', width: '40px', backgroundColor: goldLight, opacity: 0.5 }} />
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <polygon points="8,1 15,8 8,15 1,8" fill="none" stroke={goldLight} strokeWidth="1" strokeOpacity="0.5" />
+              <circle cx="8" cy="8" r="2" fill={goldLight} fillOpacity="0.6" />
+            </svg>
+            <div style={{ height: '1px', width: '40px', backgroundColor: goldLight, opacity: 0.5 }} />
+          </div>
+          <p
+            className="text-2xl md:text-3xl italic font-bold"
+            style={{ color: countdown.titleTextColor || '#C9A84C', fontFamily: countdown.titleTextFont || 'var(--v-font-display)', opacity: 0.85 }}
+          >
+            {countdown.titleTextMsg || 'La espera casi termina'}
+          </p>
+          <br />
+        </motion.div>
+
+        {/* Counters */}
+        <div className="flex flex-wrap justify-center items-center gap-6 md:gap-12 lg:gap-16">
+          {items.map((item, index) => (
+            <motion.div
+              key={item.label}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.12, duration: 0.7, ease: 'easeOut' }}
+              className="flex flex-col items-center"
+            >
+              {/* Vintage square frame with image background */}
+              <div
+                className="relative flex items-center justify-center mb-3"
+                style={{
+                  width: 'clamp(82px, 20vw, 125px)',
+                  height: 'clamp(82px, 20vw, 125px)',
+                }}
+              >
+                {/* Background Image */}
+                <img
+                  src={marcoCountdownImg}
+                  alt="Marco Countdown"
+                  className="absolute inset-0 w-full h-full object-fill pointer-events-none drop-shadow-md"
+                />
+
+                <span
+                  className="text-base sm:text-2xl italic leading-relaxed mb-2"
+                  style={{
+                    color: numColor,
+                    fontFamily: countdown.numberFontText || 'var(--v-font-display)',
+                    fontSize: 'clamp(1.5rem, 5vw, 2.8rem)',
+                    fontStyle: 'italic',
+                  }}
+                >
+                  {String(item.value).padStart(2, '0')}
+                </span>
+              </div>
+              <span
+                className="ttext-base sm:text-2xl italic leading-relaxed mb-2"
+                style={{ color: lblColor, fontFamily: 'var(--v-font-utility)' }}
+              >
+                {item.label}
+              </span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

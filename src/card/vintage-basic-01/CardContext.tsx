@@ -81,8 +81,8 @@ export const DEFAULT_CONFIG: CardConfig = {
     detailIcon2Color: '#d79f72', detailsMapsTitle: 'Cómo llegar',
     backgroundColorFrom: '#19284c', backgroundColorVia: '#5c678d', backgroundColorTo: '#19284c',
     boderColor: '#A5ADB8', backgroundColorIconMoments: '#e8dcd9', borderColorIconMoments: '#D7B272',
-    ceremony: { title: '', place: '', time: '' },
-    celebration: { title: '', place: '', time: '' },
+    ceremony: { title: 'Ceremonia', place: 'Lugar de la Ceremonia', time: '17:00 pm' },
+    celebration: { title: 'Celebración', place: 'Lugar de la Celebración', time: '19:00 pm' },
     ceremonyMaps: '', celebrationMaps: '',
   },
   timeline: {
@@ -198,6 +198,10 @@ export function CardProvider({ eventId, children }: CardProviderProps) {
         const comps = event.components || {};
         const active = event.activeComponents || {};
         const wedding = event.wedding || {};
+        const eventDataObj = event.event || {};
+        const rawDate = wedding.weddingDate || eventDataObj.eventDate;
+        const rawTime = wedding.weddingTime || eventDataObj.eventTime;
+        const rawNames = wedding.coupleNames || eventDataObj.honoreeNames;
 
         setConfig(prev => ({
           ...prev,
@@ -206,9 +210,9 @@ export function CardProvider({ eventId, children }: CardProviderProps) {
             numberGuests: numberGuests ? parseInt(String(numberGuests)) : prev.paramsGeneral.numberGuests,
           },
           weddingData: {
-            weddingDate: wedding.weddingDate ? new Date(wedding.weddingDate).toISOString() : DEFAULT_CONFIG.weddingData.weddingDate,
-            weddingTime: wedding.weddingTime || DEFAULT_CONFIG.weddingData.weddingTime,
-            coupleNames: wedding.coupleNames || DEFAULT_CONFIG.weddingData.coupleNames,
+            weddingDate: rawDate ? new Date(rawDate).toISOString() : DEFAULT_CONFIG.weddingData.weddingDate,
+            weddingTime: rawTime || DEFAULT_CONFIG.weddingData.weddingTime,
+            coupleNames: rawNames || DEFAULT_CONFIG.weddingData.coupleNames,
           },
           webhookUrl: event.components?.rsvp?.webhookUrl || DEFAULT_CONFIG.webhookUrl,
           envelope: merge(DEFAULT_CONFIG.envelope, comps.envelope),

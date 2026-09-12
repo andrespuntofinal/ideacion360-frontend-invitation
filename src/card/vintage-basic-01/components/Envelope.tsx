@@ -4,6 +4,8 @@ import confetti from 'canvas-confetti';
 import { useCardConfig } from '../CardContext';
 import { optimizeCloudinaryUrl } from '../../../utils/cloudinary';
 import '../vintage.css';
+import mirrorImg from '../img/marco-envelope-couple.png';
+import marcoImg from '../img/marco-envelope.png';
 
 interface EnvelopeProps {
   onOpenComplete: () => void;
@@ -12,22 +14,22 @@ interface EnvelopeProps {
 /* ── Inline SVG ornaments ────────────────────────────────────────────────── */
 const FloralDivider = ({ color = '#C9A84C' }: { color?: string }) => (
   <svg width="180" height="20" viewBox="0 0 180 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <line x1="0" y1="10" x2="70" y2="10" stroke={color} strokeWidth="0.8" strokeOpacity="0.5"/>
-    <circle cx="80" cy="10" r="2" fill={color} fillOpacity="0.6"/>
-    <circle cx="90" cy="7" r="3" fill={color} fillOpacity="0.4"/>
-    <circle cx="90" cy="13" r="3" fill={color} fillOpacity="0.4"/>
-    <circle cx="100" cy="10" r="2" fill={color} fillOpacity="0.6"/>
-    <line x1="110" y1="10" x2="180" y2="10" stroke={color} strokeWidth="0.8" strokeOpacity="0.5"/>
+    <line x1="0" y1="10" x2="70" y2="10" stroke={color} strokeWidth="0.8" strokeOpacity="0.5" />
+    <circle cx="80" cy="10" r="2" fill={color} fillOpacity="0.6" />
+    <circle cx="90" cy="7" r="3" fill={color} fillOpacity="0.4" />
+    <circle cx="90" cy="13" r="3" fill={color} fillOpacity="0.4" />
+    <circle cx="100" cy="10" r="2" fill={color} fillOpacity="0.6" />
+    <line x1="110" y1="10" x2="180" y2="10" stroke={color} strokeWidth="0.8" strokeOpacity="0.5" />
   </svg>
 );
 
 const CornerOrnament = ({ color = '#C9A84C' }: { color?: string }) => (
   <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M4,4 Q4,44 44,44" stroke={color} strokeWidth="1" strokeOpacity="0.4" fill="none"/>
-    <path d="M4,4 Q24,4 44,4" stroke={color} strokeWidth="1" strokeOpacity="0.4" fill="none"/>
-    <circle cx="5" cy="5" r="2" fill={color} fillOpacity="0.5"/>
-    <circle cx="44" cy="44" r="2" fill={color} fillOpacity="0.5"/>
-    <path d="M12,4 Q12,12 4,12" stroke={color} strokeWidth="0.7" strokeOpacity="0.3" fill="none"/>
+    <path d="M4,4 Q4,44 44,44" stroke={color} strokeWidth="1" strokeOpacity="0.4" fill="none" />
+    <path d="M4,4 Q24,4 44,4" stroke={color} strokeWidth="1" strokeOpacity="0.4" fill="none" />
+    <circle cx="5" cy="5" r="2" fill={color} fillOpacity="0.5" />
+    <circle cx="44" cy="44" r="2" fill={color} fillOpacity="0.5" />
+    <path d="M12,4 Q12,12 4,12" stroke={color} strokeWidth="0.7" strokeOpacity="0.3" fill="none" />
   </svg>
 );
 
@@ -162,45 +164,17 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
         >
           {banner.subtextMsg || 'Nuestra Boda'}
         </p>
-
-        {/* Couple names */}
-        <h1
-          className="text-3xl sm:text-4xl md:text-5xl italic leading-tight"
-          style={{
-            color: envelope.textDarkColor || '#3D2B1F',
-            fontFamily: envelope.titleFont || 'var(--v-font-display)',
-          }}
-        >
-          {weddingData?.coupleNames || 'Juan & Laura'}
-        </h1>
-
-        {/* Date */}
-        {formattedDate && (
-          <p
-            className="text-sm mt-3 italic"
-            style={{ color: envelope.textColor || '#8B6914', fontFamily: 'var(--v-font-body)', opacity: 0.85 }}
-          >
-            {formattedDate}
-          </p>
-        )}
-
         {/* Floral ornamental divider */}
         <div className="mt-4">
           <FloralDivider color={accentColor} />
         </div>
 
-        {/* Message below divider */}
-        {!envelope.messageOnEnvelope && (
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.9 }}
-            className="text-sm md:text-base italic mt-3 leading-relaxed"
-            style={{ color: envelope.textDarkColor || '#6B5B4E', fontFamily: envelope.envelopeFont || 'var(--v-font-body)', maxWidth: '320px', opacity: 0.85 }}
-          >
-            {envelope.envelopeMsg}
-          </motion.p>
-        )}
+
+
+
+
+
+
       </motion.div>
 
       {/* ── Envelope Container ───────────────────────────────────────── */}
@@ -232,7 +206,7 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             {/* Card 1: Guest Info */}
             <motion.div
-              className="absolute w-[45%] max-w-[230px] h-[70%] max-h-[280px] shadow-2xl z-10 pointer-events-auto"
+              className="absolute w-[45%] max-w-[230px] h-[70%] max-h-[280px] z-10 pointer-events-auto"
               initial={{ y: '10%', x: 0, rotate: 0, opacity: 0, scale: 0.8 }}
               animate={isOpening ? {
                 y: ['10%', '-115%', '-40%'],
@@ -244,23 +218,19 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
               } : { y: '10%', x: 0, rotate: 0, opacity: 0, scale: 0.8, zIndex: 10 }}
               transition={{ duration: 1.5, times: [0, 0.5, 1], ease: 'easeInOut' }}
               style={{
-                backgroundColor: cardBg,
-                border: `1px solid ${accentColor}50`,
-                borderRadius: '2px',
+                backgroundColor: 'transparent',
+                border: 'none',
               }}
             >
-              <div
-                className="w-full h-full p-3 md:p-5 flex flex-col items-center justify-center relative overflow-hidden"
-                style={{ border: `1px solid ${accentColor}30`, borderRadius: '1px', margin: '4px' }}
-              >
-                {/* Noise texture overlay */}
-                {envelope.textureUrl && (
-                  <div
-                    className="absolute inset-0 z-0 pointer-events-none opacity-70"
-                    style={{ backgroundImage: `url(${envelope.textureUrl})`, backgroundSize: 'cover', mixBlendMode: 'multiply' }}
-                  />
-                )}
-                <div className="relative z-10 flex flex-col items-center justify-center text-center">
+              <div className="w-[90%] h-[100%] relative overflow-hidden flex items-center justify-center">
+                {/* Frame Background */}
+                <img
+                  src={marcoImg}
+                  alt="Marco"
+                  className="absolute w-[120%] h-[87%] top-[13%]"
+                />
+
+                <div className="relative z-10 flex flex-col items-center justify-center text-center p-4">
                   {/* Small ornament */}
                   <div className="mb-2 opacity-40">
                     <FloralDivider color={accentColor} />
@@ -294,7 +264,7 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
 
             {/* Card 2: Photo */}
             <motion.div
-              className="absolute w-[45%] max-w-[230px] h-[70%] max-h-[280px] shadow-2xl z-10 pointer-events-auto"
+              className="absolute w-[45%] max-w-[230px] h-[70%] max-h-[280px] z-10 pointer-events-auto"
               initial={{ y: '10%', x: 0, rotate: 0, opacity: 0, scale: 0.8 }}
               animate={isOpening ? {
                 y: ['10%', '-120%', '-42%'],
@@ -306,23 +276,44 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
               } : { y: '10%', x: 0, rotate: 0, opacity: 0, scale: 0.8, zIndex: 10 }}
               transition={{ duration: 1.5, times: [0, 0.5, 1], ease: 'easeInOut' }}
               style={{
-                backgroundColor: envelope.photoBackgroundColor || '#ffffff',
-                border: `6px solid ${envelope.photoBackgroundColor || '#ffffff'}`,
-                borderRadius: '1px',
+                backgroundColor: 'transparent',
+                border: 'none',
               }}
             >
-              <div className="w-full h-full relative overflow-hidden shadow-inner">
-                {envelope.cardCouplePhoto ? (
-                  <img src={envelope.cardCouplePhoto} alt="Pareja" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                ) : (
+              <div className="w-full h-full relative overflow-hidden flex items-center justify-center">
+                {/* Mirror Background Frame */}
+                <img
+                  src={mirrorImg}
+                  alt="Espejo"
+                  className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-md"
+                />
+
+                {/* Couple Photo (rendered inside the mirror frame) */}
+                <div className="absolute w-[67%] h-[77%] top-[13%] rounded-full overflow-hidden flex items-center justify-center z-10">
+                  {envelope.cardCouplePhoto ? (
+                    <img
+                      src={envelope.cardCouplePhoto}
+                      alt="Pareja"
+                      className="w-full h-full object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                  ) : (
+                    <div
+                      className="w-full h-full flex items-center justify-center text-xs italic"
+                      style={{ backgroundColor: '#f0ead8', color: '#9C8778', fontFamily: 'var(--v-font-body)' }}
+                    >
+                      Nuestra Foto
+                    </div>
+                  )}
+
+                  {/* Soft reflection glow on the mirror glass */}
                   <div
-                    className="w-full h-full flex items-center justify-center text-xs italic"
-                    style={{ backgroundColor: '#f0ead8', color: '#9C8778', fontFamily: 'var(--v-font-body)' }}
-                  >
-                    Nuestra Foto
-                  </div>
-                )}
-                <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_20px_rgba(0,0,0,0.08)]" />
+                    className="absolute inset-0 pointer-events-none opacity-20"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.15) 100%)',
+                    }}
+                  />
+                </div>
               </div>
             </motion.div>
           </div>
@@ -364,9 +355,17 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
                   className="absolute inset-0 -translate-y-18 px-16 pb-12 flex flex-col items-center justify-center text-center pointer-events-none"
                   style={{ color: envelope.envelopeMsgColor || envelope.textDarkColor, fontFamily: envelope.envelopeFont }}
                 >
-                  <p className="text-[22px] sm:text-[18px] md:text-[22px] italic leading-relaxed max-w-[80%]">
-                    {envelope.envelopeMsg}
-                  </p>
+                  {/* Couple names */}
+                  <h1
+                    className="text-3xl sm:text-4xl md:text-4xl italic leading-tight"
+                    style={{
+                      color: envelope.textDarkColor || '#3D2B1F',
+                      fontFamily: envelope.titleFont || 'var(--v-font-display)',
+                    }}
+                  >
+                    {weddingData?.coupleNames || 'Juan & Laura'}
+                  </h1>
+
                 </div>
               )}
             </div>
@@ -391,25 +390,24 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
             initial={{ top: '50%', y: '-10%' }}
             animate={{
               top: isOpening ? '60%' : '50%',
-              y: isOpening ? '0%' : '-10%',
+              y: isOpening ? '0%' : '-30%',
               scale: isOpening ? 1.08 : 1,
             }}
             transition={{ duration: 0.8, ease: 'easeInOut' }}
           >
             <div
-              className="w-28 h-28 flex items-center justify-center relative transition-all duration-300 group-hover:scale-110"
-              style={{ filter: `drop-shadow(0 4px 16px ${accentColor}80)` }}
+              className="w-45 h-45 flex items-center justify-center relative transition-all duration-300 group-hover:scale-110"
             >
               {envelope.sealImage ? (
                 <img
                   src={envelope.sealImage}
                   alt="Sello"
-                  className="absolute -top-4 left-1/2 -translate-x-1/2 w-28 object-contain drop-shadow-lg v-seal-pulse"
+                  className="w-full h-full object-contain v-seal-pulse"
                 />
               ) : (
                 /* Vintage wax seal SVG */
                 <svg
-                  className="absolute -top-4 left-1/2 -translate-x-1/2 w-24 h-24 v-seal-pulse"
+                  className="w-32 h-32 v-seal-pulse"
                   viewBox="0 0 96 96"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -437,29 +435,29 @@ export default function Envelope({ onOpenComplete }: EnvelopeProps) {
                   </text>
                 </svg>
               )}
+            </div>
 
-              {/* Text below seal */}
-              <div
-                className="relative z-10 flex flex-col items-center justify-center mt-16"
-                style={{ fontFamily: 'var(--v-font-utility)', color: envelope.textDarkColor || '#3D2B1F' }}
-              >
-                {step === 'closed' ? (
-                  <motion.span
-                    animate={{ opacity: [0.7, 1, 0.7] }}
-                    transition={{ repeat: Infinity, duration: 2.5 }}
-                    className="text-[10px] font-medium tracking-[0.2em] uppercase text-center"
-                    style={{ color: envelope.textDarkColor || '#6B5B4E' }}
-                  >
-                    Abrir invitación
-                  </motion.span>
-                ) : (
-                  <span className="text-[10px] font-medium tracking-[0.2em] uppercase text-center"
-                    style={{ color: envelope.textDarkColor || '#6B5B4E' }}
-                  >
-                    Ver detalles
-                  </span>
-                )}
-              </div>
+            {/* Text below seal */}
+            <div
+              className="mt-4 flex flex-col items-center justify-center"
+              style={{ fontFamily: 'var(--v-font-utility)', color: envelope.textDarkColor || '#3D2B1F' }}
+            >
+              {step === 'closed' ? (
+                <motion.span
+                  animate={{ opacity: [0.7, 1, 0.7] }}
+                  transition={{ repeat: Infinity, duration: 2.5 }}
+                  className="text-[10px] font-medium tracking-[0.2em] uppercase text-center"
+                  style={{ color: envelope.textDarkColor || '#6B5B4E' }}
+                >
+                  Abrir invitación
+                </motion.span>
+              ) : (
+                <span className="text-[10px] font-medium tracking-[0.2em] uppercase text-center"
+                  style={{ color: envelope.textDarkColor || '#6B5B4E' }}
+                >
+                  Ver detalles
+                </span>
+              )}
             </div>
           </motion.button>
         </div>

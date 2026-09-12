@@ -8,10 +8,16 @@ import logoImg from '../assets/logositio.jpg';
 
 interface EventData {
   type: 'web' | 'video' | 'card';
+  category?: string;
   wedding?: {
     coupleNames?: string;
     weddingDate?: string;
     weddingTime?: string;
+  };
+  event?: {
+    honoreeNames?: string;
+    eventDate?: string;
+    eventTime?: string;
   };
   reviews?: {
     url?: string;
@@ -136,7 +142,7 @@ export const EventReviews = () => {
     );
   }
 
-  const coupleNames = event.wedding?.coupleNames || 'los Novios';
+  const coupleNames = event.wedding?.coupleNames || event.event?.honoreeNames || 'los Novios';
   const eventType = event.type ? (typeLabels[event.type] || { label: 'Boda', icon: Heart, color: '#f472b6' }) : { label: 'Boda', icon: Heart, color: '#f472b6' };
   const TypeIcon = eventType.icon;
 
@@ -295,7 +301,7 @@ export const EventReviews = () => {
                   </div>
                   <div>
                     <div style={{ fontSize: '0.65rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600 }}>Fecha</div>
-                    <div style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 600 }}>{formatDate(event.wedding?.weddingDate)}</div>
+                    <div style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 600 }}>{formatDate(event.wedding?.weddingDate || event.event?.eventDate)}</div>
                   </div>
                 </div>
               </div>

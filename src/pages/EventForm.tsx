@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Save, ArrowLeft, User, Heart, ToggleLeft, AlertCircle, CheckCircle, Mail, Phone, CreditCard, Calendar, Clock, LayoutGrid, Settings, Ban, CheckCircle2, FilePen, Globe, Play } from 'lucide-react';
+import { Save, ArrowLeft, User, Heart, ToggleLeft, AlertCircle, CheckCircle, Mail, Phone, CreditCard, Calendar, Clock, LayoutGrid, Settings, Ban, CheckCircle2, FilePen, Globe, Play, Crown, Gift, Sparkles } from 'lucide-react';
 import AdminLayout from '../components/admin/AdminLayout';
 import useEventsStore from '../stores/eventsStore';
 import toast from 'react-hot-toast';
@@ -25,16 +25,21 @@ const COMPONENTS_LIST: ComponentEntry[] = [
 
 interface FormState {
   type: "web" | "video" | "card";
+  category: "Bodas" | "Fiesta de 15" | "Cumpleaños";
   status: "draft" | "active" | "canceled" | "completed";
   contact: Record<string, string>;
   wedding: Record<string, string>;
+  eventData: Record<string, string>;
   activeComponents: Record<string, boolean>;
 }
 
 const defaultForm: FormState = {
-  type: 'web', status: 'draft',
+  type: 'web',
+  category: 'Bodas',
+  status: 'draft',
   contact: { name: '', email: '', phone: '', identification: '' },
   wedding: { coupleNames: '', weddingDate: '', weddingTime: '', cardType: 'elegant-basic-01' },
+  eventData: { honoreeNames: '', eventDate: '', eventTime: '', cardType: 'elegant-basic-01' },
   activeComponents: Object.fromEntries(COMPONENTS_LIST.map((c) => [c.key, false])),
 };
 
@@ -51,16 +56,27 @@ const EventForm = () => {
     if (isEdit && id) {
       fetchEventById(id).then((event) => {
         if (event) {
+          const categoryVal: any = event.category || (event.event ? 'Cumpleaños' : 'Bodas');
+          const weddingObj = (event.wedding as Record<string, string>) || {};
+          const eventObj = (event.event as Record<string, string>) || {};
           setForm({
             type: event.type || 'web',
+            category: categoryVal,
             status: (event.status as any) || 'draft',
             contact: (event.contact as Record<string, string>) || defaultForm.contact,
             wedding: {
-              coupleNames: (event.wedding as Record<string, string>)?.coupleNames || '',
-              weddingDate: (event.wedding as Record<string, string>)?.weddingDate
-                ? new Date((event.wedding as Record<string, string>).weddingDate).toISOString().split('T')[0] : '',
-              weddingTime: (event.wedding as Record<string, string>)?.weddingTime || '',
-              cardType: (event.wedding as Record<string, string>)?.cardType || 'elegant-basic-01',
+              coupleNames: weddingObj.coupleNames || '',
+              weddingDate: weddingObj.weddingDate
+                ? new Date(weddingObj.weddingDate).toISOString().split('T')[0] : '',
+              weddingTime: weddingObj.weddingTime || '',
+              cardType: weddingObj.cardType || 'elegant-basic-01',
+            },
+            eventData: {
+              honoreeNames: eventObj.honoreeNames || '',
+              eventDate: eventObj.eventDate
+                ? new Date(eventObj.eventDate).toISOString().split('T')[0] : '',
+              eventTime: eventObj.eventTime || '',
+              cardType: eventObj.cardType || 'elegant-basic-01',
             },
             activeComponents: { ...defaultForm.activeComponents, ...(event.activeComponents as unknown as Record<string, boolean>) },
           });
@@ -77,7 +93,32 @@ const EventForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const payload: any = { ...form, wedding: { ...form.wedding, weddingDate: form.wedding.weddingDate ? new Date(form.wedding.weddingDate).toISOString() : '' } };
+    const isWedding = form.category === 'Bodas';
+
+    const payload: any = {
+      type: form.type,
+      category: form.category,
+      status: form.status,
+      contact: form.contact,
+      activeComponents: form.activeComponents,
+    };
+
+    if (isWedding) {
+      payload.wedding = {
+        coupleNames: form.wedding.coupleNames,
+        weddingDate: form.wedding.weddingDate ? new Date(form.wedding.weddingDate).toISOString() : '',
+        weddingTime: form.wedding.weddingTime,
+        cardType: form.wedding.cardType || 'elegant-basic-01',
+      };
+    } else {
+      payload.event = {
+        honoreeNames: form.eventData.honoreeNames,
+        eventDate: form.eventData.eventDate ? new Date(form.eventData.eventDate).toISOString() : '',
+        eventTime: form.eventData.eventTime,
+        cardType: form.eventData.cardType || 'elegant-basic-01',
+      };
+    }
+
     const result = isEdit && id ? await updateEvent(id, payload) : await createEvent(payload);
     if (result.success) {
       setNotification({ type: 'success', message: isEdit ? '¡Evento actualizado!' : '¡Evento creado!' });
@@ -92,7 +133,7 @@ const EventForm = () => {
   const steps = [
     { label: 'Tipo de Evento', icon: LayoutGrid },
     { label: 'Contacto', icon: User },
-    { label: 'Detalles Boda', icon: Heart },
+    { label: 'Detalles Evento', icon: Heart },
     { label: 'Componentes', icon: Settings }
   ];
 
@@ -152,6 +193,64 @@ const EventForm = () => {
         <motion.div key={activeStep} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.35 }}>
           {activeStep === 0 && (
             <div className="glass-card" style={{ padding: '2rem' }}>
+              {/* Categoría Selector */}
+              <h2 style={{ fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '1.1rem', color: 'var(--text-primary)', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Sparkles size={18} color="#D7B272" />Categoría del Evento
+              </h2>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', marginBottom: '2.5rem' }}>
+                {[
+                  { value: 'Bodas', label: 'Bodas', icon: Heart, color: '#f472b6', gradient: 'linear-gradient(135deg, rgba(244, 114, 182, 0.25) 0%, rgba(20, 18, 40, 0.9) 100%)' },
+                  { value: 'Fiesta de 15', label: 'Fiesta de 15', icon: Crown, color: '#a78bfa', gradient: 'linear-gradient(135deg, rgba(167, 139, 250, 0.25) 0%, rgba(20, 18, 40, 0.9) 100%)' },
+                  { value: 'Cumpleaños', label: 'Cumpleaños', icon: Gift, color: '#fbbf24', gradient: 'linear-gradient(135deg, rgba(251, 191, 36, 0.25) 0%, rgba(20, 18, 40, 0.9) 100%)' },
+                ].map((cat) => {
+                  const Icon = cat.icon;
+                  const isActive = form.category === cat.value;
+                  return (
+                    <motion.div
+                      key={cat.value}
+                      whileHover={{ y: -3, scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setForm((f) => ({ ...f, category: cat.value as any }))}
+                      style={{
+                        padding: '1.2rem 1.5rem',
+                        borderRadius: '16px',
+                        background: isActive ? cat.gradient : 'rgba(255,255,255,0.02)',
+                        border: `1.5px solid ${isActive ? cat.color : 'rgba(255,255,255,0.08)'}`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                        boxShadow: isActive ? `0 8px 20px -4px ${cat.color}35` : 'none',
+                      }}
+                    >
+                      <div style={{
+                        width: '42px',
+                        height: '42px',
+                        borderRadius: '12px',
+                        background: isActive ? `${cat.color}30` : 'rgba(255,255,255,0.05)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        border: `1px solid ${isActive ? cat.color : 'rgba(255,255,255,0.1)'}`,
+                        flexShrink: 0
+                      }}>
+                        <Icon size={20} color={isActive ? cat.color : 'rgba(255,255,255,0.5)'} />
+                      </div>
+                      <div>
+                        <div style={{
+                          fontSize: '0.95rem',
+                          fontWeight: isActive ? 700 : 600,
+                          color: isActive ? '#fff' : 'rgba(255,255,255,0.7)',
+                        }}>{cat.label}</div>
+                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{isActive ? 'Seleccionado' : 'Elegir categoría'}</div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+
+              {/* Tipo de Invitación Selector */}
               <h2 style={{ fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '1.1rem', color: 'var(--text-primary)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Heart size={18} color="var(--color-purple-light)" />Tipo de Invitación</h2>
               <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap', marginTop: '1rem' }}>
                 {[
@@ -282,59 +381,75 @@ const EventForm = () => {
 
           {activeStep === 2 && (
             <div className="glass-card" style={{ padding: '2rem' }}>
-              <h2 style={{ fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '1.1rem', color: 'var(--text-primary)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Heart size={18} color="#f472b6" />Detalles de la Boda</h2>
+              <h2 style={{ fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '1.1rem', color: 'var(--text-primary)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Heart size={18} color="#f472b6" />
+                {form.category === 'Bodas' ? 'Detalles de la Boda' : 'Detalles del evento'}
+              </h2>
               <div className="grid-responsive" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
                 <div style={{ gridColumn: '1 / -1' }}>
-                  <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Heart size={14} color="var(--text-secondary)" />Nombre de los Novios</label>
+                  <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <Heart size={14} color="var(--text-secondary)" />
+                    {form.category === 'Bodas' ? 'Nombre de los Novios' : 'Nombre del cumpleañero'}
+                  </label>
                   <div style={{ position: 'relative' }}>
                     <input
                       type="text"
                       className="input-field"
-                      placeholder="Sebastián & Laura"
-                      value={form.wedding.coupleNames || ''}
-                      onChange={(e) => setField('wedding', 'coupleNames', e.target.value)}
+                      placeholder={form.category === 'Bodas' ? "Sebastián & Laura" : "María Alejandra"}
+                      value={form.category === 'Bodas' ? (form.wedding.coupleNames || '') : (form.eventData.honoreeNames || '')}
+                      onChange={(e) => form.category === 'Bodas' ? setField('wedding', 'coupleNames', e.target.value) : setField('eventData', 'honoreeNames', e.target.value)}
                       style={{ paddingLeft: '2.75rem' }}
                     />
                     <Heart size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', opacity: 0.4, color: '#f472b6' }} />
                   </div>
                 </div>
                 <div>
-                  <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Calendar size={14} color="var(--text-secondary)" />Fecha de la Boda</label>
+                  <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <Calendar size={14} color="var(--text-secondary)" />
+                    {form.category === 'Bodas' ? 'Fecha de la Boda' : 'Fecha del evento'}
+                  </label>
                   <div style={{ position: 'relative' }}>
                     <input
                       type="date"
                       className="input-field"
-                      value={form.wedding.weddingDate || ''}
-                      onChange={(e) => setField('wedding', 'weddingDate', e.target.value)}
+                      value={form.category === 'Bodas' ? (form.wedding.weddingDate || '') : (form.eventData.eventDate || '')}
+                      onChange={(e) => form.category === 'Bodas' ? setField('wedding', 'weddingDate', e.target.value) : setField('eventData', 'eventDate', e.target.value)}
                       style={{ paddingLeft: '2.75rem' }}
                     />
                     <Calendar size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', opacity: 0.4, color: 'var(--text-secondary)' }} />
                   </div>
                 </div>
                 <div>
-                  <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Clock size={14} color="var(--text-secondary)" />Hora de la Boda</label>
+                  <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <Clock size={14} color="var(--text-secondary)" />
+                    {form.category === 'Bodas' ? 'Hora de la Boda' : 'Hora del evento'}
+                  </label>
                   <div style={{ position: 'relative' }}>
                     <input
                       type="time"
                       className="input-field"
-                      value={form.wedding.weddingTime || ''}
-                      onChange={(e) => setField('wedding', 'weddingTime', e.target.value)}
+                      value={form.category === 'Bodas' ? (form.wedding.weddingTime || '') : (form.eventData.eventTime || '')}
+                      onChange={(e) => form.category === 'Bodas' ? setField('wedding', 'weddingTime', e.target.value) : setField('eventData', 'eventTime', e.target.value)}
                       style={{ paddingLeft: '2.75rem' }}
                     />
                     <Clock size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', opacity: 0.4, color: 'var(--text-secondary)' }} />
                   </div>
                 </div>
-                <div style={{ gridColumn: '1 / -1' }}>
+                <div style={{ maxWidth: '400px' }}>
                   <label className="input-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><LayoutGrid size={14} color="var(--text-secondary)" />Tipo de tarjeta</label>
                   <div style={{ position: 'relative' }}>
                     <select
-                      value={form.wedding.cardType || 'elegant-basic-01'}
-                      onChange={(e) => setField('wedding', 'cardType', e.target.value)}
+                      value={form.category === 'Bodas' ? (form.wedding.cardType || 'elegant-basic-01') : (form.eventData.cardType || 'elegant-basic-01')}
+                      onChange={(e) => {
+                        setField('wedding', 'cardType', e.target.value);
+                        setField('eventData', 'cardType', e.target.value);
+                      }}
                       className="input-field"
                       style={{ paddingLeft: '2.75rem', appearance: 'auto' }}
                     >
                       <option value="elegant-basic-01">Tarjeta elegante básica</option>
                       <option value="vintage-basic-01">Tarjeta vintage básica</option>
+                      <option value="celebration-15-basic-01">Tarjeta celebración 15 básica</option>
                     </select>
                     <LayoutGrid size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', opacity: 0.4, color: 'var(--text-secondary)' }} />
                   </div>

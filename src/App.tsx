@@ -78,6 +78,7 @@ const App = () => {
 
         {/* Public Card (Invitation View) */}
         <Route path="/wedding/card/:eventId" element={<CardPage />} />
+        <Route path="/event/card/:eventId" element={<CardPage />} />
         <Route path="/wedding/reviews/:eventId" element={<EventReviews />} />
         <Route path="/wedding/control-user/*" element={<ControlUser />} />
 

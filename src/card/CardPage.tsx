@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { eventsService } from '../services/api';
 import ElegantCardPage from './elegant-basic-01/CardPage';
 import VintageCardPage from './vintage-basic-01/CardPage';
+import Celebration15CardPage from './celebration-15-basic-01/CardPage';
 
 export default function CardPage() {
   const { eventId } = useParams<{ eventId: string }>();
@@ -24,7 +25,7 @@ export default function CardPage() {
     fetchPromise
       .then((event) => {
         console.log('Fetched event:', event);
-        const type = event?.wedding?.cardType || 'elegant-basic-01';
+        const type = event?.wedding?.cardType || event?.event?.cardType || 'elegant-basic-01';
         console.log('Resolved cardType:', type);
         setCardType(type);
         setLoading(false);
@@ -42,6 +43,10 @@ export default function CardPage() {
 
   if (error) {
     return <div className="flex items-center justify-center min-h-screen text-red-400">Error: {error}. Intenta recargar.</div>;
+  }
+
+  if (cardType === 'celebration-15-basic-01') {
+    return <Celebration15CardPage />;
   }
 
   if (cardType === 'vintage-basic-01') {

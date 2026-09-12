@@ -84,6 +84,12 @@ const EventDetail = () => {
 
   const activeComponents = Object.entries(event.activeComponents || {}).filter(([, v]) => v).map(([k]) => k);
 
+  const isWedding = (event.category ? event.category === 'Bodas' : Boolean(event.wedding));
+  const eventName = event.wedding?.coupleNames || event.event?.honoreeNames || 'Detalle del Evento';
+  const eventDateVal = event.wedding?.weddingDate || event.event?.eventDate;
+  const eventTimeVal = event.wedding?.weddingTime || event.event?.eventTime;
+  const eventCategory = event.category || (event.event ? 'Cumpleaños' : 'Bodas');
+
   return (
     <AdminLayout>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
@@ -93,7 +99,10 @@ const EventDetail = () => {
             <ArrowLeft size={18} />
           </button>
           <div>
-            <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.6rem', color: 'var(--text-primary)' }}>{event.wedding?.coupleNames || 'Detalle del Evento'}</h1>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem' }}>
+              <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.6rem', color: 'var(--text-primary)', margin: 0 }}>{eventName}</h1>
+              <span style={{ fontSize: '0.75rem', padding: '0.2rem 0.6rem', borderRadius: '50px', background: 'rgba(139, 92, 246, 0.2)', color: '#a78bfa', border: '1px solid rgba(139, 92, 246, 0.4)', fontWeight: 600 }}>{eventCategory}</span>
+            </div>
             <code style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>{event.eventId}</code>
           </div>
         </div>
@@ -123,8 +132,15 @@ const EventDetail = () => {
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass-card" style={{ padding: '1.5rem' }}>
-          <h3 style={{ fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '0.9rem', color: '#f472b6', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Heart size={16} /> Detalles de la Boda</h3>
-          {[{ label: 'Novios', value: event.wedding?.coupleNames }, { label: 'Fecha', value: formatDate(event.wedding?.weddingDate) }, { label: 'Hora', value: formatTime12h(event.wedding?.weddingTime) }, { label: 'Tipo', value: event.type === 'web' ? 'Boda Web' : event.type === 'video' ? 'Boda Video' : 'Boda Card' }].map(({ label, value }) => (
+          <h3 style={{ fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '0.9rem', color: '#f472b6', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Heart size={16} /> {isWedding ? 'Detalles de la Boda' : 'Detalles del evento'}
+          </h3>
+          {[
+            { label: isWedding ? 'Novios' : 'Cumpleañero(a)', value: eventName },
+            { label: 'Fecha', value: formatDate(eventDateVal) },
+            { label: 'Hora', value: formatTime12h(eventTimeVal) },
+            { label: 'Tipo', value: event.type === 'web' ? 'Web Card' : event.type === 'video' ? 'Video Card' : 'Digital Card' }
+          ].map(({ label, value }) => (
             <div key={label} style={{ marginBottom: '0.75rem' }}>
               <div style={{ color: 'var(--text-muted)', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.2rem' }}>{label}</div>
               <div style={{ color: 'var(--text-primary)', fontSize: '0.9rem' }}>{value || '—'}</div>

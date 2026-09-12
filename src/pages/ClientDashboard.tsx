@@ -85,7 +85,11 @@ const ClientDashboard = () => {
     );
   }
 
-  const coupleNames = event?.wedding?.coupleNames || 'Boda';
+  const isWedding = (event?.category ? event.category === 'Bodas' : Boolean(event?.wedding));
+  const categoryLabel = event?.category || (event?.event ? 'Cumpleaños' : 'Boda');
+  const coupleNames = event?.wedding?.coupleNames || event?.event?.honoreeNames || categoryLabel;
+  const rawEventDate = event?.wedding?.weddingDate || event?.event?.eventDate;
+  const rawEventTime = event?.wedding?.weddingTime || event?.event?.eventTime;
 
   // Calculate quick guest stats
   const guests = event?.components?.guestManagement?.guests || [];
@@ -93,8 +97,8 @@ const ClientDashboard = () => {
   const notAttendingGuests = guests.filter((g: any) => g.confirmation === 'no').length;
   const pendingGuests = guests.filter((g: any) => g.confirmation !== 'si' && g.confirmation !== 'no').length;
 
-  const formattedDate = event?.wedding?.weddingDate
-    ? new Date(event.wedding.weddingDate).toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' })
+  const formattedDate = rawEventDate
+    ? new Date(rawEventDate).toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' })
     : 'Fecha por definir';
 
   return (
@@ -154,7 +158,7 @@ const ClientDashboard = () => {
           >
 
             <h2 style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)', fontWeight: 600, lineHeight: 1.2 }}>
-              Boda <br />
+              {categoryLabel} <br />
               <span style={{
                 fontWeight: 800,
                 background: 'linear-gradient(to right, #3b82f6, #8b5cf6, #D7B272)',
@@ -294,11 +298,11 @@ const ClientDashboard = () => {
               </div>
 
               <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'white', marginBottom: '1rem', fontFamily: 'var(--font-body)' }}>
-                Detalles de la Boda
+                {isWedding ? 'Detalles de la Boda' : 'Detalles del evento'}
               </h3>
 
               <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '2rem' }}>
-                Edita la información esencial de tu boda: fecha y hora, música del sitio, mensaje de portada, cronograma de momentos, código de vestimenta y datos de los regalos.
+                Edita la información esencial de tu evento: fecha y hora, música del sitio, mensaje de portada, cronograma de momentos, código de vestimenta y datos de los regalos.
               </p>
             </div>
 
@@ -317,7 +321,7 @@ const ClientDashboard = () => {
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>Hora:</span>
-                <span style={{ color: 'white', fontWeight: 600 }}>{formatTime12h(event?.wedding?.weddingTime)}</span>
+                <span style={{ color: 'white', fontWeight: 600 }}>{formatTime12h(rawEventTime)}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>Música de fondo:</span>

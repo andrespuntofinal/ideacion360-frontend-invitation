@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
 import { useCardConfig } from '../CardContext';
-import { optimizeCloudinaryUrl } from '../../../utils/cloudinary';
 import '../vintage.css';
+import dressCodeWomenImg from '../img/dress-code-women-v3.png';
+import dressCodeMenImg from '../img/dress-code-men-v2.png';
 
 export default function DressCode() {
   const { config } = useCardConfig();
@@ -9,17 +10,27 @@ export default function DressCode() {
   const accentColor = envelope.accentColor || '#C9A84C';
 
   const details = [
-    { title: dressCode.titleWomen, iconUrl: optimizeCloudinaryUrl(dressCode.dressCodeIconWomen), text: dressCode.dressCodeTextWomen, isWomen: true },
-    { title: dressCode.titleMen, iconUrl: optimizeCloudinaryUrl(dressCode.dressCodeIconMen), text: dressCode.dressCodeTextMen, isWomen: false },
+    {
+      title: dressCode.titleWomen || 'Mujeres',
+      image: dressCodeWomenImg,
+      text: dressCode.dressCodeTextWomen,
+      palette: dressCode.colorPaletteWomen,
+    },
+    {
+      title: dressCode.titleMen || 'Hombres',
+      image: dressCodeMenImg,
+      text: dressCode.dressCodeTextMen,
+      palette: dressCode.colorPaletteMen,
+    },
   ];
 
   return (
-    <section className="w-full py-4 md:py-6 px-0 md:px-2">
+    <section className="w-full py-12 md:py-16 px-4 flex flex-col items-center">
       {/* Section title */}
       <motion.div
         initial={{ opacity: 0, y: -16, filter: 'blur(8px)' }}
         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-        viewport={{ once: false, amount: 0.5 }}
+        viewport={{ once: true }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
         className="text-center mb-10"
       >
@@ -38,100 +49,82 @@ export default function DressCode() {
         <div className="flex items-center justify-center gap-3 mt-3">
           <div style={{ height: '1px', width: '32px', backgroundColor: accentColor, opacity: 0.4 }} />
           <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-            <circle cx="4" cy="4" r="2" fill={accentColor} fillOpacity="0.6"/>
+            <circle cx="4" cy="4" r="2" fill={accentColor} fillOpacity="0.6" />
           </svg>
           <div style={{ height: '1px', width: '32px', backgroundColor: accentColor, opacity: 0.4 }} />
         </div>
       </motion.div>
 
-      {/* Cards */}
-      <div className="flex flex-col gap-5 w-full">
+      {/* Cards container: side-by-side horizontally on all screens */}
+      <div className="w-full max-w-3xl flex flex-row gap-4 sm:gap-8 justify-center items-center">
         {details.map((item, i) => (
           <motion.div
-            key={item.title}
-            initial={{ opacity: 0, y: 40, filter: 'blur(8px)' }}
-            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            viewport={{ once: false, amount: 0.2 }}
-            transition={{ delay: i * 0.12, duration: 0.8, type: 'spring', stiffness: 100, damping: 20 }}
-            className="relative v-corner-card"
-            style={{
-              background: `linear-gradient(160deg, ${dressCode.backgroundColorFrom || '#2C1F14'}, ${dressCode.backgroundColorVia || '#4A3728'}, ${dressCode.backgroundColorTo || '#3D2B1F'})`,
-              border: `1px solid ${accentColor}40`,
-              padding: '2rem 1.5rem 1.75rem',
-            }}
-          >
-            {/* Top accent line */}
-            <div
-              className="absolute top-0 left-8 right-8"
-              style={{ height: '1px', background: `linear-gradient(to right, transparent, ${accentColor}60, transparent)` }}
-            />
 
-            {/* Icon + title row */}
-            <div className="flex items-center gap-3 mb-4">
-              <div
-                className="flex items-center justify-center flex-shrink-0 overflow-hidden"
-                style={{
-                  width: '44px', height: '44px',
-                  backgroundColor: dressCode.backgroundColorIconMoments || '#4A3728',
-                  border: `1px solid ${accentColor}50`,
-                }}
-              >
-                {item.iconUrl ? (
-                  <img
-                    src={item.iconUrl}
-                    alt={item.title}
-                    className="w-10 h-10 object-contain"
-                    referrerPolicy="no-referrer"
-                  />
-                ) : (
-                  <span className="text-xl" style={{ lineHeight: 1 }}>
-                    {item.isWomen ? '♀' : '♂'}
-                  </span>
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.15, duration: 0.8 }}
+            className="flex-1 min-w-0 flex justify-center"
+          >
+            <div className="relative w-full max-w-[340px] aspect-square flex items-center justify-center">
+              {/* Background Frame Image */}
+              <img
+                src={item.image}
+
+                className="absolute inset-0 w-full h-full object-contain pointer-events-none drop-shadow-md z-10"
+              />
+
+              {/* Card content overlaid on top of the image */}
+              <div className="absolute inset-0 z-20 flex flex-col items-center justify-center p-[8%] text-center">
+                {/* Subtitle */}
+                <h3
+                  className="text-sm sm:text-lg md:text-xl tracking-[0.1em] uppercase font-semibold"
+                  style={{ fontFamily: 'var(--v-font-utility)', color: dressCode.title2Color || '#C9A84C' }}
+                >
+                  {item.title}
+                </h3>
+
+                {/* Decorative Separator */}
+                <div
+                  className="w-[50%] h-[1px] my-1.5 sm:my-2.5"
+                  style={{ background: `linear-gradient(to right, transparent, ${accentColor}80, transparent)` }}
+                />
+
+                {/* Description */}
+                <p
+                  className="text-[10px] sm:text-sm md:text-base leading-relaxed px-1 sm:px-2"
+                  style={{ color: dressCode.text2Color || '#E8D5A3', fontFamily: 'var(--v-font-body)' }}
+                >
+                  {item.text}
+                </p>
+
+                {/* Color Palette */}
+                {dressCode.activateColorPalette && item.palette && item.palette.length > 0 && (
+                  <div className="flex flex-col items-center mt-2 sm:mt-3">
+                    <span
+                      className="text-[8px] sm:text-[9px] tracking-[0.2em] uppercase mb-1"
+                      style={{ color: accentColor, fontFamily: 'var(--v-font-utility)', opacity: 0.7 }}
+                    >
+                      Paleta
+                    </span>
+                    <div className="flex flex-row gap-1 sm:gap-1.5">
+                      {item.palette.map((color, idx) => (
+                        <div
+                          key={idx}
+                          className="rounded-full shadow-sm"
+                          style={{
+                            width: '14px',
+                            height: '14px',
+                            backgroundColor: color || '#ffffff',
+                            border: `1px solid ${accentColor}60`,
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </div>
                 )}
               </div>
-              <h3
-                className="text-base tracking-[0.1em] uppercase font-medium"
-                style={{ fontFamily: 'var(--v-font-utility)', color: dressCode.title2Color || '#C9A84C' }}
-              >
-                {item.title}
-              </h3>
             </div>
-
-            {/* Separator */}
-            <div
-              className="mb-4"
-              style={{ height: '1px', background: `linear-gradient(to right, ${accentColor}40, transparent)` }}
-            />
-
-            {/* Dress code text */}
-            <p
-              className="text-sm leading-relaxed"
-              style={{ color: dressCode.text2Color || '#E8D5A3', fontFamily: 'var(--v-font-body)' }}
-            >
-              {item.text}
-            </p>
-
-            {/* Color palette */}
-            {dressCode.activateColorPalette && (
-              <div className="flex flex-row gap-2 mt-5 items-center">
-                <span
-                  className="text-[9px] tracking-[0.2em] uppercase mr-1"
-                  style={{ color: accentColor, fontFamily: 'var(--v-font-utility)', opacity: 0.7 }}
-                >
-                  Paleta
-                </span>
-                {(item.isWomen ? dressCode.colorPaletteWomen : dressCode.colorPaletteMen)?.map((color, idx) => (
-                  <div
-                    key={idx}
-                    style={{
-                      width: '18px', height: '18px',
-                      backgroundColor: color || '#ffffff',
-                      border: `1px solid ${accentColor}40`,
-                    }}
-                  />
-                ))}
-              </div>
-            )}
           </motion.div>
         ))}
       </div>

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useCardConfig } from '../CardContext';
 import '../vintage.css';
+import marcoCountdownImg from '../img/marco-countdown-v2.png';
 
 interface TimeLeft { days: number; hours: number; minutes: number; seconds: number; }
 
@@ -40,12 +41,12 @@ export default function Countdown() {
 
   // Vintage dark background derived from countdown config or fallback
   const fromColor = countdown.backgroundColorFrom || '#2C1F14';
-  const viaColor  = countdown.backgroundColorVia  || '#4A3728';
-  const toColor   = countdown.backgroundColorTo   || '#3D2B1F';
-  const goldLight = countdown.borderColorCircle   || '#C9A84C';
-  const circBg    = countdown.backgroundColorCircle || '#4A3728';
-  const numColor  = countdown.numberColorText1    || '#C9A84C';
-  const lblColor  = countdown.numberColorText2    || '#9C8778';
+  const viaColor = countdown.backgroundColorVia || '#4A3728';
+  const toColor = countdown.backgroundColorTo || '#3D2B1F';
+  const goldLight = countdown.borderColorCircle || '#C9A84C';
+  const circBg = countdown.backgroundColorCircle || '#4A3728';
+  const numColor = countdown.numberColorText1 || '#C9A84C';
+  const lblColor = countdown.numberColorText2 || '#9C8778';
 
   return (
     <section
@@ -84,8 +85,8 @@ export default function Countdown() {
           <div className="flex items-center justify-center gap-3 mb-3">
             <div style={{ height: '1px', width: '40px', backgroundColor: goldLight, opacity: 0.5 }} />
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <polygon points="8,1 15,8 8,15 1,8" fill="none" stroke={goldLight} strokeWidth="1" strokeOpacity="0.5"/>
-              <circle cx="8" cy="8" r="2" fill={goldLight} fillOpacity="0.6"/>
+              <polygon points="8,1 15,8 8,15 1,8" fill="none" stroke={goldLight} strokeWidth="1" strokeOpacity="0.5" />
+              <circle cx="8" cy="8" r="2" fill={goldLight} fillOpacity="0.6" />
             </svg>
             <div style={{ height: '1px', width: '40px', backgroundColor: goldLight, opacity: 0.5 }} />
           </div>
@@ -108,37 +109,21 @@ export default function Countdown() {
               transition={{ delay: index * 0.12, duration: 0.7, ease: 'easeOut' }}
               className="flex flex-col items-center"
             >
-              {/* Vintage square frame instead of circle */}
+              {/* Vintage square frame with image background */}
               <div
                 className="relative flex items-center justify-center mb-3"
                 style={{
-                  width: 'clamp(72px, 18vw, 120px)',
-                  height: 'clamp(72px, 18vw, 120px)',
-                  backgroundColor: circBg,
-                  border: `1px solid ${goldLight}60`,
-                  boxShadow: `inset 0 0 20px rgba(0,0,0,0.3), 0 4px 20px rgba(0,0,0,0.25)`,
+                  width: 'clamp(82px, 20vw, 125px)',
+                  height: 'clamp(82px, 20vw, 125px)',
                 }}
               >
-                {/* Inner gold border */}
-                <div
-                  className="absolute inset-[5px]"
-                  style={{ border: `1px solid ${goldLight}30` }}
+                {/* Background Image */}
+                <img
+                  src={marcoCountdownImg}
+                  alt="Marco Countdown"
+                  className="absolute inset-0 w-full h-full object-fill pointer-events-none drop-shadow-md"
                 />
-                {/* Corner dots */}
-                {[[-1,-1],[1,-1],[1,1],[-1,1]].map(([x, y], i) => (
-                  <div
-                    key={i}
-                    className="absolute w-1 h-1"
-                    style={{
-                      backgroundColor: goldLight,
-                      opacity: 0.5,
-                      top: x === -1 ? '6px' : undefined,
-                      bottom: x === 1 ? '6px' : undefined,
-                      left: y === -1 ? '6px' : undefined,
-                      right: y === 1 ? '6px' : undefined,
-                    }}
-                  />
-                ))}
+
                 <span
                   className="relative z-10 leading-none font-light"
                   style={{

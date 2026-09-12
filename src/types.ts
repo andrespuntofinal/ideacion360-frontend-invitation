@@ -40,6 +40,13 @@ export interface EventWedding {
   cardType?: string;
 }
 
+export interface EventGeneralData {
+  honoreeNames?: string;
+  eventDate?: string;
+  eventTime?: string;
+  cardType?: string;
+}
+
 export interface ActiveComponents {
   banner: boolean;
   calendar: boolean;
@@ -94,8 +101,10 @@ export interface WeddingEvent {
   eventId: string;
   type: 'web' | 'video' | 'card';
   status: 'draft' | 'active' | 'inactive' | 'canceled' | 'completed' | 'concluded';
+  category?: 'Bodas' | 'Fiesta de 15' | 'Cumpleaños';
   contact?: EventContact;
   wedding?: EventWedding;
+  event?: EventGeneralData;
   activeComponents: ActiveComponents;
   components: EventComponents;
   reviews?: {

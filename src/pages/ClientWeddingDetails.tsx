@@ -173,11 +173,13 @@ const ClientWeddingDetails = () => {
 
       // Populate states
       // General
-      setCoupleNames(eventData.wedding?.coupleNames || '');
-      if (eventData.wedding?.weddingDate) {
-        setWeddingDate(new Date(eventData.wedding.weddingDate).toISOString().split('T')[0]);
+      const isWeddingObj = (eventData.category ? eventData.category === 'Bodas' : Boolean(eventData.wedding));
+      setCoupleNames(eventData.wedding?.coupleNames || eventData.event?.honoreeNames || '');
+      const rawDate = eventData.wedding?.weddingDate || eventData.event?.eventDate;
+      if (rawDate) {
+        setWeddingDate(new Date(rawDate).toISOString().split('T')[0]);
       }
-      setWeddingTime(eventData.wedding?.weddingTime || '');
+      setWeddingTime(eventData.wedding?.weddingTime || eventData.event?.eventTime || '');
 
       // Components
       const banner = eventData.components?.banner || {};
@@ -326,15 +328,24 @@ const ClientWeddingDetails = () => {
       // 2. Perform component and general updates
       const updatePromises: Promise<any>[] = [];
 
-      // A. General Wedding properties
-      const weddingUpdate = {
+      // A. General properties
+      const isWeddingType = (event.category ? event.category === 'Bodas' : Boolean(event.wedding));
+      const generalUpdate = isWeddingType ? {
         wedding: {
           coupleNames: coupleNames,
           weddingDate: weddingDate ? new Date(weddingDate).toISOString() : undefined,
-          weddingTime: convertTo24Hour(weddingTime)
+          weddingTime: convertTo24Hour(weddingTime),
+          cardType: event.wedding?.cardType || 'elegant-basic-01',
+        }
+      } : {
+        event: {
+          honoreeNames: coupleNames,
+          eventDate: weddingDate ? new Date(weddingDate).toISOString() : undefined,
+          eventTime: convertTo24Hour(weddingTime),
+          cardType: event.event?.cardType || 'elegant-basic-01',
         }
       };
-      updatePromises.push(eventsService.update(eventId!, weddingUpdate));
+      updatePromises.push(eventsService.update(eventId!, generalUpdate));
 
       // B. Banner Component
       updatePromises.push(eventsService.updateComponent(eventId!, 'banner', {
@@ -505,66 +516,72 @@ const ClientWeddingDetails = () => {
       </div>
 
       {/* Sticky Header */}
-      <header
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '1rem 2rem',
-          background: 'rgba(9, 7, 33, 0.75)',
-          borderBottom: '1px solid var(--border-glass)',
-          backdropFilter: 'blur(12px)',
-          position: 'sticky',
-          top: 0,
-          zIndex: 100
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <button
-            onClick={() => navigate(`/wedding/mi-boda/${eventId}`)}
+      {(() => {
+        const isWeddingUI = (event?.category ? event.category === 'Bodas' : Boolean(event?.wedding));
+        const categoryUI = event?.category || (event?.event ? 'Evento' : 'Boda');
+        return (
+          <header
             style={{
-              background: 'rgba(138, 196, 224, 0.1)',
-              border: '1px solid rgba(138, 196, 224, 0.2)',
-              color: 'var(--text-secondary)',
-              padding: '0.5rem',
-              borderRadius: 8,
-              cursor: 'pointer',
-              display: 'flex'
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: '1rem 2rem',
+              background: 'rgba(9, 7, 33, 0.75)',
+              borderBottom: '1px solid var(--border-glass)',
+              backdropFilter: 'blur(12px)',
+              position: 'sticky',
+              top: 0,
+              zIndex: 100
             }}
-            title="Volver al menú"
           >
-            <ArrowLeft size={18} />
-          </button>
-          <div>
-            <h1 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0, color: 'var(--text-primary)' }}>
-              Detalles de la Boda
-            </h1>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.75rem', margin: 0 }}>
-              Boda {coupleNames}
-            </p>
-          </div>
-        </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <button
+                onClick={() => navigate(`/wedding/mi-boda/${eventId}`)}
+                style={{
+                  background: 'rgba(138, 196, 224, 0.1)',
+                  border: '1px solid rgba(138, 196, 224, 0.2)',
+                  color: 'var(--text-secondary)',
+                  padding: '0.5rem',
+                  borderRadius: 8,
+                  cursor: 'pointer',
+                  display: 'flex'
+                }}
+                title="Volver al menú"
+              >
+                <ArrowLeft size={18} />
+              </button>
+              <div>
+                <h1 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0, color: 'var(--text-primary)' }}>
+                  {isWeddingUI ? 'Detalles de la Boda' : 'Detalles del evento'}
+                </h1>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.75rem', margin: 0 }}>
+                  {categoryUI} {coupleNames}
+                </p>
+              </div>
+            </div>
 
-        <motion.button
-          onClick={handleSave}
-          disabled={isSaving}
-          className="btn-primary"
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-          style={{
-            padding: '0.6rem 1.8rem',
-            fontSize: '0.9rem',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
-            boxShadow: '0 4px 15px rgba(139, 92, 246, 0.3)'
-          }}
-        >
-          <Save size={16} />
-          <span>{isSaving ? 'Guardando...' : 'Guardar Cambios'}</span>
-        </motion.button>
-      </header>
+            <motion.button
+              onClick={handleSave}
+              disabled={isSaving}
+              className="btn-primary"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              style={{
+                padding: '0.6rem 1.8rem',
+                fontSize: '0.9rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
+                boxShadow: '0 4px 15px rgba(139, 92, 246, 0.3)'
+              }}
+            >
+              <Save size={16} />
+              <span>{isSaving ? 'Guardando...' : 'Guardar Cambios'}</span>
+            </motion.button>
+          </header>
+        );
+      })()}
 
       {/* Main Form Area */}
       <main style={{ flex: 1, width: '100%', maxWidth: '900px', margin: '0 auto', padding: '2rem 1.5rem', zIndex: 1 }}>
@@ -579,7 +596,7 @@ const ClientWeddingDetails = () => {
             position: 'relative',
             zIndex: openSection === 'general' ? 10 : 1
           }}>
-            {renderSectionHeader('general', 'Detalle Generales', <Calendar size={18} />)}
+            {renderSectionHeader('general', 'Detalles Generales', <Calendar size={18} />)}
             <AnimatePresence>
               {openSection === 'general' && (
                 <motion.div
@@ -589,17 +606,20 @@ const ClientWeddingDetails = () => {
                   transition={{ duration: 0.2 }}
                   style={{ overflow: 'visible' }}
                 >
-                  <div style={{ padding: '1.5rem', borderTop: '1px solid var(--border-glass)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem', overflow: 'visible' }}>
-                    <div style={{ gridColumn: '1 / -1' }}>
-                      <label className="input-label">Nombre de los Novios</label>
-                      <input type="text" className="input-field" placeholder="Ej. Johanna y Andrés" value={coupleNames} onChange={e => setCoupleNames(e.target.value)} />
-                    </div>
-                    <div>
-                      <label className="input-label">Fecha de la Boda</label>
-                      <input type="date" className="input-field" value={weddingDate} onChange={e => setWeddingDate(e.target.value)} />
-                    </div>
-                    <div style={{ position: 'relative' }}>
-                      <label className="input-label">Hora de la Boda</label>
+                  {(() => {
+                    const isWeddingSection = (event?.category ? event.category === 'Bodas' : Boolean(event?.wedding));
+                    return (
+                      <div style={{ padding: '1.5rem', borderTop: '1px solid var(--border-glass)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem', overflow: 'visible' }}>
+                        <div style={{ gridColumn: '1 / -1' }}>
+                          <label className="input-label">{isWeddingSection ? 'Nombre de los Novios' : 'Nombre del cumpleañero'}</label>
+                          <input type="text" className="input-field" placeholder={isWeddingSection ? "Ej. Johanna y Andrés" : "Ej. Sofía"} value={coupleNames} onChange={e => setCoupleNames(e.target.value)} />
+                        </div>
+                        <div>
+                          <label className="input-label">{isWeddingSection ? 'Fecha de la Boda' : 'Fecha del evento'}</label>
+                          <input type="date" className="input-field" value={weddingDate} onChange={e => setWeddingDate(e.target.value)} />
+                        </div>
+                        <div style={{ position: 'relative' }}>
+                          <label className="input-label">{isWeddingSection ? 'Hora de la Boda' : 'Hora del evento'}</label>
                       <div style={{ position: 'relative' }}>
                         <input
                           type="text"
@@ -690,8 +710,10 @@ const ClientWeddingDetails = () => {
                           </div>
                         </>
                       )}
-                    </div>
-                  </div>
+                        </div>
+                      </div>
+                    );
+                  })()}
                 </motion.div>
               )}
             </AnimatePresence>

@@ -22,12 +22,12 @@ interface Landing2Props {
 /* ── SVG floral footer ornament ─────────────────────────────────────────── */
 const FloralFooter = ({ color = '#C9A84C' }: { color?: string }) => (
   <svg width="220" height="28" viewBox="0 0 220 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <line x1="0" y1="14" x2="88" y2="14" stroke={color} strokeWidth="0.8" strokeOpacity="0.45"/>
-    <circle cx="96" cy="14" r="2" fill={color} fillOpacity="0.5"/>
-    <path d="M104 8 Q110 14 104 20 Q110 14 116 8 Q110 14 116 20 Q110 14 104 8Z" fill={color} fillOpacity="0.35"/>
-    <circle cx="110" cy="14" r="3.5" fill={color} fillOpacity="0.25"/>
-    <circle cx="124" cy="14" r="2" fill={color} fillOpacity="0.5"/>
-    <line x1="132" y1="14" x2="220" y2="14" stroke={color} strokeWidth="0.8" strokeOpacity="0.45"/>
+    <line x1="0" y1="14" x2="88" y2="14" stroke={color} strokeWidth="0.8" strokeOpacity="0.45" />
+    <circle cx="96" cy="14" r="2" fill={color} fillOpacity="0.5" />
+    <path d="M104 8 Q110 14 104 20 Q110 14 116 8 Q110 14 116 20 Q110 14 104 8Z" fill={color} fillOpacity="0.35" />
+    <circle cx="110" cy="14" r="3.5" fill={color} fillOpacity="0.25" />
+    <circle cx="124" cy="14" r="2" fill={color} fillOpacity="0.5" />
+    <line x1="132" y1="14" x2="220" y2="14" stroke={color} strokeWidth="0.8" strokeOpacity="0.45" />
   </svg>
 );
 
@@ -66,7 +66,7 @@ export default function Landing2({ onClose }: Landing2Props) {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundAttachment: 'fixed',
-            opacity: 0.28,
+            opacity: 5.28,
           }}
         />
       )}

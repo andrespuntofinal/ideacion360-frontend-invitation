@@ -240,16 +240,24 @@ const AdminDashboard = () => {
                 <tbody>
                   {paginatedEvents.map((event, idx) => {
                     const isLast = idx >= paginatedEvents.length - 2;
+                    const eventCategory = event.category || (event.event ? 'Cumpleaños' : 'Bodas');
+                    const eventTitleName = event.wedding?.coupleNames || event.event?.honoreeNames || '—';
+                    const eventDateVal = event.wedding?.weddingDate || event.event?.eventDate;
+                    const categoryBadgeColor = eventCategory === 'Bodas' ? '#f472b6' : eventCategory === 'Fiesta de 15' ? '#a78bfa' : '#fbbf24';
+
                     return (
                       <tr key={event._id} className="dashboard-row" style={{ borderBottom: '1px solid rgba(255,255,255,0.04)', transition: 'background 0.2s' }}>
                         <td style={{ padding: '1.5rem 1.5rem' }}>
-                          <div style={{ marginBottom: '0.6rem' }}>
+                          <div style={{ marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
                             <span className={`badge badge-${event.type || 'web'}`} style={{ fontSize: '0.65rem', borderRadius: '4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{typeLabels[event.type || ''] || 'Web'}</span>
+                            <span style={{ fontSize: '0.65rem', padding: '0.15rem 0.5rem', borderRadius: '4px', background: `${categoryBadgeColor}20`, color: categoryBadgeColor, border: `1px solid ${categoryBadgeColor}40`, fontWeight: 700 }}>
+                              {eventCategory}
+                            </span>
                           </div>
                           <div>
-                            <div style={{ color: '#FFFFFF', fontSize: '1.05rem', fontWeight: 700, marginBottom: '0.35rem' }}>{event.wedding?.coupleNames || '—'}</div>
+                            <div style={{ color: '#FFFFFF', fontSize: '1.05rem', fontWeight: 700, marginBottom: '0.35rem' }}>{eventTitleName}</div>
                             <div style={{ color: '#94a3b8', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                              <Calendar size={14} color="#3b82f6" /> {formatDate(event.wedding?.weddingDate)}
+                              <Calendar size={14} color="#3b82f6" /> {formatDate(eventDateVal)}
                             </div>
                           </div>
                         </td>
@@ -308,7 +316,8 @@ const AdminDashboard = () => {
                                         if (firstGuestUrl) {
                                           window.open(firstGuestUrl.startsWith('http') ? firstGuestUrl : `${baseFrontUrl}/${firstGuestUrl}`, '_blank');
                                         } else {
-                                          window.open(`${baseFrontUrl}/wedding/card/${event.eventId}`, '_blank');
+                                          const cardPrefix = (eventCategory === 'Bodas') ? 'wedding' : 'event';
+                                          window.open(`${baseFrontUrl}/${cardPrefix}/card/${event.eventId}`, '_blank');
                                         }
                                       }
                                     },

@@ -1085,12 +1085,14 @@ const ComponentsManager = () => {
         const guestsArray = sanitizedData.guests;
         const rawInitials = event?.components?.envelope?.initialsCoupleText || 'EVT';
         const initials = String(rawInitials).replace(/[^A-Za-z]/g, '').toUpperCase().substring(0, 3).padEnd(3, 'X');
+        const isWedding = (event?.category ? event.category === 'Bodas' : Boolean(event?.wedding));
+        const cardPrefix = isWedding ? 'wedding' : 'event';
 
         sanitizedData.guests = guestsArray.map((g: any) => {
           if (!g.token) {
             const randomStr = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
             g.token = `${initials}${randomStr}`;
-            g.urlCard = `wedding/card/${g.token}`;
+            g.urlCard = `${cardPrefix}/card/${g.token}`;
           }
           // Clean up any internal fields if they exist
           delete g.__v;
@@ -1128,7 +1130,7 @@ const ComponentsManager = () => {
           </h1>
           {event && (
             <p style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>
-              {event.wedding?.coupleNames || 'Evento'} · {activeComponents.length} componentes activos
+              {event.wedding?.coupleNames || event.event?.honoreeNames || 'Evento'} · {activeComponents.length} componentes activos
             </p>
           )}
         </div>

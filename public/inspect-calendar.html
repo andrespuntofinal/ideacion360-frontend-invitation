@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inspect Calendar</title>
+</head>
+<body>
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <script>
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, 500, 500);
+            const imgData = ctx.getImageData(0, 0, 500, 500);
+            const data = imgData.data;
+            
+            let minX = 500, maxX = 0, minY = 500, maxY = 0;
+            let found = false;
+            
+            for (let y = 0; y < 500; y++) {
+                for (let x = 0; x < 500; x++) {
+                    const idx = (y * 500 + x) * 4;
+                    const alpha = data[idx + 3];
+                    if (alpha < 10) { // transparent or close to it
+                        if (x < minX) minX = x;
+                        if (x > maxX) maxX = x;
+                        if (y < minY) minY = y;
+                        if (y > maxY) maxY = y;
+                        found = true;
+                    }
+                }
+            }
+            
+            if (found) {
+                const results = {
+                    minX, maxX, minY, maxY,
+                    minXPercent: (minX / 500) * 100,
+                    maxXPercent: (maxX / 500) * 100,
+                    minYPercent: (minY / 500) * 100,
+                    maxYPercent: (maxY / 500) * 100
+                };
+                console.log("BOUNDING_BOX_RESULTS:" + JSON.stringify(results));
+            } else {
+                console.log("BOUNDING_BOX_RESULTS:NOT_FOUND");
+            }
+        };
+        img.onerror = () => console.error("Failed to load image");
+        img.src = "/src/card/vintage-basic-01/img/calendar-couple.png";
+    </script>
+</body>
+</html>

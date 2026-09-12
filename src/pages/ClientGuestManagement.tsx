@@ -72,11 +72,13 @@ const ClientGuestManagement = () => {
       const updatedData = { ...data };
 
       if (updatedData.guests && updatedData.guests.length > 0) {
+        const isWedding = (event?.category ? event.category === 'Bodas' : Boolean(event?.wedding));
+        const cardPrefix = isWedding ? 'wedding' : 'event';
         updatedData.guests = updatedData.guests.map((g: any) => {
           if (!g.token) {
             const randomStr = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
             g.token = `${initials}${randomStr}`;
-            g.urlCard = `wedding/card/${g.token}`;
+            g.urlCard = `${cardPrefix}/card/${g.token}`;
           }
           return g;
         });
@@ -106,7 +108,7 @@ const ClientGuestManagement = () => {
     gray: colors.detailIcon2Color || '#9ca3af',
   };
 
-  const coupleNames = event?.wedding?.coupleNames || '';
+  const coupleNames = event?.wedding?.coupleNames || event?.event?.honoreeNames || '';
 
   const totalGuests = data?.totalGuests || 0;
   const guests = data?.guests || [];

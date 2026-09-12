@@ -1,0 +1,153 @@
+/* ─── CELEBRATION-15-BASIC-01 Design System ────────────────────────────────── */
+/* Fonts: Alex Brush (display), Playfair Display (body), Montserrat (utility) */
+
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+/* ── CSS Variables ─────────────────────────────────────────────────────────── */
+:root {
+  --v-cream:        #FFF5F6;
+  --v-cream-dark:   #FDE8EB;
+  --v-cream-deep:   #F8D0D6;
+  --v-gold:         #B38646;
+  --v-gold-light:   #E0A96D;
+  --v-gold-pale:    #F3D9B1;
+  --v-brown:        #321E30;
+  --v-brown-mid:    #5E3C58;
+  --v-brown-light:  #A17B9B;
+  --v-sepia:        #854D7A;
+  --v-card-bg:      rgba(255, 245, 246, 0.96);
+  --v-border:       rgba(224, 169, 109, 0.35);
+  --v-border-strong: rgba(224, 169, 109, 0.65);
+  --v-shadow:       rgba(50, 30, 48, 0.15);
+  --v-font-display: 'Alex Brush', cursive, Georgia, serif;
+  --v-font-body:    'Playfair Display', Georgia, serif;
+  --v-font-utility: 'Montserrat', sans-serif;
+}
+
+/* ── Shared Patterns & Utilities ───────────────────────────────────────────── */
+
+/* Parchment paper texture via SVG noise */
+.v-paper {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E"),
+    linear-gradient(160deg, var(--v-cream) 0%, var(--v-cream-dark) 50%, var(--v-cream) 100%);
+  background-size: 400px 400px, cover;
+}
+
+/* Ornamental divider line */
+.v-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 1.5rem auto;
+  width: 100%;
+  max-width: 280px;
+}
+.v-divider::before,
+.v-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--v-gold-light), transparent);
+}
+
+/* Section labels */
+.v-eyebrow {
+  font-family: var(--v-font-utility);
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--v-brown-light);
+  margin-bottom: 0.25rem;
+}
+
+/* Card wrapper with parchment + corner filigree */
+.v-card {
+  position: relative;
+  background: var(--v-card-bg);
+  border: 1px solid var(--v-border);
+  border-radius: 4px;
+  box-shadow:
+    0 2px 8px var(--v-shadow),
+    inset 0 0 0 1px rgba(201, 168, 76, 0.10);
+  overflow: hidden;
+}
+
+/* Gradient dark band (for countdown/timeline) */
+.v-dark-band {
+  background: linear-gradient(135deg, #2C1F14 0%, #4A3728 40%, #3D2B1F 100%);
+  position: relative;
+  overflow: hidden;
+}
+.v-dark-band::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+  background-size: 300px 300px;
+  pointer-events: none;
+}
+
+/* Section title styling (vintage script-style heading) */
+.v-section-title {
+  font-family: var(--v-font-display);
+  font-style: italic;
+  color: var(--v-gold);
+  letter-spacing: 0.03em;
+}
+.v-section-title-dark {
+  font-family: var(--v-font-display);
+  font-style: italic;
+  color: var(--v-gold-light);
+  letter-spacing: 0.03em;
+}
+
+/* Wax seal aura effect */
+@keyframes sealAura {
+  0%, 100% {
+    filter: drop-shadow(0 0 6px rgba(201, 168, 76, 0.6)) drop-shadow(0 4px 12px rgba(61, 43, 31, 0.35));
+  }
+  50% {
+    filter: drop-shadow(0 0 15px rgba(201, 168, 76, 0.95)) drop-shadow(0 6px 18px rgba(61, 43, 31, 0.45));
+  }
+}
+.v-seal-pulse {
+  animation: sealAura 2.5s ease-in-out infinite;
+}
+
+/* Corner SVG filigree — injected via ::before/::after on .v-corner-card */
+.v-corner-card {
+  position: relative;
+}
+.v-corner-card::before,
+.v-corner-card::after {
+  content: '';
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M2,2 Q16,2 30,2 Q30,16 30,30' fill='none' stroke='%23C9A84C' stroke-width='1' stroke-opacity='0.5'/%3E%3Ccircle cx='4' cy='4' r='1.5' fill='%23C9A84C' fill-opacity='0.5'/%3E%3Ccircle cx='28' cy='28' r='1.5' fill='%23C9A84C' fill-opacity='0.5'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: 5;
+}
+.v-corner-card::before {
+  top: 6px;
+  left: 6px;
+}
+.v-corner-card::after {
+  bottom: 6px;
+  right: 6px;
+  transform: rotate(180deg);
+}
+
+/* Smooth entrance */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.v-fade-up {
+  animation: fadeUp 0.8s ease-out both;
+}
