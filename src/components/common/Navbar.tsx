@@ -112,7 +112,7 @@ const Navbar = () => {
           ))}
           <div style={{ display: 'flex', gap: '0.5rem' }}>
             <Link to="/wedding/login">
-              <button className="btn-secondary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.8rem' }}>Mi boda</button>
+              <button className="btn-secondary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.8rem' }}>Mi evento</button>
             </Link>
             <Link to="/wedding/Admin/dashboard">
               <button className="btn-primary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.8rem', background: 'linear-gradient(to right,  #3b82f6, #8b5cf6)' }}>Admin</button>
@@ -140,7 +140,7 @@ const Navbar = () => {
             ))}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1rem' }}>
               <Link to="/wedding/login" style={{ display: 'block' }}>
-                <button className="btn-secondary" style={{ width: '100%' }}>Mi boda</button>
+                <button className="btn-secondary" style={{ width: '100%' }}>Mi evento</button>
               </Link>
               <Link to="/wedding/Admin/dashboard" style={{ display: 'block' }}>
                 <button className="btn-primary" style={{ width: '100%' }}>Admin Panel</button>

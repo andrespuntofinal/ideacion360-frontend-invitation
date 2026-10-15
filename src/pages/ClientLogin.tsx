@@ -151,7 +151,7 @@ const ClientLogin = () => {
               letterSpacing: '-0.03em',
               lineHeight: 1.1
             }}>
-              {step === 'email' ? 'Mi Boda' : 'Verificación'}
+              {step === 'email' ? 'Mi Evento' : 'Verificación'}
             </h1>
             <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', lineHeight: 1.5, marginBottom: '2rem' }}>
               {step === 'email'

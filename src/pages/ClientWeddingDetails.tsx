@@ -620,96 +620,96 @@ const ClientWeddingDetails = () => {
                         </div>
                         <div style={{ position: 'relative' }}>
                           <label className="input-label">{isWeddingSection ? 'Hora de la Boda' : 'Hora del evento'}</label>
-                      <div style={{ position: 'relative' }}>
-                        <input
-                          type="text"
-                          className="input-field"
-                          style={{ cursor: 'pointer' }}
-                          readOnly
-                          value={weddingTime}
-                          onClick={() => setShowTimePicker(!showTimePicker)}
-                          placeholder="Seleccionar hora..."
-                        />
-                        <Clock
-                          size={18}
-                          color="var(--text-muted)"
-                          style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}
-                        />
-                      </div>
-
-                      {showTimePicker && (
-                        <>
-                          <div
-                            style={{ position: 'fixed', inset: 0, zIndex: 140 }}
-                            onClick={() => setShowTimePicker(false)}
-                          />
-                          <div style={{
-                            position: 'absolute',
-                            top: 'calc(100% + 6px)',
-                            left: 0,
-                            width: '260px',
-                            backgroundColor: '#ffffff',
-                            borderRadius: '12px',
-                            boxShadow: '0 10px 25px rgba(0,0,0,0.5)',
-                            border: '1px solid rgba(0,0,0,0.15)',
-                            display: 'flex',
-                            height: '240px',
-                            overflow: 'hidden',
-                            zIndex: 150
-                          }}>
-                            {/* Hours Column */}
-                            <div className="time-picker-column">
-                              {Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0')).map(hr => {
-                                const isSelected = parseWeddingTime(weddingTime).hour === hr;
-                                return (
-                                  <button
-                                    key={hr}
-                                    type="button"
-                                    onClick={() => setWeddingTime(`${hr}:${parseWeddingTime(weddingTime).minute} ${parseWeddingTime(weddingTime).meridiem}`)}
-                                    className={`time-picker-option ${isSelected ? 'selected' : ''}`}
-                                  >
-                                    {hr}
-                                  </button>
-                                );
-                              })}
-                            </div>
-
-                            {/* Minutes Column */}
-                            <div className="time-picker-column">
-                              {Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0')).map(min => {
-                                const isSelected = parseWeddingTime(weddingTime).minute === min;
-                                return (
-                                  <button
-                                    key={min}
-                                    type="button"
-                                    onClick={() => setWeddingTime(`${parseWeddingTime(weddingTime).hour}:${min} ${parseWeddingTime(weddingTime).meridiem}`)}
-                                    className={`time-picker-option ${isSelected ? 'selected' : ''}`}
-                                  >
-                                    {min}
-                                  </button>
-                                );
-                              })}
-                            </div>
-
-                            {/* Meridiem Column */}
-                            <div className="time-picker-column">
-                              {['a. m.', 'p. m.'].map(mer => {
-                                const isSelected = parseWeddingTime(weddingTime).meridiem === mer;
-                                return (
-                                  <button
-                                    key={mer}
-                                    type="button"
-                                    onClick={() => setWeddingTime(`${parseWeddingTime(weddingTime).hour}:${parseWeddingTime(weddingTime).minute} ${mer}`)}
-                                    className={`time-picker-option ${isSelected ? 'selected' : ''}`}
-                                  >
-                                    {mer}
-                                  </button>
-                                );
-                              })}
-                            </div>
+                          <div style={{ position: 'relative' }}>
+                            <input
+                              type="text"
+                              className="input-field"
+                              style={{ cursor: 'pointer' }}
+                              readOnly
+                              value={weddingTime}
+                              onClick={() => setShowTimePicker(!showTimePicker)}
+                              placeholder="Seleccionar hora..."
+                            />
+                            <Clock
+                              size={18}
+                              color="var(--text-muted)"
+                              style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}
+                            />
                           </div>
-                        </>
-                      )}
+
+                          {showTimePicker && (
+                            <>
+                              <div
+                                style={{ position: 'fixed', inset: 0, zIndex: 140 }}
+                                onClick={() => setShowTimePicker(false)}
+                              />
+                              <div style={{
+                                position: 'absolute',
+                                top: 'calc(100% + 6px)',
+                                left: 0,
+                                width: '260px',
+                                backgroundColor: '#ffffff',
+                                borderRadius: '12px',
+                                boxShadow: '0 10px 25px rgba(0,0,0,0.5)',
+                                border: '1px solid rgba(0,0,0,0.15)',
+                                display: 'flex',
+                                height: '240px',
+                                overflow: 'hidden',
+                                zIndex: 150
+                              }}>
+                                {/* Hours Column */}
+                                <div className="time-picker-column">
+                                  {Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0')).map(hr => {
+                                    const isSelected = parseWeddingTime(weddingTime).hour === hr;
+                                    return (
+                                      <button
+                                        key={hr}
+                                        type="button"
+                                        onClick={() => setWeddingTime(`${hr}:${parseWeddingTime(weddingTime).minute} ${parseWeddingTime(weddingTime).meridiem}`)}
+                                        className={`time-picker-option ${isSelected ? 'selected' : ''}`}
+                                      >
+                                        {hr}
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+
+                                {/* Minutes Column */}
+                                <div className="time-picker-column">
+                                  {Array.from({ length: 60 }, (_, i) => String(i).padStart(2, '0')).map(min => {
+                                    const isSelected = parseWeddingTime(weddingTime).minute === min;
+                                    return (
+                                      <button
+                                        key={min}
+                                        type="button"
+                                        onClick={() => setWeddingTime(`${parseWeddingTime(weddingTime).hour}:${min} ${parseWeddingTime(weddingTime).meridiem}`)}
+                                        className={`time-picker-option ${isSelected ? 'selected' : ''}`}
+                                      >
+                                        {min}
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+
+                                {/* Meridiem Column */}
+                                <div className="time-picker-column">
+                                  {['a. m.', 'p. m.'].map(mer => {
+                                    const isSelected = parseWeddingTime(weddingTime).meridiem === mer;
+                                    return (
+                                      <button
+                                        key={mer}
+                                        type="button"
+                                        onClick={() => setWeddingTime(`${parseWeddingTime(weddingTime).hour}:${parseWeddingTime(weddingTime).minute} ${mer}`)}
+                                        className={`time-picker-option ${isSelected ? 'selected' : ''}`}
+                                      >
+                                        {mer}
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            </>
+                          )}
                         </div>
                       </div>
                     );

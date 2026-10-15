@@ -298,7 +298,7 @@ const ClientDashboard = () => {
               </div>
 
               <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'white', marginBottom: '1rem', fontFamily: 'var(--font-body)' }}>
-                {isWedding ? 'Detalles de la Boda' : 'Detalles del evento'}
+                {isWedding ? 'Detalles del evento' : 'Detalles del evento'}
               </h3>
 
               <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: '2rem' }}>
